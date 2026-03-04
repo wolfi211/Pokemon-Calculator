@@ -1,2 +1,22 @@
 @import "tailwindcss";
-@import "@/assets/multiselect.css"
+
+@theme {
+  --color-normal: #9FA19F;
+  --color-fighting: #FF8000;
+  --color-flying: #81B9EF;
+  --color-poison: #9141CB;
+  --color-ground: #915121;
+  --color-rock: #AFA981;
+  --color-bug: #91A119;
+  --color-ghost: #704170;
+  --color-steel: #60A1B8;
+  --color-fire: #E62829;
+  --color-water: #2980EF;
+  --color-grass: #3FA129;
+  --color-electric: #FAC000;
+  --color-psychic: #EF4179;
+  --color-ice: #3DCEF3;
+  --color-dragon: #5060E1;
+  --color-dark: #624D4E;
+  --color-fairy: #EF70EF;
+}

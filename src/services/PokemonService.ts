@@ -1,24 +1,38 @@
-import { supabase } from '@/services/supabase';
-import { type Move, toMove } from '@/types/move';
-import { toPokemon, type Pokemon } from '@/types/pokemon';
+import { supabase } from '@/services/supabase'
+import { type Move, toMove } from '@/types/move'
+import { toPokemon, type Pokemon } from '@/types/pokemon'
 
 export class PokemonService {
 
     async getAllPokemon() {
         const { data: pokemons } = await supabase
-      .from('pokemon')
-      .select('*')
+            .from('pokemon')
+            .select('*')
 
-      return pokemons as Pokemon[]
+        return pokemons as Pokemon[]
+    }
+
+    async getPokemonById(id: number): Promise<Pokemon | undefined> {
+        const { data, error } = await supabase
+            .from('pokemon')
+            .select('*')
+            .eq('id', id)
+
+        if (error) {
+            console.error(error)
+            return undefined
+        }
+
+        return toPokemon(data)
     }
 
     async queryPokemon(query: string): Promise<Pokemon[]> {
-        const {data, error } = await supabase
+        const { data, error } = await supabase
             .from('pokemon')
             .select('*')
             .ilike("name", `%${query}%`)
 
-        if(error) {
+        if (error) {
             console.error(error)
             return []
         }
@@ -27,12 +41,12 @@ export class PokemonService {
     }
 
     async queryMoves(query: string): Promise<Move[]> {
-        const {data, error } = await supabase
+        const { data, error } = await supabase
             .from('moves')
             .select('*')
             .ilike("name", `%${query}%`)
 
-        if(error) {
+        if (error) {
             console.error(error)
             return []
         }
