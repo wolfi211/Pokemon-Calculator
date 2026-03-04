@@ -6,8 +6,10 @@ import PokemonSearch from './PokemonSearch.vue';
 </script>
 
 <template>
-    <div class="mx-auto w-fit flex justify-center content-center items-center gap-3">
-        <PokemonSearch />
+    <div class="mt-10 mx-auto w-fit flex justify-center content-start items-start gap-3">
+        <div>
+            <PokemonSearch />
+        </div>
         <div class="grid grid-cols-2 gap-3">
             <MoveSearch v-for="i in [1,2,3,4]" :order="i" />
         </div>
