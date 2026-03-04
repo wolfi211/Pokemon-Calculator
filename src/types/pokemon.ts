@@ -9,6 +9,7 @@ export interface Pokemon {
   stats: StatBlock
   moves: Move[]
   spriteUrl: string
+  speciesName: string
 }
 
 export const toPokemon = (row: any): Pokemon => ({
@@ -24,5 +25,6 @@ export const toPokemon = (row: any): Pokemon => ({
     speed: row.speed
   } as StatBlock,
   types: row.type_ids,
-  moves: []
+  moves: [],
+  speciesName: row.species_name
 })

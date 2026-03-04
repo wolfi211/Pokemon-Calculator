@@ -15,8 +15,6 @@ const activeTheme = computed(() => {
 const moveIconUrl = computed(() => {
     const typeId = selectedMove.value?.type
     if (!typeId) return ''
-
-    // This logic tells Vite to resolve the path correctly
     return new URL(`/src/assets/images/types/${typeId}.png`, import.meta.url).href
 })
 

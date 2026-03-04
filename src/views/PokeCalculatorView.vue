@@ -4,6 +4,7 @@ import SearchBar from '@/components/SearchBar.vue'
 import PokemonList from '@/components/PokemonList.vue'
 import PokemonDisplay from '@/components/PokemonDisplay.vue'
 import { PokemonService } from '@/services/PokemonService'
+import GithubLink from '@/components/GithubLink.vue'
 
 const counterResults = ref<any[]>([])
 const service = new PokemonService()
@@ -37,13 +38,8 @@ const handleSearchResults = (data: any[]) => {
 
             <section id="results-section" class="mt-12">
                 <PokemonList v-if="counterResults.length > 0" :counters="counterResults" />
-
-                <!-- <div v-else class="text-center py-20 border-2 border-dashed border-slate-200 rounded-2xl">
-                    <p class="text-slate-400 font-medium">
-                        No results yet. Perform a search to see recommendations.
-                    </p>
-                </div> -->
             </section>
         </div>
+        <GithubLink />
     </main>
 </template>

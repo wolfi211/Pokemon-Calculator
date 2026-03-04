@@ -23,11 +23,34 @@ const normalizedPokemon = computed(() => {
 })
 
 const bulbapediaUrl = computed(() => {
-    const name = props.pokemon.name;
-    // Capitalize first letter: bulbasaur -> Bulbasaur
-    const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1);
-    return `https://bulbapedia.bulbagarden.net/wiki/${capitalizedName}_(Pok%C3%A9mon)`;
-});
+    const species = props.pokemon.species_name || props.pokemon.name
+
+    const hardMapping: Record<string, string> = {
+        'porygon-z': 'Porygon-Z',
+        'type-null': 'Type:_Null'
+    }
+
+    if (hardMapping[species]) {
+        return `https://bulbapedia.bulbagarden.net/wiki/${hardMapping[species]}_(Pok%C3%A9mon)`
+    }
+
+    const parts = species.split('-')
+
+    const capParts = parts.map((p: string) => {
+        if (p.toLowerCase() === 'o') return 'o'
+        return p.charAt(0).toUpperCase() + p.slice(1)
+    })
+
+    const underscorePrefixes = [
+        'Iron', 'Great', 'Scream', 'Brute', 'Flutter', 'Sandy',
+        'Roaring', 'Walking', 'Gouging', 'Raging', 'Tapu'
+    ]
+
+    const joiner = underscorePrefixes.includes(capParts[0]) ? '_' : '-'
+    const finalName = capParts.join(joiner)
+
+    return `https://bulbapedia.bulbagarden.net/wiki/${finalName}_(Pok%C3%A9mon)`
+})
 
 const cardStyle = computed(() => {
     const types = normalizedPokemon.value.types

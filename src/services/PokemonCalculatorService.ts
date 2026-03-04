@@ -1,6 +1,4 @@
 import { supabase } from '@/services/supabase'
-import type { Pokemon } from '../types/pokemon'
-import type { Move } from '../types/move'
 
 export const TYPE_CHART: Record<number, Record<number, number>> = {
   1: { 6: 0.5, 8: 0, 9: 0.5 }, // Normal
@@ -47,7 +45,6 @@ export class PokemonCalculatorService {
     if (!candidates) return []
 
     const results = candidates.map(candidate => {
-      // DEFENSIVE LOGIC
       let weaknesses = 0
       let resistances = 0
       let immunities = 0
@@ -61,22 +58,17 @@ export class PokemonCalculatorService {
         else neutral++
       }
 
-      // Filter: We don't want any weaknesses
       if (weaknesses > 0) return null
 
-      // OFFENSIVE LOGIC
-      // Check if it has a move matching its best stat that is super effective
       const bestStat = candidate.attack >= candidate.special_attack ? 'physical' : 'special'
       const hasCounterMove = candidate.moves.some((m: any) => {
         if (m.damage_class !== bestStat) return false
         const eff = this.calculateEffectiveness(m.type_id, enemy.type_ids)
-        return eff > 1 // Super effective
+        return eff > 1
       })
 
       if (!hasCounterMove) return null
 
-      // TIERING SYSTEM
-      // Tier 0: 4 Immunities/Resistances, Tier 1: 3, etc.
       const tier = moveTypeIds.length - (immunities + resistances)
 
       return {
@@ -90,13 +82,11 @@ export class PokemonCalculatorService {
   }
 
   private calculateEffectiveness(attackTypeId: number, defenderTypeIds: number | number[]): number {
-    // Ensure defenderTypeIds is an array (handles single type pokemons)
     const defs = Array.isArray(defenderTypeIds) ? defenderTypeIds : [defenderTypeIds]
     return defs.reduce((acc, defId) => acc * (TYPE_CHART[attackTypeId]?.[defId] ?? 1), 1)
   }
 
   private checkSTAB(pokemon: any, enemyTypeIds: number[]): boolean {
-    // Simple check: does the pokemon have a type that is super effective against enemy?
     return pokemon.type_ids.some((tId: number) =>
       enemyTypeIds.some(eId => (TYPE_CHART[tId]?.[eId] ?? 1) > 1)
     )

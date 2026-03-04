@@ -66,6 +66,7 @@ async function syncPokedex() {
       const pokemonRecord = {
         id: d.id,
         name: d.name,
+        species_name: d.species.name,
         hp: d.stats[0].base_stat,
         attack: d.stats[1].base_stat,
         defense: d.stats[2].base_stat,

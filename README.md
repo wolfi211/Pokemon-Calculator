@@ -1,42 +1,58 @@
-# pokemon-calculator-vue
+# 🛡️ PokéCounter
+A high-performance Pokémon counter dashboard built with Vue 3, Vite, and Supabase. This tool allows you to find "Perfect Walls" and "Strong Alternatives" against specific Pokémon threats, featuring real-time stat sorting and smart links to Bulbapedia.
 
-This template should help get you started developing with Vue 3 in Vite.
+## 🚀 Features
+Smart Tiering: Automatically groups Pokémon into "Perfect Walls" and "Strong Alternatives."
 
-## Recommended IDE Setup
+Dynamic Sorting: Re-order results within tiers by their stats.
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+Collapsible Tiers: Clean UX for managing large sets of counter-data.
 
-## Recommended Browser Setup
+Auto-Sync: Custom script to pull the latest data (including forms and species) from PokéAPI into your own Supabase instance.
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+Smart Linking: Deep-links directly to Bulbapedia species pages.
 
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
+## 🛠️ Setup
+### 1. Clone & Install
+```
+git clone https://github.com/yourusername/pokecounter.git
+cd pokecounter
 npm install
 ```
+### 2. Environment Variables
+Create a .env file in the root directory. Do not commit this file.
 
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
 ```
+# Supabase Configuration
+VITE_SUPABASE_URL=your_supabase_project_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 
-### Type-Check, Compile and Minify for Production
+# PokéAPI Configuration
+POKEAPI_BASE_URL=https://pokeapi.co/api/v2
+```
+### 3. Database Schema
+The Schema can be found inside supabase.sql
 
-```sh
+## 🔄 Syncing Data
+To populate your database from PokéAPI, run the sync script. This script handles rate-limiting and batches requests for efficiency.
+
+```
+npm run db:sync
+```
+## 💻 Development
+```
+# Start the dev server
+npm run dev
+
+# Build for production
 npm run build
 ```
+## 💡 Contributing
+Found a bug with a specific Pokémon's Bulbapedia link or stat calculation?
+
+Open an Issue.
+
+Submit a Pull Request.
+
+## 🔒 Security Note
+This project uses .env files to manage database connectivity. Ensure .env is listed in your .gitignore to prevent leaking your Supabase credentials.

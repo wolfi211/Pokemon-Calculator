@@ -1,39 +1,36 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import PokemonDisplay from './PokemonDisplay.vue';
+import PokemonDisplay from './PokemonDisplay.vue'
 
 const props = defineProps<{
     counters: any[]
 }>()
 
-// Track collapsed states
-const collapsedTiers = ref<Record<string, boolean>>({});
-const sortBy = ref<'hp' | 'attack' | 'special_attack' | 'speed'>('speed');
+const collapsedTiers = ref<Record<string, boolean>>({})
+const sortBy = ref<'hp' | 'attack' | 'special_attack' | 'speed'>('speed')
 
 const toggleTier = (tier: string) => {
-    collapsedTiers.value[tier] = !collapsedTiers.value[tier];
-};
+    collapsedTiers.value[tier] = !collapsedTiers.value[tier]
+}
 
 const groupedResults = computed(() => {
-    // Ensure we sort tiers numerically (0, 1, 2...)
-    const groups: Record<number, any[]> = {};
+    const groups: Record<number, any[]> = {}
 
     props.counters.forEach(pokemon => {
-        const tier = pokemon.tier ?? 0;
-        if (!groups[tier]) groups[tier] = [];
-        groups[tier].push(pokemon);
-    });
+        const tier = pokemon.tier ?? 0
+        if (!groups[tier]) groups[tier] = []
+        groups[tier].push(pokemon)
+    })
 
-    // 2. Sort each group based on the selected stat (Descending)
     Object.keys(groups).forEach(tier => {
         groups[Number(tier)]!.sort((a, b) => {
-            const valA = a[sortBy.value] || 0;
-            const valB = b[sortBy.value] || 0;
-            return valB - valA;
-        });
-    });
+            const valA = a[sortBy.value] || 0
+            const valB = b[sortBy.value] || 0
+            return valB - valA
+        })
+    })
 
-    return groups;
+    return groups
 })
 </script>
 
