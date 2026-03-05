@@ -1,0 +1,16 @@
+services:
+  pokecounter:
+    build:
+      context: .
+      args:
+        - VITE_SUPABASE_URL=${VITE_SUPABASE_URL}
+        - VITE_SUPABASE_ANON_KEY=${VITE_SUPABASE_ANON_KEY}
+    image: pokecounter-app:latest
+    container_name: pokecounter_web
+    ports:
+      - "8080:80"
+    environment:
+      - VITE_SUPABASE_URL=${VITE_SUPABASE_URL}
+      - VITE_SUPABASE_ANON_KEY=${VITE_SUPABASE_ANON_KEY}
+      - POKEAPI_BASE_URL=${POKEAPI_BASE_URL:-https://pokeapi.co/api/v2}
+    restart: unless-stopped

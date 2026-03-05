@@ -8,7 +8,7 @@ const supabase = createClient(
   process.env.VITE_SUPABASE_ANON_KEY!
 )
 
-const baseUrl = process.env.POKEAPI_BASE_URL
+const baseUrl = 'https://pokeapi.co/api/v2';
 
 async function syncPokedex() {
   console.log("🚀 Starting Sync...")
