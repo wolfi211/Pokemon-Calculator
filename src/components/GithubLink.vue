@@ -1,7 +1,7 @@
 <template>
     <div class="fixed bottom-6 right-6 z-50">
         <a href="https://github.com/wolfi211/Pokemon-Calculator" target="_blank"
-            class="p-3 bg-white border border-slate-200 shadow-lg rounded-full flex items-center gap-2 hover:bg-slate-50 transition-all text-slate-600 hover:text-slate-900"
+            class="p-3 bg-white border border-neutral-200 shadow-lg rounded-full flex items-center gap-2 hover:bg-neutral-50 transition-all text-neutral-950 hover:text-red-500"
             title="Found a bug? Open an issue on GitHub">
             <span class="text-xs font-bold pl-1">GitHub</span>
             <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">

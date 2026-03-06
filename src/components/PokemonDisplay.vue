@@ -5,9 +5,10 @@ import TypeIcon from './TypeIcon.vue'
 
 const props = defineProps<{
     pokemon: any
+    small?: boolean
+    closeButton?: boolean
 }>()
 
-// Helper to normalize the data structure between raw DB and test objects
 const normalizedPokemon = computed(() => {
     return {
         name: props.pokemon?.name,
@@ -79,12 +80,12 @@ const typeIcons = computed(() => {
 
 <template>
     <div v-if="pokemon"
-        class="group relative flex items-center p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow"
-        :style="cardStyle">
+        class="group relative flex items-center bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow"
+        :class="small ? 'p-1' : 'p-4'" :style="cardStyle">
 
         <a :href="bulbapediaUrl" target="_blank" rel="noopener noreferrer"
-            class="absolute top-3 right-3 p-1.5 rounded-md text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 transition-all opacity-0 group-hover:opacity-100"
-            title="View on Bulbapedia">
+            class="absolute top-3 right-3 p-1.5 rounded-md text-neutral-400 hover:text-emerald-600 hover:bg-emerald-50 transition-all opacity-0 group-hover:opacity-100"
+            :class="small ? 'group-hover:bg-emerald-100/70' : ''" title="View on Bulbapedia">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -92,18 +93,19 @@ const typeIcons = computed(() => {
             </svg>
         </a>
 
-        <div class="flex flex-col items-center mx-5 min-w-30">
-            <div
-                class="relative w-24 h-24 overflow-hidden hover:overflow-visible z-100 flex items-center justify-center">
+        <div class="flex flex-col items-center" :class="small ? 'mx-0' : 'mx-5 min-w-30'">
+            <div class="relative overflow-hidden hover:overflow-visible z-100 flex items-center justify-center"
+                :class="small ? 'w-15 h-15' : 'w-24 h-24'">
                 <img :src="normalizedPokemon.sprite" :alt="normalizedPokemon.name"
                     class="w-full h-full object-contain transform scale-[1] transition-transform hover:scale-[1.3]" />
             </div>
 
-            <h4 class="capitalize font-bold text-slate-800 text-lg">{{ normalizedPokemon.name }}</h4>
+            <h4 v-if="!small" class="capitalize font-bold text-neutral-800 text-center text-lg">{{
+                normalizedPokemon.name }}</h4>
+        </div>
 
-            <div class="flex gap-1 mt-2">
-                <TypeIcon v-for="(icon, index) in typeIcons" :key="index" :url="icon.url" :type-theme="icon.theme" />
-            </div>
+        <div v-if="!small" class="flex flex-col gap-1 h-full">
+            <TypeIcon v-for="(icon, index) in typeIcons" :key="index" :url="icon.url" :type-theme="icon.theme" />
         </div>
 
         <div class="grid grid-cols-6 gap-2 w-full text-center pr-4">
@@ -115,8 +117,10 @@ const typeIcons = computed(() => {
                 { label: 'SpD', val: normalizedPokemon.spd },
                 { label: 'Spe', val: normalizedPokemon.spe }
             ]" :key="stat.label">
-                <span class="block text-lg text-slate-400 uppercase font-bold">{{ stat.label }}</span>
-                <span class="text-xl font-semibold text-slate-700">{{ stat.val }}</span>
+                <span class="block text-neutral-400 uppercase font-bold" :class="!small ? 'text-lg' : 'text-xs'">{{
+                    stat.label }}</span>
+                <span class="font-semibold text-neutral-700" :class="!small ? 'text-xl' : 'text-xs'">{{ stat.val
+                    }}</span>
             </div>
         </div>
     </div>

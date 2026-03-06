@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import PokeCalculatorView from './views/PokeCalculatorView.vue';
 </script>
 
 <template>
-  <RouterView />
+  <PokeCalculatorView />
 </template>

@@ -3,6 +3,7 @@ import { ref, reactive } from 'vue'
 import PokemonSearch from './PokemonSearch.vue'
 import MoveSearch from './MoveSearch.vue'
 import { PokemonCalculatorService } from '@/services/PokemonCalculatorService'
+import PokemonDisplay from './PokemonDisplay.vue'
 
 // State to hold the final selection
 const enemyPokemon = ref<any>(null)
@@ -51,17 +52,19 @@ const startSearch = async () => {
 
 <template>
     <div class="mt-5 mx-auto w-fit flex flex-col items-center gap-6">
-        <div class="flex justify-center content-center items-center gap-3">
-            <div>
+        <div class="flex justify-center content-start items-start gap-3">
+            <div class="flex flex-col gap-3">
                 <PokemonSearch @update:pokemon="handlePokemonUpdate" />
             </div>
-            <div class="grid grid-cols-2 gap-3">
+            <div class="grid grid-cols-2 gap-3 h-full">
                 <MoveSearch v-for="i in [1, 2, 3, 4]" :key="i" :order="i" @update:move="handleMoveUpdate" />
             </div>
         </div>
 
-        <button @click="startSearch" :disabled="!enemyPokemon || isSearching" class="inline-flex items-center px-8 py-3 bg-indigo-500 text-white rounded-lg font-bold shadow-lg 
-             hover:bg-indigo-400 disabled:bg-indigo-200 disabled:cursor-not-allowed transition-all 
+        <PokemonDisplay v-if="enemyPokemon" :pokemon="enemyPokemon" class="w-full" />
+
+        <button @click="startSearch" :disabled="!enemyPokemon || isSearching" class="inline-flex items-center px-8 py-3 bg-red-500 text-white rounded-lg font-bold shadow-lg 
+             hover:bg-red-400 disabled:bg-red-200 disabled:cursor-not-allowed transition-all 
              active:scale-95 min-w-50 justify-center">
             <svg v-if="isSearching" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -70,7 +73,7 @@ const startSearch = async () => {
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
                 </path>
             </svg>
-            {{ isSearching ? 'Searching...' : 'Calculate Matchup' }}
+            {{ isSearching ? 'Searching...' : 'Find Counter' }}
         </button>
     </div>
 </template>

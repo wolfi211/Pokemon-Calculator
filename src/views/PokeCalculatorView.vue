@@ -2,13 +2,9 @@
 import { ref } from 'vue'
 import SearchBar from '@/components/SearchBar.vue'
 import PokemonList from '@/components/PokemonList.vue'
-import PokemonDisplay from '@/components/PokemonDisplay.vue'
-import { PokemonService } from '@/services/PokemonService'
 import GithubLink from '@/components/GithubLink.vue'
 
 const counterResults = ref<any[]>([])
-const service = new PokemonService()
-const pokemon = ref<any>()
 
 const handleSearchResults = (data: any[]) => {
     counterResults.value = data
@@ -23,16 +19,16 @@ const handleSearchResults = (data: any[]) => {
 </script>
 
 <template>
-    <main class="min-h-screen bg-slate-50 py-12 px-4">
+    <main class="min-h-screen bg-neutral-800 py-12 px-4">
         <div class="max-w-6xl mx-auto">
             <header class="text-center mb-12">
-                <h1 class="text-4xl font-black text-slate-900 tracking-tight mb-2">
-                    POKÉMON <span class="text-emerald-600">COUNTER</span> FINDER
+                <h1 class="text-4xl font-black text-neutral-100 tracking-tight mb-2">
+                    POKÉMON <span class="text-red-500">COUNTER</span> FINDER
                 </h1>
-                <p class="text-slate-500">Select an enemy and their moves to find the perfect walls.</p>
+                <p class="text-neutral-100/50">Select an enemy and their moves to find the perfect counter.</p>
             </header>
 
-            <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
+            <section class="bg-white p-8 rounded-2xl shadow-sm">
                 <SearchBar @results="handleSearchResults" />
             </section>
 
