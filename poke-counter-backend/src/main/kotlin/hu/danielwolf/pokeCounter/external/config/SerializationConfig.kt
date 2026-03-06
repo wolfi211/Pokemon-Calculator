@@ -2,7 +2,6 @@ package hu.danielwolf.pokeCounter.external.config
 
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonBuilder
 import kotlinx.serialization.json.JsonNamingStrategy
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
