@@ -1,63 +1,97 @@
 package hu.danielwolf.pokeCounter.external.config
 
-import hu.danielwolf.pokeCounter.external.api.PokeApi
+import hu.danielwolf.pokeCounter.external.api.berries.BerryApi
+import hu.danielwolf.pokeCounter.external.api.contests.ContestApi
+import hu.danielwolf.pokeCounter.external.api.encounters.EncounterApi
+import hu.danielwolf.pokeCounter.external.api.evolution.EvolutionApi
+import hu.danielwolf.pokeCounter.external.api.games.GameApi
+import hu.danielwolf.pokeCounter.external.api.items.ItemApi
+import hu.danielwolf.pokeCounter.external.api.locations.LocationApi
+import hu.danielwolf.pokeCounter.external.api.machines.MachineApi
+import hu.danielwolf.pokeCounter.external.api.move.MoveApi
+import hu.danielwolf.pokeCounter.external.api.pokemon.PokemonApi
+import hu.danielwolf.pokeCounter.external.api.utilities.UtilityApi
 import io.netty.channel.ChannelOption.CONNECT_TIMEOUT_MILLIS
-import io.netty.handler.timeout.ReadTimeoutHandler
+import kotlinx.serialization.json.Json
 import java.time.Duration
-import java.util.concurrent.TimeUnit.SECONDS
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpHeaders
-import org.springframework.http.MediaType.APPLICATION_JSON
+import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.http.client.reactive.ReactorClientHttpConnector
 import org.springframework.http.codec.json.KotlinSerializationJsonDecoder
 import org.springframework.http.codec.json.KotlinSerializationJsonEncoder
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.support.WebClientAdapter
 import org.springframework.web.service.invoker.HttpServiceProxyFactory
+import org.springframework.web.service.invoker.createClient
 import reactor.netty.http.client.HttpClient
 
 @Configuration
 class WebclientConfig(
   private val pokeApiProperties: PokeApiProperties,
+  private val json: Json
 ) {
 
   @Bean
-  @Qualifier("wechatWebClient")
-  fun wechatWebClient(builder: WebClient.Builder): WebClient {
-    val httpClient = HttpClient.create()
-      .option(CONNECT_TIMEOUT_MILLIS, CONNECT_TIMEOUT_SECONDS * 1000)
-      .responseTimeout(Duration.ofSeconds(RESPONSE_TIMEOUT_SECONDS))
-      .doOnConnected {
-        it.addHandlerFirst(ReadTimeoutHandler(CONNECT_TIMEOUT_SECONDS.toLong(), SECONDS))
-      }
-
-    return builder
-      .clientConnector(ReactorClientHttpConnector(httpClient))
-      .codecs {
-        it.defaultCodecs().apply {
-          kotlinSerializationJsonDecoder(KotlinSerializationJsonDecoder(json()))
-          kotlinSerializationJsonEncoder(KotlinSerializationJsonEncoder(json()))
-        }
-      }
-      .defaultHeaders {
-        it.contentType = APPLICATION_JSON
-        it.accept = listOf(APPLICATION_JSON)
-        it.set(HttpHeaders.USER_AGENT, "CityGo-Backend/1.0.0")
-      }
+  fun pokeWebClient(): WebClient {
+    return WebClient.builder()
       .baseUrl(pokeApiProperties.baseUrl)
+      .codecs { configurer ->
+        configurer.defaultCodecs().kotlinSerializationJsonDecoder(KotlinSerializationJsonDecoder(json))
+        configurer.defaultCodecs().kotlinSerializationJsonEncoder(KotlinSerializationJsonEncoder(json))
+      }
+      .clientConnector(ReactorClientHttpConnector(
+        HttpClient.create()
+          .responseTimeout(Duration.ofSeconds(RESPONSE_TIMEOUT_SECONDS))
+          .option(CONNECT_TIMEOUT_MILLIS, CONNECT_TIMEOUT_IN_MILLIS)
+      ))
+      .defaultHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
       .build()
   }
 
   @Bean
-  fun wechatOrderApi(wechatWebClient: WebClient): PokeApi =
-    HttpServiceProxyFactory
-      .builderFor(WebClientAdapter.create(wechatWebClient)).build()
-      .createClient(PokeApi::class.java)
+  fun pokeApiFactory(pokeWebClient: WebClient): HttpServiceProxyFactory {
+    return HttpServiceProxyFactory
+      .builderFor(WebClientAdapter.create(pokeWebClient))
+      .build()
+  }
+
+  @Bean
+  fun berryApi(factory: HttpServiceProxyFactory) = factory.createClient<BerryApi>()
+
+  @Bean
+  fun contestApi(factory: HttpServiceProxyFactory) = factory.createClient<ContestApi>()
+
+  @Bean
+  fun encounterApi(factory: HttpServiceProxyFactory) = factory.createClient<EncounterApi>()
+
+  @Bean
+  fun evolutionApi(factory: HttpServiceProxyFactory) = factory.createClient<EvolutionApi>()
+
+  @Bean
+  fun gameApi(factory: HttpServiceProxyFactory) = factory.createClient<GameApi>()
+
+  @Bean
+  fun itemApi(factory: HttpServiceProxyFactory) = factory.createClient<ItemApi>()
+
+  @Bean
+  fun locationApi(factory: HttpServiceProxyFactory) = factory.createClient<LocationApi>()
+
+  @Bean
+  fun machineApi(factory: HttpServiceProxyFactory) = factory.createClient<MachineApi>()
+
+  @Bean
+  fun moveApi(factory: HttpServiceProxyFactory) = factory.createClient<MoveApi>()
+
+  @Bean
+  fun pokemonApi(factory: HttpServiceProxyFactory) = factory.createClient<PokemonApi>()
+
+  @Bean
+  fun utilityApi(factory: HttpServiceProxyFactory) = factory.createClient<UtilityApi>()
 
   companion object {
-    private const val CONNECT_TIMEOUT_SECONDS = 5
+    private const val CONNECT_TIMEOUT_IN_MILLIS = 5000
     private const val RESPONSE_TIMEOUT_SECONDS = 20L
   }
 }

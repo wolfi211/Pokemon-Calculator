@@ -11,11 +11,14 @@ import org.springframework.http.converter.json.KotlinSerializationJsonHttpMessag
 @Configuration
 class SerializationConfig {
 
+  @OptIn(ExperimentalSerializationApi::class)
   @Bean
-  fun json() = Json {
+  fun json(): Json = Json {
+    namingStrategy = JsonNamingStrategy.SnakeCase
+    ignoreUnknownKeys = true
+
     coerceInputValues = true
     encodeDefaults = true
-    ignoreUnknownKeys = true
     isLenient = true
     explicitNulls = false
   }
@@ -23,15 +26,4 @@ class SerializationConfig {
   @Bean
   fun kotlinSerializationConverter(json: Json) =
     KotlinSerializationJsonHttpMessageConverter(json)
-}
-
-@OptIn(ExperimentalSerializationApi::class)
-fun json(builder: ((JsonBuilder) -> Unit)? = null) = Json {
-  namingStrategy = JsonNamingStrategy.SnakeCase
-  coerceInputValues = true
-  encodeDefaults = true
-  ignoreUnknownKeys = true
-  isLenient = true
-  explicitNulls = false
-  builder?.invoke(this)
 }
