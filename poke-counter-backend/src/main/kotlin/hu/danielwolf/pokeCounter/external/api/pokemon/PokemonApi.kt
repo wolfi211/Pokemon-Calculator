@@ -100,8 +100,11 @@ interface PokemonApi {
     @GetExchange
     fun followPokemon(url: URI): ExternalPokemon
 
-    @GetExchange("$PATH_POKEMON/{id}/encounters")
-    fun getPokemonLocationAreaEncounters(@PathVariable id: Int): List<ExternalLocationAreaEncounter>
+    @GetExchange("$PATH_POKEMON/{pokemonId}$PATH_ENCOUNTER")
+    fun getPokemonLocationAreaEncounters(@PathVariable pokemonId: Int): List<ExternalLocationAreaEncounter>
+
+    @GetExchange
+    fun followPokemonLocationAreaEncounters(url: URI): List<ExternalLocationAreaEncounter>
 
     @GetExchange(PATH_POKEMON_COLOR)
     fun getAllPokemonColors(@RequestParam pager: PageRequest): NamedApiResourceList
@@ -175,7 +178,7 @@ interface PokemonApi {
         const val PATH_NATURE = "/nature"
         const val PATH_POKEATHLON_STAT = "/pokeathlon-stat"
         const val PATH_POKEMON = "/pokemon"
-        const val PATH_POKEMON_LOCATION_AREA_ENCOUNTER = "/pokemon/:id/encounters"
+        const val PATH_ENCOUNTER = "/encounters"
         const val PATH_POKEMON_COLOR = "/pokemon-color"
         const val PATH_POKEMON_FORM = "/pokemon-form"
         const val PATH_POKEMON_HABITAT = "/pokemon-habitat"
