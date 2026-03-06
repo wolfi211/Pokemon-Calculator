@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: poke-counter-backend
+
+poke-api:
+  base-url: https://pokeapi.co/api/v2
