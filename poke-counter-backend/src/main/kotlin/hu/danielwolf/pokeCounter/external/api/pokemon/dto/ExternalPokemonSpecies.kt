@@ -18,7 +18,7 @@ data class ExternalPokemonSpecies(
     val isBaby: Boolean,
     val isLegendary: Boolean,
     val isMythical: Boolean,
-    val hatchCounter: Boolean,
+    val hatchCounter: Int,
     val hasGenderDifferences: Boolean,
     val formsSwitchable: Boolean,
     val growthRate: NamedAPIResource,
@@ -37,6 +37,8 @@ data class ExternalPokemonSpecies(
     val genera: List<ExternalGenus>,
     val varieties: List<ExternalPokemonSpeciesVariety>,
 )
+
+//fun ExternalPokemonSpecies.localizedNames() =
 
 @Serializable
 data class ExternalGenus(
