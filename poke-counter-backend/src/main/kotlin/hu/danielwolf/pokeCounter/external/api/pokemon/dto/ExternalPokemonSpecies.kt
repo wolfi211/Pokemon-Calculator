@@ -38,8 +38,6 @@ data class ExternalPokemonSpecies(
     val varieties: List<ExternalPokemonSpeciesVariety>,
 )
 
-//fun ExternalPokemonSpecies.localizedNames() =
-
 @Serializable
 data class ExternalGenus(
     val genus: String,

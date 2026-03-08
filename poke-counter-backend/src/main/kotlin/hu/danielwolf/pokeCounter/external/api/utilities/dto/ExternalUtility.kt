@@ -1,5 +1,6 @@
 package hu.danielwolf.pokeCounter.external.api.utilities.dto
 
+import hu.danielwolf.pokeCounter.domain.entity.LocalizedName
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -34,6 +35,8 @@ data class ExternalName(
   val name: String,
   val language: NamedAPIResource
 )
+
+fun ExternalName.toLocalizedName() = LocalizedName(this.name, this.language.name)
 
 @Serializable
 data class ExternalDescription(

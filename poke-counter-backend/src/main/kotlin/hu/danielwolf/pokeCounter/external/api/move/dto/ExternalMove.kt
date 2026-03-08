@@ -25,7 +25,7 @@ data class ExternalMove(
     val effectEntries: List<ExternalVerboseEffect>,
     val effectChanges: List<ExternalAbilityEffectChange>,
     val learnedByPokemon: List<NamedAPIResource>,
-    val flavorTestEntries: List<ExternalMoveFlavorText>,
+    val flavorTextEntries: List<ExternalMoveFlavorText>,
     val generation: NamedAPIResource,
     val machines: List<ExternalMachineVersionDetail>,
     val meta: ExternalMoveMetaData,
