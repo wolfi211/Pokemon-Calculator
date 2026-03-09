@@ -3,6 +3,8 @@ package hu.danielwolf.pokeCounter.domain.entity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 
 @Entity
@@ -15,7 +17,7 @@ data class Species(
     @Column(name = "name", nullable = false, unique = true)
     val name: String,
 
-    @Column(name = "\"order\"")
+    @Column(name = "order")
     val order: Int?,
 
     @Column(name = "gender_rate")
@@ -53,5 +55,13 @@ data class Species(
 
     @Column(name = "form_descriptions", columnDefinition = "jsonb")
     val formDescriptions: Map<String, String>?,
+
+    @OneToMany
+    @JoinColumn(name = "species_id", referencedColumnName = "id")
+    val pokemon: Set<Pokemon> = emptySet(),
+
+    @OneToMany
+    @JoinColumn(name = "species_id", referencedColumnName = "id")
+    val pokedexEntries: Set<PokedexPokemon> = emptySet(),
 )
 

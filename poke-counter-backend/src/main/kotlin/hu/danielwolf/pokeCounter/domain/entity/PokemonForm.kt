@@ -15,7 +15,7 @@ data class PokemonForm(
     @Column(name = "name", nullable = false, unique = true)
     val name: String,
 
-    @Column(name = "\"order\"")
+    @Column(name = "order")
     val order: Int?,
 
     @Column(name = "form_order")

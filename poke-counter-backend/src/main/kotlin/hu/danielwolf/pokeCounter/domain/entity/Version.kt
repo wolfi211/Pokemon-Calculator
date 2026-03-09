@@ -6,7 +6,7 @@ import jakarta.persistence.Id
 import jakarta.persistence.Table
 
 @Entity
-@Table(name = "\"version\"")
+@Table(name = "version")
 data class Version(
     @Id
     @Column(name = "id")

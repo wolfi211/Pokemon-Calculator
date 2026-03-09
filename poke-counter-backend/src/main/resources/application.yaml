@@ -1,6 +1,10 @@
 spring:
   application:
     name: poke-counter-backend
+  jpa:
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
 
 poke-api:
   base-url: https://pokeapi.co/api/v2

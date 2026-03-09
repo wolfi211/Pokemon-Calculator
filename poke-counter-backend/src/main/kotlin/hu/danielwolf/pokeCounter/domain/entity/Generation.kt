@@ -3,6 +3,8 @@ package hu.danielwolf.pokeCounter.domain.entity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 
 @Entity
@@ -17,5 +19,37 @@ data class Generation(
 
     @Column(name = "names", columnDefinition = "jsonb")
     val names: Map<String, String>?,
+
+    @OneToMany
+    @JoinColumn(name = "main_generation", referencedColumnName = "id")
+    val regions: Set<Region> = emptySet(),
+
+    @OneToMany
+    @JoinColumn(name = "generation_id", referencedColumnName = "id")
+    val versionGroups: Set<VersionGroup> = emptySet(),
+
+    @OneToMany
+    @JoinColumn(name = "generation", referencedColumnName = "id")
+    val abilities: Set<Ability> = emptySet(),
+
+    @OneToMany
+    @JoinColumn(name = "generation", referencedColumnName = "id")
+    val moves: Set<Move> = emptySet(),
+
+    @OneToMany
+    @JoinColumn(name = "generation", referencedColumnName = "id")
+    val typeRelations: Set<TypeRelation> = emptySet(),
+
+    @OneToMany
+    @JoinColumn(name = "generation_id", referencedColumnName = "id")
+    val pokemonAbilities: Set<PokemonAbility> = emptySet(),
+
+    @OneToMany
+    @JoinColumn(name = "generation_id", referencedColumnName = "id")
+    val pokemonTypes: Set<PokemonType> = emptySet(),
+
+    @OneToMany
+    @JoinColumn(name = "generation_id", referencedColumnName = "id")
+    val pokemonStats: Set<PokemonStat> = emptySet(),
 )
 

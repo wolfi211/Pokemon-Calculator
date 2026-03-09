@@ -3,6 +3,8 @@ package hu.danielwolf.pokeCounter.domain.entity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 
 @Entity
@@ -26,5 +28,9 @@ data class Pokedex(
 
     @Column(name = "region")
     val regionId: Int?,
+
+    @OneToMany
+    @JoinColumn(name = "pokedex_id", referencedColumnName = "id")
+    val entries: Set<PokedexPokemon> = emptySet(),
 )
 

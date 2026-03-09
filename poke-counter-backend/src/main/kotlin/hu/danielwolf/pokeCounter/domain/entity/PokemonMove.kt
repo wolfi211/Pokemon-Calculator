@@ -27,7 +27,7 @@ data class PokemonMove(
     @Column(name = "level_learned_at")
     val levelLearnedAt: Int?,
 
-    @Column(name = "\"order\"")
+    @Column(name = "order")
     val order: Int?,
 )
 

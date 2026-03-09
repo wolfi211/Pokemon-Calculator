@@ -3,6 +3,8 @@ package hu.danielwolf.pokeCounter.domain.entity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 
 @Entity
@@ -24,7 +26,7 @@ data class Pokemon(
     @Column(name = "is_default")
     val isDefault: Boolean?,
 
-    @Column(name = "\"order\"")
+    @Column(name = "order")
     val order: Int?,
 
     @Column(name = "weight")
@@ -38,5 +40,25 @@ data class Pokemon(
 
     @Column(name = "species_id")
     val speciesId: Int?,
+
+    @OneToMany
+    @JoinColumn(name = "pokemon_id", referencedColumnName = "id")
+    val types: Set<PokemonType> = emptySet(),
+
+    @OneToMany
+    @JoinColumn(name = "pokemon_id", referencedColumnName = "id")
+    val abilities: Set<PokemonAbility> = emptySet(),
+
+    @OneToMany
+    @JoinColumn(name = "pokemon_id", referencedColumnName = "id")
+    val moves: Set<PokemonMove> = emptySet(),
+
+    @OneToMany
+    @JoinColumn(name = "pokemon_id", referencedColumnName = "id")
+    val stats: Set<PokemonStat> = emptySet(),
+
+    @OneToMany
+    @JoinColumn(name = "pokemon_id", referencedColumnName = "id")
+    val forms: Set<PokemonForm> = emptySet(),
 )
 
