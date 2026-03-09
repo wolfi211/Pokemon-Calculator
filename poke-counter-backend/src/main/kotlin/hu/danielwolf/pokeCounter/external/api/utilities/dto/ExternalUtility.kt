@@ -36,8 +36,6 @@ data class ExternalName(
   val language: NamedAPIResource
 )
 
-fun ExternalName.toLocalizedName() = LocalizedName(this.name, this.language.name)
-
 @Serializable
 data class ExternalDescription(
   val description: String,
