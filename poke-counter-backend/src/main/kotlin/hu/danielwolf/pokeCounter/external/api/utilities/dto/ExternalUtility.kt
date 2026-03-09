@@ -1,6 +1,5 @@
 package hu.danielwolf.pokeCounter.external.api.utilities.dto
 
-import hu.danielwolf.pokeCounter.domain.entity.LocalizedName
 import kotlinx.serialization.Serializable
 
 @Serializable
