@@ -1,6 +1,6 @@
 package hu.danielwolf.pokeCounter.domain.services
 
-import hu.danielwolf.pokeCounter.domain.entity.LearnMethodVersionGroup
+import hu.danielwolf.pokeCounter.domain.entities.LearnMethodVersionGroup
 import hu.danielwolf.pokeCounter.domain.repositories.LearnMethodVersionGroupRepository
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service

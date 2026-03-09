@@ -1,6 +1,6 @@
 package hu.danielwolf.pokeCounter.domain.services
 
-import hu.danielwolf.pokeCounter.domain.entity.PokemonStat
+import hu.danielwolf.pokeCounter.domain.entities.PokemonStat
 import hu.danielwolf.pokeCounter.domain.repositories.PokemonStatRepository
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service

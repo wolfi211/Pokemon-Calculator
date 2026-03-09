@@ -1,6 +1,6 @@
 package hu.danielwolf.pokeCounter.domain.repositories
 
-import hu.danielwolf.pokeCounter.domain.entity.Pokemon
+import hu.danielwolf.pokeCounter.domain.entities.Pokemon
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface PokemonRepository : JpaRepository<Pokemon, Int> {

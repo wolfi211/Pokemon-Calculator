@@ -1,6 +1,6 @@
 package hu.danielwolf.pokeCounter.domain.repositories
 
-import hu.danielwolf.pokeCounter.domain.entity.Region
+import hu.danielwolf.pokeCounter.domain.entities.Region
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface RegionRepository : JpaRepository<Region, Int> {

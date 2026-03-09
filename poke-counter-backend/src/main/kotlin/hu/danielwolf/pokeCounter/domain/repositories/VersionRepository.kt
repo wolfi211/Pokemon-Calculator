@@ -1,6 +1,6 @@
 package hu.danielwolf.pokeCounter.domain.repositories
 
-import hu.danielwolf.pokeCounter.domain.entity.Version
+import hu.danielwolf.pokeCounter.domain.entities.Version
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface VersionRepository : JpaRepository<Version, Int> {

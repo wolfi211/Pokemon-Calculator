@@ -1,6 +1,6 @@
 package hu.danielwolf.pokeCounter.domain.repositories
 
-import hu.danielwolf.pokeCounter.domain.entity.Ability
+import hu.danielwolf.pokeCounter.domain.entities.Ability
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface AbilityRepository : JpaRepository<Ability, Int> {

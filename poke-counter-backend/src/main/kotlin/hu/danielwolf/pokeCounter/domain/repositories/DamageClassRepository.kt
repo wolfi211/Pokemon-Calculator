@@ -1,6 +1,6 @@
 package hu.danielwolf.pokeCounter.domain.repositories
 
-import hu.danielwolf.pokeCounter.domain.entity.DamageClass
+import hu.danielwolf.pokeCounter.domain.entities.DamageClass
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface DamageClassRepository : JpaRepository<DamageClass, Int> {
