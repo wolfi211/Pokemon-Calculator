@@ -1,6 +1,8 @@
 package hu.danielwolf.pokeCounter.domain.entities
 
+import hu.danielwolf.pokeCounter.config.JsonMapConverter
 import jakarta.persistence.Column
+import jakarta.persistence.Convert
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
@@ -10,21 +12,23 @@ import jakarta.persistence.Table
 data class Ability(
     @Id
     @Column(name = "id")
-    val id: Int,
+    var id: Int,
 
     @Column(name = "name", nullable = false, unique = true)
-    val name: String,
+    var name: String,
 
     @Column(name = "is_main_series")
-    val isMainSeries: Boolean?,
+    var isMainSeries: Boolean?,
 
     @Column(name = "generation")
-    val generationId: Int?,
+    var generationId: Int?,
 
+    @Convert(converter = JsonMapConverter::class)
     @Column(name = "names", columnDefinition = "jsonb")
-    val names: Map<String, String>?,
+    var names: Map<String, String>? = emptyMap(),
 
+    @Convert(converter = JsonMapConverter::class)
     @Column(name = "flavor_texts", columnDefinition = "jsonb")
-    val flavorTexts: Map<String, String>?,
+    var flavorTexts: Map<String, String>? = emptyMap(),
 )
 

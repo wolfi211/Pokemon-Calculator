@@ -10,12 +10,12 @@ import jakarta.persistence.Table
 data class PokedexVersionGroup(
     @Id
     @Column(name = "id")
-    val id: Int,
+    var id: Int,
 
     @Column(name = "pokedex_id")
-    val pokedexId: Int,
+    var pokedexId: Int,
 
     @Column(name = "version_group_id")
-    val versionGroupId: Int,
+    var versionGroupId: Int,
 )
 

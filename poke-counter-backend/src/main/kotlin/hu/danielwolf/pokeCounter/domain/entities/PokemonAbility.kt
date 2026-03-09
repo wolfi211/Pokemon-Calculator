@@ -10,21 +10,21 @@ import jakarta.persistence.Table
 data class PokemonAbility(
     @Id
     @Column(name = "id")
-    val id: Int,
+    var id: Int,
 
     @Column(name = "pokemon_id")
-    val pokemonId: Int,
+    var pokemonId: Int,
 
     @Column(name = "ability_id")
-    val abilityId: Int,
+    var abilityId: Int,
 
     @Column(name = "is_hidden")
-    val isHidden: Boolean?,
+    var isHidden: Boolean?,
 
     @Column(name = "slot")
-    val slot: Int?,
+    var slot: Int?,
 
     @Column(name = "generation_id")
-    val generationId: Int?,
+    var generationId: Int?,
 )
 

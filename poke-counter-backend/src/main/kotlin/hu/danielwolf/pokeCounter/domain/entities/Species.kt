@@ -1,6 +1,8 @@
 package hu.danielwolf.pokeCounter.domain.entities
 
+import hu.danielwolf.pokeCounter.config.JsonMapConverter
 import jakarta.persistence.Column
+import jakarta.persistence.Convert
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
@@ -12,56 +14,59 @@ import jakarta.persistence.Table
 data class Species(
     @Id
     @Column(name = "id")
-    val id: Int,
+    var id: Int,
 
     @Column(name = "name", nullable = false, unique = true)
-    val name: String,
+    var name: String,
 
     @Column(name = "order")
-    val order: Int?,
+    var order: Int?,
 
     @Column(name = "gender_rate")
-    val genderRate: Int?,
+    var genderRate: Int?,
 
     @Column(name = "capture_rate")
-    val captureRate: Int?,
+    var captureRate: Int?,
 
     @Column(name = "base_happiness")
-    val baseHappiness: Int?,
+    var baseHappiness: Int?,
 
     @Column(name = "is_baby")
-    val isBaby: Boolean?,
+    var isBaby: Boolean?,
 
     @Column(name = "is_legendary")
-    val isLegendary: Boolean?,
+    var isLegendary: Boolean?,
 
     @Column(name = "is_mythical")
-    val isMythical: Boolean?,
+    var isMythical: Boolean?,
 
     @Column(name = "hatch_counter")
-    val hatchCounter: Int?,
+    var hatchCounter: Int?,
 
     @Column(name = "has_gender_differences")
-    val hasGenderDifferences: Boolean?,
+    var hasGenderDifferences: Boolean?,
 
     @Column(name = "forms_switchable")
-    val formsSwitchable: Boolean?,
+    var formsSwitchable: Boolean?,
 
+    @Convert(converter = JsonMapConverter::class)
     @Column(name = "names", columnDefinition = "jsonb")
-    val names: Map<String, String>?,
+    var names: Map<String, String>? = emptyMap(),
 
+    @Convert(converter = JsonMapConverter::class)
     @Column(name = "flavor_text_entries", columnDefinition = "jsonb")
-    val flavorTextEntries: Map<String, String>?,
+    var flavorTextEntries: Map<String, String>? = emptyMap(),
 
+    @Convert(converter = JsonMapConverter::class)
     @Column(name = "form_descriptions", columnDefinition = "jsonb")
-    val formDescriptions: Map<String, String>?,
+    var formDescriptions: Map<String, String>? = emptyMap(),
 
     @OneToMany
     @JoinColumn(name = "species_id", referencedColumnName = "id")
-    val pokemon: Set<Pokemon> = emptySet(),
+    var pokemon: Set<Pokemon> = emptySet(),
 
     @OneToMany
     @JoinColumn(name = "species_id", referencedColumnName = "id")
-    val pokedexEntries: Set<PokedexPokemon> = emptySet(),
+    var pokedexEntries: Set<PokedexPokemon> = emptySet(),
 )
 

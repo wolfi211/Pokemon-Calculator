@@ -10,21 +10,21 @@ import jakarta.persistence.Table
 data class PokemonStat(
     @Id
     @Column(name = "id")
-    val id: Int,
+    var id: Int,
 
     @Column(name = "pokemon_id")
-    val pokemonId: Int,
+    var pokemonId: Int,
 
     @Column(name = "stat_id")
-    val statId: Int,
+    var statId: Int,
 
     @Column(name = "generation_id")
-    val generationId: Int,
+    var generationId: Int,
 
     @Column(name = "base_stat")
-    val baseStat: Int,
+    var baseStat: Int,
 
     @Column(name = "effort")
-    val effort: Int,
+    var effort: Int,
 )
 

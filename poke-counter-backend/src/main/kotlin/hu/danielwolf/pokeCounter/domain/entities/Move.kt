@@ -1,6 +1,8 @@
 package hu.danielwolf.pokeCounter.domain.entities
 
+import hu.danielwolf.pokeCounter.config.JsonMapConverter
 import jakarta.persistence.Column
+import jakarta.persistence.Convert
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
@@ -12,32 +14,34 @@ import jakarta.persistence.Table
 data class Move(
     @Id
     @Column(name = "id")
-    val id: Int,
+    var id: Int,
 
     @Column(name = "name", nullable = false, unique = true)
-    val name: String,
+    var name: String,
 
     @Column(name = "priority")
-    val priority: Int?,
+    var priority: Int?,
 
     @Column(name = "damage_class")
-    val damageClassId: Int?,
+    var damageClassId: Int?,
 
+    @Convert(converter = JsonMapConverter::class)
     @Column(name = "flavor_texts", columnDefinition = "jsonb")
-    val flavorTexts: Map<String, String>?,
+    var flavorTexts: Map<String, String>? = emptyMap(),
 
     @Column(name = "generation", columnDefinition = "integer")
-    val generationId: Int?,
+    var generationId: Int?,
 
+    @Convert(converter = JsonMapConverter::class)
     @Column(name = "names", columnDefinition = "jsonb")
-    val names: Map<String, String>?,
+    var names: Map<String, String>? = emptyMap(),
 
     @OneToMany
     @JoinColumn(name = "move_id", referencedColumnName = "id")
-    val types: Set<MoveType> = emptySet(),
+    var types: Set<MoveType> = emptySet(),
 
     @OneToMany
     @JoinColumn(name = "move_id", referencedColumnName = "id")
-    val pokemonMoves: Set<PokemonMove> = emptySet(),
+    var pokemonMoves: Set<PokemonMove> = emptySet(),
 )
 

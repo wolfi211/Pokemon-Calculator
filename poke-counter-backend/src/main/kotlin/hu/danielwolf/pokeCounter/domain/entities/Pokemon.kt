@@ -12,53 +12,53 @@ import jakarta.persistence.Table
 data class Pokemon(
     @Id
     @Column(name = "id")
-    val id: Int,
+    var id: Int,
 
     @Column(name = "name", nullable = false, unique = true)
-    val name: String,
+    var name: String,
 
     @Column(name = "base_experience")
-    val baseExperience: Int?,
+    var baseExperience: Int?,
 
     @Column(name = "height")
-    val height: Int?,
+    var height: Int?,
 
     @Column(name = "is_default")
-    val isDefault: Boolean?,
+    var isDefault: Boolean?,
 
     @Column(name = "order")
-    val order: Int?,
+    var order: Int?,
 
     @Column(name = "weight")
-    val weight: Int?,
+    var weight: Int?,
 
     @Column(name = "sprite")
-    val sprite: String?,
+    var sprite: String?,
 
     @Column(name = "cry")
-    val cry: String?,
+    var cry: String?,
 
     @Column(name = "species_id")
-    val speciesId: Int?,
+    var speciesId: Int?,
 
     @OneToMany
     @JoinColumn(name = "pokemon_id", referencedColumnName = "id")
-    val types: Set<PokemonType> = emptySet(),
+    var types: Set<PokemonType> = emptySet(),
 
     @OneToMany
     @JoinColumn(name = "pokemon_id", referencedColumnName = "id")
-    val abilities: Set<PokemonAbility> = emptySet(),
+    var abilities: Set<PokemonAbility> = emptySet(),
 
     @OneToMany
     @JoinColumn(name = "pokemon_id", referencedColumnName = "id")
-    val moves: Set<PokemonMove> = emptySet(),
+    var moves: Set<PokemonMove> = emptySet(),
 
     @OneToMany
     @JoinColumn(name = "pokemon_id", referencedColumnName = "id")
-    val stats: Set<PokemonStat> = emptySet(),
+    var stats: Set<PokemonStat> = emptySet(),
 
     @OneToMany
     @JoinColumn(name = "pokemon_id", referencedColumnName = "id")
-    val forms: Set<PokemonForm> = emptySet(),
+    var forms: Set<PokemonForm> = emptySet(),
 )
 

@@ -1,6 +1,8 @@
 package hu.danielwolf.pokeCounter.domain.entities
 
+import hu.danielwolf.pokeCounter.config.JsonMapConverter
 import jakarta.persistence.Column
+import jakarta.persistence.Convert
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
@@ -12,44 +14,45 @@ import jakarta.persistence.Table
 data class Generation(
     @Id
     @Column(name = "id")
-    val id: Int,
+    var id: Int,
 
     @Column(name = "name", nullable = false, unique = true)
-    val name: String,
+    var name: String,
 
+    @Convert(converter = JsonMapConverter::class)
     @Column(name = "names", columnDefinition = "jsonb")
-    val names: Map<String, String>?,
+    var names: Map<String, String>? = emptyMap(),
 
     @OneToMany
     @JoinColumn(name = "main_generation", referencedColumnName = "id")
-    val regions: Set<Region> = emptySet(),
+    var regions: Set<Region> = emptySet(),
 
     @OneToMany
     @JoinColumn(name = "generation_id", referencedColumnName = "id")
-    val versionGroups: Set<VersionGroup> = emptySet(),
+    var versionGroups: Set<VersionGroup> = emptySet(),
 
     @OneToMany
     @JoinColumn(name = "generation", referencedColumnName = "id")
-    val abilities: Set<Ability> = emptySet(),
+    var abilities: Set<Ability> = emptySet(),
 
     @OneToMany
     @JoinColumn(name = "generation", referencedColumnName = "id")
-    val moves: Set<Move> = emptySet(),
+    var moves: Set<Move> = emptySet(),
 
     @OneToMany
     @JoinColumn(name = "generation", referencedColumnName = "id")
-    val typeRelations: Set<TypeRelation> = emptySet(),
+    var typeRelations: Set<TypeRelation> = emptySet(),
 
     @OneToMany
     @JoinColumn(name = "generation_id", referencedColumnName = "id")
-    val pokemonAbilities: Set<PokemonAbility> = emptySet(),
+    var pokemonAbilities: Set<PokemonAbility> = emptySet(),
 
     @OneToMany
     @JoinColumn(name = "generation_id", referencedColumnName = "id")
-    val pokemonTypes: Set<PokemonType> = emptySet(),
+    var pokemonTypes: Set<PokemonType> = emptySet(),
 
     @OneToMany
     @JoinColumn(name = "generation_id", referencedColumnName = "id")
-    val pokemonStats: Set<PokemonStat> = emptySet(),
+    var pokemonStats: Set<PokemonStat> = emptySet(),
 )
 

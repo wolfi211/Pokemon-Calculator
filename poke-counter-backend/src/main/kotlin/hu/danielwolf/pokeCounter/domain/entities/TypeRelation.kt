@@ -11,18 +11,18 @@ import java.math.BigDecimal
 data class TypeRelation(
     @Id
     @Column(name = "id")
-    val id: Int,
+    var id: Int,
 
     @Column(name = "damage_from")
-    val damageFromTypeId: Int,
+    var damageFromTypeId: Int,
 
     @Column(name = "damage_to")
-    val damageToTypeId: Int,
+    var damageToTypeId: Int,
 
     @Column(name = "multiplier")
-    val multiplier: BigDecimal,
+    var multiplier: BigDecimal,
 
     @Column(name = "generation")
-    val generationId: Int?,
+    var generationId: Int?,
 )
 

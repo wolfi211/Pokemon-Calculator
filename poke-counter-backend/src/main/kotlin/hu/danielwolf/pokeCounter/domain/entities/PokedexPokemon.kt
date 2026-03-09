@@ -9,9 +9,9 @@ import jakarta.persistence.Table
 @Table(name = "pokedex_pokemon")
 data class PokedexPokemon(
     @EmbeddedId
-    val id: PokedexPokemonId,
+    var id: PokedexPokemonId,
 
     @Column(name = "entry_number")
-    val entryNumber: Int,
+    var entryNumber: Int,
 )
 

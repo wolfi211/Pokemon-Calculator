@@ -10,12 +10,12 @@ import jakarta.persistence.Table
 data class LearnMethodVersionGroup(
     @Id
     @Column(name = "id")
-    val id: Int,
+    var id: Int,
 
     @Column(name = "learn_method_id")
-    val learnMethodId: Int,
+    var learnMethodId: Int,
 
     @Column(name = "version_group_id")
-    val versionGroupId: Int,
+    var versionGroupId: Int,
 )
 

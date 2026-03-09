@@ -7,9 +7,9 @@ import java.io.Serializable
 @Embeddable
 data class PokedexPokemonId(
     @Column(name = "pokedex_id")
-    val pokedexId: Int,
+    var pokedexId: Int,
 
     @Column(name = "species_id")
-    val speciesId: Int,
+    var speciesId: Int,
 ) : Serializable
 

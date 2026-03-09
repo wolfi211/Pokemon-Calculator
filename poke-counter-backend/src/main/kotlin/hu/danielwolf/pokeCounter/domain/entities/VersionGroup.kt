@@ -12,39 +12,39 @@ import jakarta.persistence.Table
 data class VersionGroup(
     @Id
     @Column(name = "id")
-    val id: Int,
+    var id: Int,
 
     @Column(name = "name", nullable = false, unique = true)
-    val name: String,
+    var name: String,
 
     @Column(name = "order")
-    val order: Int?,
+    var order: Int?,
 
     @Column(name = "generation_id")
-    val generationId: Int?,
+    var generationId: Int?,
 
     @OneToMany
     @JoinColumn(name = "version_group_id", referencedColumnName = "id")
-    val versions: Set<Version> = emptySet(),
+    var versions: Set<Version> = emptySet(),
 
     @OneToMany
     @JoinColumn(name = "version_group_id", referencedColumnName = "id")
-    val pokedexVersionGroups: Set<PokedexVersionGroup> = emptySet(),
+    var pokedexVersionGroups: Set<PokedexVersionGroup> = emptySet(),
 
     @OneToMany
     @JoinColumn(name = "version_group_id", referencedColumnName = "id")
-    val learnMethodVersionGroups: Set<LearnMethodVersionGroup> = emptySet(),
+    var learnMethodVersionGroups: Set<LearnMethodVersionGroup> = emptySet(),
 
     @OneToMany
     @JoinColumn(name = "version_group_id", referencedColumnName = "id")
-    val moveTypes: Set<MoveType> = emptySet(),
+    var moveTypes: Set<MoveType> = emptySet(),
 
     @OneToMany
     @JoinColumn(name = "version_group_id", referencedColumnName = "id")
-    val pokemonMoves: Set<PokemonMove> = emptySet(),
+    var pokemonMoves: Set<PokemonMove> = emptySet(),
 
     @OneToMany
     @JoinColumn(name = "version_group", referencedColumnName = "id")
-    val pokemonForms: Set<PokemonForm> = emptySet(),
+    var pokemonForms: Set<PokemonForm> = emptySet(),
 )
 

@@ -1,6 +1,8 @@
 package hu.danielwolf.pokeCounter.domain.entities
 
+import hu.danielwolf.pokeCounter.config.JsonMapConverter
 import jakarta.persistence.Column
+import jakarta.persistence.Convert
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
@@ -10,30 +12,31 @@ import jakarta.persistence.Table
 data class MoveType(
     @Id
     @Column(name = "id")
-    val id: Int,
+    var id: Int,
 
     @Column(name = "move_id")
-    val moveId: Int,
+    var moveId: Int,
 
     @Column(name = "accuracy")
-    val accuracy: Int?,
+    var accuracy: Int?,
 
     @Column(name = "effect_chance")
-    val effectChance: Int?,
+    var effectChance: Int?,
 
     @Column(name = "pp")
-    val pp: Int?,
+    var pp: Int?,
 
     @Column(name = "power")
-    val power: Int?,
+    var power: Int?,
 
+    @Convert(converter = JsonMapConverter::class)
     @Column(name = "effect_entries", columnDefinition = "jsonb")
-    val effectEntries: Map<String, String>?,
+    var effectEntries: Map<String, String>? = emptyMap(),
 
     @Column(name = "type_id")
-    val typeId: Int?,
+    var typeId: Int?,
 
     @Column(name = "version_group_id")
-    val versionGroupId: Int?,
+    var versionGroupId: Int?,
 )
 

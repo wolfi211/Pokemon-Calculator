@@ -1,6 +1,8 @@
 package hu.danielwolf.pokeCounter.domain.entities
 
+import hu.danielwolf.pokeCounter.config.JsonMapConverter
 import jakarta.persistence.Column
+import jakarta.persistence.Convert
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
@@ -10,42 +12,44 @@ import jakarta.persistence.Table
 data class PokemonForm(
     @Id
     @Column(name = "id")
-    val id: Int,
+    var id: Int,
 
     @Column(name = "name", nullable = false, unique = true)
-    val name: String,
+    var name: String,
 
     @Column(name = "order")
-    val order: Int?,
+    var order: Int?,
 
     @Column(name = "form_order")
-    val formOrder: Int?,
+    var formOrder: Int?,
 
     @Column(name = "is_default")
-    val isDefault: Boolean?,
+    var isDefault: Boolean?,
 
     @Column(name = "is_battle_only")
-    val isBattleOnly: Boolean?,
+    var isBattleOnly: Boolean?,
 
     @Column(name = "is_mega")
-    val isMega: Boolean?,
+    var isMega: Boolean?,
 
     @Column(name = "form_name")
-    val formName: String,
+    var formName: String,
 
     @Column(name = "pokemon_id")
-    val pokemonId: Int?,
+    var pokemonId: Int?,
 
     @Column(name = "sprite")
-    val sprite: String?,
+    var sprite: String?,
 
     @Column(name = "version_group")
-    val versionGroupId: Int?,
+    var versionGroupId: Int?,
 
+    @Convert(converter = JsonMapConverter::class)
     @Column(name = "names", columnDefinition = "jsonb")
-    val names: Map<String, String>?,
+    var names: Map<String, String>? = emptyMap(),
 
+    @Convert(converter = JsonMapConverter::class)
     @Column(name = "formNames", columnDefinition = "jsonb")
-    val formNames: Map<String, String>?,
+    var formNames: Map<String, String>? = emptyMap(),
 )
 

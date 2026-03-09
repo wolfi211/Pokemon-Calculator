@@ -10,24 +10,24 @@ import jakarta.persistence.Table
 data class PokemonMove(
     @Id
     @Column(name = "id")
-    val id: Int,
+    var id: Int,
 
     @Column(name = "pokemon_id")
-    val pokemonId: Int,
+    var pokemonId: Int,
 
     @Column(name = "move_id")
-    val moveId: Int,
+    var moveId: Int,
 
     @Column(name = "move_learn_method")
-    val moveLearnMethodId: Int,
+    var moveLearnMethodId: Int,
 
     @Column(name = "version_group_id")
-    val versionGroupId: Int,
+    var versionGroupId: Int,
 
     @Column(name = "level_learned_at")
-    val levelLearnedAt: Int?,
+    var levelLearnedAt: Int?,
 
     @Column(name = "order")
-    val order: Int?,
+    var order: Int?,
 )
 

@@ -7,12 +7,12 @@ import java.io.Serializable
 @Embeddable
 data class PokemonTypeId(
     @Column(name = "pokemon_id")
-    val pokemonId: Int,
+    var pokemonId: Int,
 
     @Column(name = "slot")
-    val slot: Int,
+    var slot: Int,
 
     @Column(name = "generation_id")
-    val generationId: Int,
+    var generationId: Int,
 ) : Serializable
 

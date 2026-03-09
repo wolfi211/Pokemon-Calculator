@@ -1,6 +1,8 @@
 package hu.danielwolf.pokeCounter.domain.entities
 
+import hu.danielwolf.pokeCounter.config.JsonMapConverter
 import jakarta.persistence.Column
+import jakarta.persistence.Convert
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
@@ -12,28 +14,29 @@ import jakarta.persistence.Table
 data class Type(
     @Id
     @Column(name = "id")
-    val id: Int,
+    var id: Int,
 
     @Column(name = "name", nullable = false, unique = true)
-    val name: String,
+    var name: String,
 
+    @Convert(converter = JsonMapConverter::class)
     @Column(name = "names", columnDefinition = "jsonb")
-    val names: Map<String, String>?,
+    var names: Map<String, String>? = emptyMap(),
 
     @OneToMany
     @JoinColumn(name = "type_id", referencedColumnName = "id")
-    val pokemonTypes: Set<PokemonType> = emptySet(),
+    var pokemonTypes: Set<PokemonType> = emptySet(),
 
     @OneToMany
     @JoinColumn(name = "type_id", referencedColumnName = "id")
-    val moveTypes: Set<MoveType> = emptySet(),
+    var moveTypes: Set<MoveType> = emptySet(),
 
     @OneToMany
     @JoinColumn(name = "damage_from", referencedColumnName = "id")
-    val damageFromRelations: Set<TypeRelation> = emptySet(),
+    var damageFromRelations: Set<TypeRelation> = emptySet(),
 
     @OneToMany
     @JoinColumn(name = "damage_to", referencedColumnName = "id")
-    val damageToRelations: Set<TypeRelation> = emptySet(),
+    var damageToRelations: Set<TypeRelation> = emptySet(),
 )
 
