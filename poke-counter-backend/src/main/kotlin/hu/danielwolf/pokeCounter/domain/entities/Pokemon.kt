@@ -44,24 +44,19 @@ data class Pokemon(
     @JoinColumn(name = "species_id")
     var species: Species?,
 
-    @OneToMany
-    @JoinColumn(name = "pokemon_id", referencedColumnName = "id")
-    var types: Set<PokemonType> = emptySet(),
+    @OneToMany(mappedBy = "pokemon")
+    var types: MutableSet<PokemonType> = mutableSetOf(),
 
-    @OneToMany
-    @JoinColumn(name = "pokemon_id", referencedColumnName = "id")
-    var abilities: Set<PokemonAbility> = emptySet(),
+    @OneToMany(mappedBy = "pokemon")
+    var abilities: MutableSet<PokemonAbility> = mutableSetOf(),
 
-    @OneToMany
-    @JoinColumn(name = "pokemon_id", referencedColumnName = "id")
-    var moves: Set<PokemonMove> = emptySet(),
+    @OneToMany(mappedBy = "pokemon")
+    var moves: MutableSet<PokemonMove> = mutableSetOf(),
 
-    @OneToMany
-    @JoinColumn(name = "pokemon_id", referencedColumnName = "id")
-    var stats: Set<PokemonStat> = emptySet(),
+    @OneToMany(mappedBy = "pokemon")
+    var stats: MutableSet<PokemonStat> = mutableSetOf(),
 
-    @OneToMany
-    @JoinColumn(name = "pokemon_id", referencedColumnName = "id")
-    var forms: Set<PokemonForm> = emptySet(),
+    @OneToMany(mappedBy = "pokemon")
+    var forms: MutableSet<PokemonForm> = mutableSetOf(),
 )
 

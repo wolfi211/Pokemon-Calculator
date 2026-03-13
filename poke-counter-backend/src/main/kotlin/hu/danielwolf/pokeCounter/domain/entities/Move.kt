@@ -40,12 +40,10 @@ data class Move(
     @Column(name = "names", columnDefinition = "jsonb")
     var names: Map<String, String>? = emptyMap(),
 
-    @OneToMany
-    @JoinColumn(name = "move_id", referencedColumnName = "id")
-    var types: Set<MoveType> = emptySet(),
+    @OneToMany(mappedBy = "move")
+    var types: MutableSet<MoveType> = mutableSetOf(),
 
-    @OneToMany
-    @JoinColumn(name = "move_id", referencedColumnName = "id")
-    var pokemonMoves: Set<PokemonMove> = emptySet(),
+    @OneToMany(mappedBy = "move")
+    var pokemonMoves: MutableSet<PokemonMove> = mutableSetOf(),
 )
 

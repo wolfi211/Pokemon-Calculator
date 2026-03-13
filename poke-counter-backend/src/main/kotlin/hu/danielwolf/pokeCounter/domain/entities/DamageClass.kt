@@ -5,7 +5,6 @@ import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 
@@ -27,8 +26,7 @@ data class DamageClass(
     @Column(name = "descriptions", columnDefinition = "jsonb")
     var descriptions: Map<String, String>? = emptyMap(),
 
-    @OneToMany
-    @JoinColumn(name = "damage_class", referencedColumnName = "id")
-    var moves: Set<Move> = emptySet(),
+    @OneToMany(mappedBy = "damageClass")
+    var moves: MutableSet<Move> = mutableSetOf(),
 )
 

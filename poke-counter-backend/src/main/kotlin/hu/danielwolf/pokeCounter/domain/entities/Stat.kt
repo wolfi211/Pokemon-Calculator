@@ -5,7 +5,6 @@ import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 
@@ -23,8 +22,7 @@ data class Stat(
     @Column(name = "names", columnDefinition = "jsonb")
     var names: Map<String, String>? = emptyMap(),
 
-    @OneToMany
-    @JoinColumn(name = "stat_id", referencedColumnName = "id")
-    var pokemonStats: Set<PokemonStat> = emptySet(),
+    @OneToMany(mappedBy = "stat")
+    var pokemonStats: MutableSet<PokemonStat> = mutableSetOf(),
 )
 
