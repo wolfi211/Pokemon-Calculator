@@ -4,14 +4,16 @@ import hu.danielwolf.pokeCounter.config.JsonMapConverter
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.Entity
+import jakarta.persistence.FetchType
 import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 
 @Entity
 @Table(name = "pokemon_forms")
 data class PokemonForm(
     @Id
-    @Column(name = "id")
     var id: Int,
 
     @Column(name = "name", nullable = false, unique = true)
@@ -35,14 +37,16 @@ data class PokemonForm(
     @Column(name = "form_name")
     var formName: String,
 
-    @Column(name = "pokemon_id")
-    var pokemonId: Int?,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pokemon_id")
+    var pokemon: Pokemon?,
 
     @Column(name = "sprite")
     var sprite: String?,
 
-    @Column(name = "version_group")
-    var versionGroupId: Int?,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "version_group")
+    var versionGroup: VersionGroup?,
 
     @Convert(converter = JsonMapConverter::class)
     @Column(name = "names", columnDefinition = "jsonb")

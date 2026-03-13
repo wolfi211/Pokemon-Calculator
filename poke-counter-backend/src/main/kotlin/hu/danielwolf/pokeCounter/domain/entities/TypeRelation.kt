@@ -2,7 +2,10 @@ package hu.danielwolf.pokeCounter.domain.entities
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import jakarta.persistence.FetchType
 import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import java.math.BigDecimal
 
@@ -13,16 +16,19 @@ data class TypeRelation(
     @Column(name = "id")
     var id: Int,
 
-    @Column(name = "damage_from")
-    var damageFromTypeId: Int,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "damage_from")
+    var damageFromType: Type,
 
-    @Column(name = "damage_to")
-    var damageToTypeId: Int,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "damage_to")
+    var damageToType: Type,
 
     @Column(name = "multiplier")
     var multiplier: BigDecimal,
 
-    @Column(name = "generation")
-    var generationId: Int?,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "generation")
+    var generation: Generation?,
 )
 

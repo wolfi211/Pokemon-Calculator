@@ -4,7 +4,10 @@ import hu.danielwolf.pokeCounter.config.JsonMapConverter
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.Entity
+import jakarta.persistence.FetchType
 import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 
 @Entity
@@ -21,7 +24,8 @@ data class Version(
     @Column(name = "names", columnDefinition = "jsonb")
     var names: Map<String, String>? = emptyMap(),
 
-    @Column(name = "version_group_id")
-    var versionGroupId: Int?,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "version_group_id")
+    var versionGroup: VersionGroup?,
 )
 

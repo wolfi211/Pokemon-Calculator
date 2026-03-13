@@ -2,7 +2,10 @@ package hu.danielwolf.pokeCounter.domain.entities
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import jakarta.persistence.FetchType
 import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 
 @Entity
@@ -12,11 +15,13 @@ data class PokemonAbility(
     @Column(name = "id")
     var id: Int,
 
-    @Column(name = "pokemon_id")
-    var pokemonId: Int,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pokemon_id")
+    var pokemon: Pokemon,
 
-    @Column(name = "ability_id")
-    var abilityId: Int,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ability_id")
+    var ability: Ability,
 
     @Column(name = "is_hidden")
     var isHidden: Boolean?,
@@ -24,7 +29,8 @@ data class PokemonAbility(
     @Column(name = "slot")
     var slot: Int?,
 
-    @Column(name = "generation_id")
-    var generationId: Int?,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "generation_id")
+    var generation: Generation?,
 )
 

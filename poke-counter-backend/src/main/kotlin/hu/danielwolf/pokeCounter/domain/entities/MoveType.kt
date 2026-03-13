@@ -4,18 +4,21 @@ import hu.danielwolf.pokeCounter.config.JsonMapConverter
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.Entity
+import jakarta.persistence.FetchType
 import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 
 @Entity
 @Table(name = "move_types")
 data class MoveType(
     @Id
-    @Column(name = "id")
     var id: Int,
 
-    @Column(name = "move_id")
-    var moveId: Int,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "move_id")
+    var move: Move,
 
     @Column(name = "accuracy")
     var accuracy: Int?,
@@ -33,10 +36,12 @@ data class MoveType(
     @Column(name = "effect_entries", columnDefinition = "jsonb")
     var effectEntries: Map<String, String>? = emptyMap(),
 
-    @Column(name = "type_id")
-    var typeId: Int?,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "type_id")
+    var type: Type?,
 
-    @Column(name = "version_group_id")
-    var versionGroupId: Int?,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "version_group_id")
+    var versionGroup: VersionGroup?,
 )
 

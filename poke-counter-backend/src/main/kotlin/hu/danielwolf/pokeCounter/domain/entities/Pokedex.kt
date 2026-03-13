@@ -4,8 +4,10 @@ import hu.danielwolf.pokeCounter.config.JsonMapConverter
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.Entity
+import jakarta.persistence.FetchType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 
@@ -30,8 +32,9 @@ data class Pokedex(
     @Column(name = "names", columnDefinition = "jsonb")
     var names: Map<String, String>? = emptyMap(),
 
-    @Column(name = "region")
-    var regionId: Int?,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "region")
+    var region: Region?,
 
     @OneToMany
     @JoinColumn(name = "pokedex_id", referencedColumnName = "id")

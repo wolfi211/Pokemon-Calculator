@@ -2,27 +2,33 @@ package hu.danielwolf.pokeCounter.domain.entities
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import jakarta.persistence.FetchType
 import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 
 @Entity
 @Table(name = "pokemon_moves")
 data class PokemonMove(
     @Id
-    @Column(name = "id")
     var id: Int,
 
-    @Column(name = "pokemon_id")
-    var pokemonId: Int,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pokemon_id")
+    var pokemon: Pokemon,
 
-    @Column(name = "move_id")
-    var moveId: Int,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "move_id")
+    var move: Move,
 
-    @Column(name = "move_learn_method")
-    var moveLearnMethodId: Int,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "move_learn_method")
+    var moveLearnMethod: MoveLearnMethod,
 
-    @Column(name = "version_group_id")
-    var versionGroupId: Int,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "version_group_id")
+    var versionGroup: VersionGroup,
 
     @Column(name = "level_learned_at")
     var levelLearnedAt: Int?,

@@ -4,8 +4,10 @@ import hu.danielwolf.pokeCounter.config.JsonMapConverter
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.Entity
+import jakarta.persistence.FetchType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 
@@ -22,15 +24,17 @@ data class Move(
     @Column(name = "priority")
     var priority: Int?,
 
-    @Column(name = "damage_class")
-    var damageClassId: Int?,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "damage_class")
+    var damageClass: DamageClass?,
 
     @Convert(converter = JsonMapConverter::class)
     @Column(name = "flavor_texts", columnDefinition = "jsonb")
     var flavorTexts: Map<String, String>? = emptyMap(),
 
-    @Column(name = "generation", columnDefinition = "integer")
-    var generationId: Int?,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "generation")
+    var generation: Generation?,
 
     @Convert(converter = JsonMapConverter::class)
     @Column(name = "names", columnDefinition = "jsonb")
