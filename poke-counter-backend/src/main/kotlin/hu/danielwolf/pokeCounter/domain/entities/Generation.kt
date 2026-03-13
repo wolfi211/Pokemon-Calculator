@@ -5,7 +5,6 @@ import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 
@@ -23,36 +22,28 @@ data class Generation(
     @Column(name = "names", columnDefinition = "jsonb")
     var names: Map<String, String>? = emptyMap(),
 
-    @OneToMany
-    @JoinColumn(name = "mainGeneration")
+    @OneToMany(mappedBy = "mainGeneration")
     var regions: MutableSet<Region> = mutableSetOf(),
 
-    @OneToMany
-    @JoinColumn(name = "generation_id", referencedColumnName = "id")
-    var versionGroups: Set<VersionGroup> = emptySet(),
+    @OneToMany(mappedBy = "generation")
+    var versionGroups: MutableSet<VersionGroup> = mutableSetOf(),
 
-    @OneToMany
-    @JoinColumn(name = "generation", referencedColumnName = "id")
-    var abilities: Set<Ability> = emptySet(),
+    @OneToMany(mappedBy = "generation")
+    var abilities: MutableSet<Ability> = mutableSetOf(),
 
-    @OneToMany
-    @JoinColumn(name = "generation", referencedColumnName = "id")
-    var moves: Set<Move> = emptySet(),
+    @OneToMany(mappedBy = "generation")
+    var moves: MutableSet<Move> = mutableSetOf(),
 
-    @OneToMany
-    @JoinColumn(name = "generation", referencedColumnName = "id")
-    var typeRelations: Set<TypeRelation> = emptySet(),
+    @OneToMany(mappedBy = "generation")
+    var typeRelations: MutableSet<TypeRelation> = mutableSetOf(),
 
-    @OneToMany
-    @JoinColumn(name = "generation_id", referencedColumnName = "id")
-    var pokemonAbilities: Set<PokemonAbility> = emptySet(),
+    @OneToMany(mappedBy = "generation")
+    var pokemonAbilities: MutableSet<PokemonAbility> = mutableSetOf(),
 
-    @OneToMany
-    @JoinColumn(name = "generation_id", referencedColumnName = "id")
-    var pokemonTypes: Set<PokemonType> = emptySet(),
+    @OneToMany(mappedBy = "generation")
+    var pokemonTypes: MutableSet<PokemonType> = mutableSetOf(),
 
-    @OneToMany
-    @JoinColumn(name = "generation_id", referencedColumnName = "id")
-    var pokemonStats: Set<PokemonStat> = emptySet(),
+    @OneToMany(mappedBy = "generation")
+    var pokemonStats: MutableSet<PokemonStat> = mutableSetOf(),
 )
 

@@ -5,7 +5,6 @@ import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 
@@ -23,20 +22,16 @@ data class Type(
     @Column(name = "names", columnDefinition = "jsonb")
     var names: Map<String, String>? = emptyMap(),
 
-    @OneToMany
-    @JoinColumn(name = "type_id", referencedColumnName = "id")
-    var pokemonTypes: Set<PokemonType> = emptySet(),
+    @OneToMany(mappedBy = "type")
+    var pokemonTypes: MutableSet<PokemonType> = mutableSetOf(),
 
-    @OneToMany
-    @JoinColumn(name = "type_id", referencedColumnName = "id")
-    var moveTypes: Set<MoveType> = emptySet(),
+    @OneToMany(mappedBy = "type")
+    var moveTypes: MutableSet<MoveType> = mutableSetOf(),
 
-    @OneToMany
-    @JoinColumn(name = "damage_from", referencedColumnName = "id")
-    var damageFromRelations: Set<TypeRelation> = emptySet(),
+    @OneToMany(mappedBy = "damageFromType")
+    var damageFromRelations: MutableSet<TypeRelation> = mutableSetOf(),
 
-    @OneToMany
-    @JoinColumn(name = "damage_to", referencedColumnName = "id")
-    var damageToRelations: Set<TypeRelation> = emptySet(),
+    @OneToMany(mappedBy = "damageToType")
+    var damageToRelations: MutableSet<TypeRelation> = mutableSetOf(),
 )
 

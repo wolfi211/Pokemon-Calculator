@@ -5,7 +5,6 @@ import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 
@@ -61,12 +60,10 @@ data class Species(
     @Column(name = "form_descriptions", columnDefinition = "jsonb")
     var formDescriptions: Map<String, String>? = emptyMap(),
 
-    @OneToMany
-    @JoinColumn(name = "species_id", referencedColumnName = "id")
-    var pokemon: Set<Pokemon> = emptySet(),
+    @OneToMany(mappedBy = "species")
+    var pokemon: MutableSet<Pokemon> = mutableSetOf(),
 
-    @OneToMany
-    @JoinColumn(name = "species_id", referencedColumnName = "id")
-    var pokedexEntries: Set<PokedexPokemon> = emptySet(),
+    @OneToMany(mappedBy = "species")
+    var pokedexEntries: MutableSet<PokedexPokemon> = mutableSetOf(),
 )
 

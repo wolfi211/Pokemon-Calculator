@@ -29,8 +29,7 @@ data class Region(
     @JoinColumn(nullable = false, name = "main_generation")
     var mainGeneration: Generation,
 
-    @OneToMany
-    @JoinColumn(name = "region", referencedColumnName = "id")
-    var pokedexes: Set<Pokedex> = emptySet(),
+    @OneToMany(mappedBy = "region")
+    var pokedexes: MutableSet<Pokedex> = mutableSetOf(),
 )
 

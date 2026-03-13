@@ -26,28 +26,22 @@ data class VersionGroup(
     @JoinColumn(name = "generation_id")
     var generation: Generation?,
 
-    @OneToMany
-    @JoinColumn(name = "version_group_id", referencedColumnName = "id")
-    var versions: Set<Version> = emptySet(),
+    @OneToMany(mappedBy = "versionGroup")
+    var versions: MutableSet<Version> = mutableSetOf(),
 
-    @OneToMany
-    @JoinColumn(name = "version_group_id", referencedColumnName = "id")
-    var pokedexVersionGroups: Set<PokedexVersionGroup> = emptySet(),
+    @OneToMany(mappedBy = "versionGroup")
+    var pokedexVersionGroups: MutableSet<PokedexVersionGroup> = mutableSetOf(),
 
-    @OneToMany
-    @JoinColumn(name = "version_group_id", referencedColumnName = "id")
-    var learnMethodVersionGroups: Set<LearnMethodVersionGroup> = emptySet(),
+    @OneToMany(mappedBy = "versionGroup")
+    var learnMethodVersionGroups: MutableSet<LearnMethodVersionGroup> = mutableSetOf(),
 
-    @OneToMany
-    @JoinColumn(name = "version_group_id", referencedColumnName = "id")
-    var moveTypes: Set<MoveType> = emptySet(),
+    @OneToMany(mappedBy = "versionGroup")
+    var moveTypes: MutableSet<MoveType> = mutableSetOf(),
 
-    @OneToMany
-    @JoinColumn(name = "version_group_id", referencedColumnName = "id")
-    var pokemonMoves: Set<PokemonMove> = emptySet(),
+    @OneToMany(mappedBy = "versionGroup")
+    var pokemonMoves: MutableSet<PokemonMove> = mutableSetOf(),
 
-    @OneToMany
-    @JoinColumn(name = "version_group", referencedColumnName = "id")
-    var pokemonForms: Set<PokemonForm> = emptySet(),
+    @OneToMany(mappedBy = "versionGroup")
+    var pokemonForms: MutableSet<PokemonForm> = mutableSetOf(),
 )
 
