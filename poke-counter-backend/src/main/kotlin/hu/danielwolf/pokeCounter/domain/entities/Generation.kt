@@ -24,8 +24,8 @@ data class Generation(
     var names: Map<String, String>? = emptyMap(),
 
     @OneToMany
-    @JoinColumn(name = "main_generation", referencedColumnName = "id")
-    var regions: Set<Region> = emptySet(),
+    @JoinColumn(name = "mainGeneration")
+    var regions: MutableSet<Region> = mutableSetOf(),
 
     @OneToMany
     @JoinColumn(name = "generation_id", referencedColumnName = "id")
