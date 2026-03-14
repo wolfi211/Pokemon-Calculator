@@ -11,3 +11,7 @@ databaseChangeLog:
       file: db/changelog/changes/05-relations-and-stats.sql
   - include:
       file: db/changelog/changes/06-sequences.sql
+  - include:
+      file: db/changelog/changes/07-pokedex-pokemon-version-group-pokemon.sql
+  - include:
+      file: db/changelog/changes/08-nullable-generation-current-rows.sql

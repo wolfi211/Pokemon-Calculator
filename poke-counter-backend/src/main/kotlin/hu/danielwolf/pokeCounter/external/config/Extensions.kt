@@ -5,4 +5,6 @@ import java.net.URI
 
 fun String.toURI() = URI(this)
 
+fun String.extractPokeApiId(): Int = substringAfterLast('/').toInt()
+
 fun List<ExternalName>.toEntityMap(): Map<String, String> = this.associate { it.language.name to it.name }

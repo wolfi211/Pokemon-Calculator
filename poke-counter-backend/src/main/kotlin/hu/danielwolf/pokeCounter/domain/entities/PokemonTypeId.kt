@@ -13,6 +13,6 @@ data class PokemonTypeId(
     var slot: Int,
 
     @Column(name = "generation_id")
-    var generationId: Int,
+    var generationId: Int?,
 ) : Serializable
 

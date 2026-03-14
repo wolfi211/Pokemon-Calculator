@@ -9,7 +9,9 @@ data class PokedexPokemonId(
     @Column(name = "pokedex_id")
     var pokedexId: Int,
 
-    @Column(name = "species_id")
-    var speciesId: Int,
-) : Serializable
+    @Column(name = "version_group_id")
+    var versionGroupId: Int,
 
+    @Column(name = "pokemon_id")
+    var pokemonId: Int,
+) : Serializable

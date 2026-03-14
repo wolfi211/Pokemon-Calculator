@@ -62,8 +62,5 @@ data class Species(
 
     @OneToMany(mappedBy = "species")
     var pokemon: MutableSet<Pokemon> = mutableSetOf(),
-
-    @OneToMany(mappedBy = "species")
-    var pokedexEntries: MutableSet<PokedexPokemon> = mutableSetOf(),
 )
 

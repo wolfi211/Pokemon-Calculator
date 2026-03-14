@@ -25,7 +25,7 @@ data class PokemonStat(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "generation_id")
-    var generation: Generation,
+    var generation: Generation?,
 
     @Column(name = "base_stat")
     var baseStat: Int,

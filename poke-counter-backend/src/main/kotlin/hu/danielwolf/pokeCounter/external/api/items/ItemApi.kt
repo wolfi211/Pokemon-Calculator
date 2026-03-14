@@ -43,10 +43,10 @@ interface ItemApi {
     @GetExchange
     fun followItemCategory(url: URI): ExternalItemCategory
 
-    @GetExchange(PATH_ITEM_FLINT_EFFECT)
+    @GetExchange(PATH_ITEM_FLING_EFFECT)
     fun getAllItemFlingEffects(@RequestParam pager: PageRequest): NamedApiResourceList
 
-    @GetExchange("$PATH_ITEM_FLINT_EFFECT/{id}")
+    @GetExchange("$PATH_ITEM_FLING_EFFECT/{id}")
     fun getItemFlingEffectById(@PathVariable id: Int): ExternalItemFlingEffect
 
     @GetExchange

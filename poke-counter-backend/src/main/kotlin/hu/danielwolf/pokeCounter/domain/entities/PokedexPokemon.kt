@@ -21,11 +21,15 @@ data class PokedexPokemon(
     var pokedex: Pokedex,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("speciesId")
-    @JoinColumn(name = "species_id")
-    var species: Species,
+    @MapsId("versionGroupId")
+    @JoinColumn(name = "version_group_id")
+    var versionGroup: VersionGroup,
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("pokemonId")
+    @JoinColumn(name = "pokemon_id")
+    var pokemon: Pokemon,
 
     @Column(name = "entry_number")
     var entryNumber: Int,
 )
-

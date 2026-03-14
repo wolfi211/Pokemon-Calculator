@@ -22,7 +22,7 @@ data class PokemonType(
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("generationId")
     @JoinColumn(name = "generation_id")
-    var generation: Generation,
+    var generation: Generation?,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "type_id")
