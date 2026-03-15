@@ -8,3 +8,5 @@ spring:
 
 poke-api:
   base-url: https://pokeapi.co/api/v2
+  # Minimum delay between consecutive requests (ms). 0 = no delay. Keeps sync under PokeAPI limits.
+  min-delay-between-requests-ms: 100

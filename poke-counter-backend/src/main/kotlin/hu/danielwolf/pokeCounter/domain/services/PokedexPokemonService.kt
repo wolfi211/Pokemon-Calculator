@@ -17,10 +17,14 @@ class PokedexPokemonService(
             ResponseStatusException(HttpStatus.BAD_REQUEST, "pokedexpokemon.not-found")
         }
 
+    fun existsById(id: PokedexPokemonId): Boolean = pokedexPokemonRepository.existsById(id)
+
     fun save(pokedexPokemon: PokedexPokemon): PokedexPokemon =
         pokedexPokemonRepository.save(pokedexPokemon)
 
     fun saveAll(pokedexPokemon: Iterable<PokedexPokemon>): List<PokedexPokemon> =
         pokedexPokemonRepository.saveAll(pokedexPokemon)
+
+    fun deleteAll() = pokedexPokemonRepository.deleteAll()
 }
 

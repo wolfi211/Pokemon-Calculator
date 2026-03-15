@@ -5,16 +5,21 @@ import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
+import jakarta.persistence.SequenceGenerator
 import jakarta.persistence.Table
 
 @Entity
 @Table(name = "move_types")
 data class MoveType(
     @Id
-    var id: Int,
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "move_types_id_seq")
+    @SequenceGenerator(name = "move_types_id_seq", sequenceName = "move_types_id_seq", allocationSize = 1)
+    var id: Int = 0,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "move_id")

@@ -21,7 +21,10 @@ import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.http.client.reactive.ReactorClientHttpConnector
 import org.springframework.http.codec.json.KotlinSerializationJsonDecoder
 import org.springframework.http.codec.json.KotlinSerializationJsonEncoder
+import org.springframework.web.reactive.function.client.ClientResponse
+import org.springframework.web.reactive.function.client.ExchangeFilterFunction
 import org.springframework.web.reactive.function.client.WebClient
+import reactor.core.publisher.Mono
 import org.springframework.web.reactive.function.client.support.WebClientAdapter
 import org.springframework.web.service.invoker.HttpServiceProxyFactory
 import org.springframework.web.service.invoker.createClient
@@ -35,9 +38,15 @@ class WebclientConfig(
 
   @Bean
   fun pokeWebClient(): WebClient {
+    val rateLimiter = PokeApiRateLimiter(pokeApiProperties.minDelayBetweenRequestsMs)
     return WebClient.builder()
       .baseUrl(pokeApiProperties.baseUrl)
-      .codecs { configurer ->
+      .filter { request, next ->
+          val response = next.exchange(request)
+          val result: Mono<ClientResponse> = Mono.fromRunnable<Void> { rateLimiter.acquire() }.then(response)
+          result
+      }
+        .codecs { configurer ->
         configurer.defaultCodecs().kotlinSerializationJsonDecoder(KotlinSerializationJsonDecoder(json))
         configurer.defaultCodecs().kotlinSerializationJsonEncoder(KotlinSerializationJsonEncoder(json))
       }

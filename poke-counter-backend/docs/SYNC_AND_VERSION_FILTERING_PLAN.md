@@ -127,12 +127,20 @@ Use the stored ExternalPokedex list.
 - [ ] **Phase 3 sync**: Abilities, Moves, MoveType (current = null version_group, past from pastValues; closest higher when querying).
 - [ ] **Phase 4 sync**: Species, Pokemon, Pokemon forms; fill PokemonType, PokemonAbility, PokemonStat, PokemonMove (generation/version_group rule as above).
 - [ ] **PokedexPokemon fill**: After Phase 4, iterate stored ExternalPokedex: Pass A (per pokedex+version_group, per species → all matching forms or default; same entry_number); Pass B (Mega + gmax forms → same entry_number as base).
-- [ ] **Orchestrator**: PokeApiSyncService.syncAll() runs Phase 1 → 2 → 3 → 4 → PokedexPokemon fill; rate limiting/pagination as needed.
+- [ ] **Orchestrator**: PokeApiSyncService.syncAll() runs Phase 1 → 2 → 3 → 4 → PokedexPokemon fill; pagination as needed.
 - [ ] **Phase 1 API**: Filter matchup candidates by version_group using PokedexPokemon (and optional FormVersionGroup if used).
 
 ---
 
-## 6. Filtering by version/version-group
+## 6. PokeAPI rate limiting
+
+To avoid overloading PokeAPI (no strict documented REST limit; 429s occur with aggressive or parallel requests), all outbound requests go through a **WebClient filter** that enforces a minimum delay between consecutive calls.
+
+- **Config**: `poke-api.min-delay-between-requests-ms` (default **100** ms). Set to **0** to disable.
+- **Behaviour**: Before each request, the filter waits so that at least this many milliseconds have passed since the previous request. Sync code is unchanged; throttling is central and automatic.
+- **Implementation**: `PokeApiRateLimiter` (in `external.config`) + `ExchangeFilterFunction` on the PokeAPI `WebClient` in `WebclientConfig`.
+
+## 7. Filtering by version/version-group
 
 - “Pokémon available in version group V” = Pokemon that have at least one **PokedexPokemon** row with `version_group_id = V` and `pokedex_id` in the set of pokedexes linked to V via **PokedexVersionGroup**.  
 - No need for a separate FormVersionGroup for availability if PokedexPokemon is fully populated as above.

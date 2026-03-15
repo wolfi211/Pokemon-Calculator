@@ -21,5 +21,7 @@ class PokedexVersionGroupService(
 
     fun saveAll(pokedexVersionGroups: Iterable<PokedexVersionGroup>): List<PokedexVersionGroup> =
         pokedexVersionGroupRepository.saveAll(pokedexVersionGroups)
+
+    fun findAll(): List<PokedexVersionGroup> = pokedexVersionGroupRepository.findAll()
 }
 
