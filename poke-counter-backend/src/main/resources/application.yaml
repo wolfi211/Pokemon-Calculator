@@ -1,11 +1,9 @@
-# Defaults when not using Docker Compose (e.g. production or CI).
-# When using spring-boot-docker-compose, datasource is auto-configured from compose.yaml.
 spring:
   application:
     name: poke-counter-backend
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/pokecounter
+    url: jdbc:postgresql://danielwolf.hu:5555/pokecounter
     username: pokecounter
     password: pokecounter
     driver-class-name: org.postgresql.Driver
@@ -34,17 +32,11 @@ spring:
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.yml
 
-  docker:
-    compose:
-      # start-only: start Postgres when app starts, leave it running when app stops
-      lifecycle-management: start-only
-
 server:
   port: 8080
   compression:
     enabled: true
 
-# Application and dependency logging
 logging:
   level:
     root: INFO
@@ -66,5 +58,4 @@ logging:
 
 poke-api:
   base-url: https://pokeapi.co/api/v2
-  # Minimum delay between consecutive requests (ms). 0 = no delay. Keeps sync under PokeAPI limits.
   min-delay-between-requests-ms: 100

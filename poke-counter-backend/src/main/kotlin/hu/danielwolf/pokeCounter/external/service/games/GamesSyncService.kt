@@ -99,11 +99,22 @@ class GamesSyncService(
             val external = gameApi.followPokedex(it.url.toURI())
             val region = external.region?.let { regionService.getByName(it.name) }
             val pokedex = pokedexService.save(external.toEntity(region))
-            external.versionGroups.forEach { vgResource ->
-                val versionGroup = versionGroupService.getByName(vgResource.name)
-                pokedexVersionGroupService.save(
-                    PokedexVersionGroup(pokedex = pokedex, versionGroup = versionGroup)
-                )
+            if (external.versionGroups.isEmpty()) {
+                // e.g. national pokedex (id=1) has no version_groups in API; link to all version groups so fill runs
+                val allVersionGroups = versionGroupService.findAll()
+                allVersionGroups.forEach { versionGroup ->
+                    pokedexVersionGroupService.save(
+                        PokedexVersionGroup(pokedex = pokedex, versionGroup = versionGroup)
+                    )
+                }
+                logger.info("Pokedex '${pokedex.name}' (id=${pokedex.id}) has no version_groups in API; linked to all ${allVersionGroups.size} version groups.")
+            } else {
+                external.versionGroups.forEach { vgResource ->
+                    val versionGroup = versionGroupService.getByName(vgResource.name)
+                    pokedexVersionGroupService.save(
+                        PokedexVersionGroup(pokedex = pokedex, versionGroup = versionGroup)
+                    )
+                }
             }
             stored.add(external)
         }

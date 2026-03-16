@@ -23,5 +23,9 @@ class PokedexVersionGroupService(
         pokedexVersionGroupRepository.saveAll(pokedexVersionGroups)
 
     fun findAll(): List<PokedexVersionGroup> = pokedexVersionGroupRepository.findAll()
+
+    /** Loads all with pokedex and versionGroup eagerly (avoids LazyInitializationException in long-running loops). */
+    fun findAllWithPokedexAndVersionGroup(): List<PokedexVersionGroup> =
+        pokedexVersionGroupRepository.findAllWithPokedexAndVersionGroup()
 }
 

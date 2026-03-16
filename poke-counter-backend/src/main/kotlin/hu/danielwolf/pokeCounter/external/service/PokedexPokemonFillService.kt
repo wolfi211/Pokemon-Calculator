@@ -13,10 +13,6 @@ import hu.danielwolf.pokeCounter.external.api.games.dto.ExternalPokedex
 import org.slf4j.Logger
 import org.springframework.stereotype.Service
 
-/**
- * Fills pokedex_pokemon from stored ExternalPokedex list (no API calls).
- * Pass A: species-based entries; Pass B: Mega and Gigantamax forms with same entry_number as base.
- */
 @Service
 class PokedexPokemonFillService(
     private val pokedexPokemonService: PokedexPokemonService,
@@ -36,12 +32,15 @@ class PokedexPokemonFillService(
         pokedexPokemonService.deleteAll()
         val externalByName = externalPokedexes.associateBy { it.name }
 
-        // (pokedexId, versionGroupId, speciesId) -> entryNumber (for Pass B)
         val speciesEntryByPokedexAndVersion = mutableMapOf<Triple<Int, Int, Int>, Int>()
 
-        // Pass A — species-based entries
-        pokedexVersionGroupService.findAll().forEach { pvg ->
-            val external = externalByName[pvg.pokedex.name] ?: return@forEach
+        val allPvg = pokedexVersionGroupService.findAllWithPokedexAndVersionGroup()
+        logger.info("Pass A: processing ${allPvg.size} pokedex-version-groups...")
+        allPvg.forEachIndexed { index, pvg ->
+            if ((index + 1) % 10 == 0 || index == 0) {
+                logger.info("Pass A: ${index + 1}/${allPvg.size} pokedex-version-groups")
+            }
+            val external = externalByName[pvg.pokedex.name] ?: return@forEachIndexed
             val pokedex = pvg.pokedex
             val versionGroup = pvg.versionGroup
             val formsInVersion = pokemonFormRepository.findByVersionGroup_Id(versionGroup.id)
@@ -71,15 +70,16 @@ class PokedexPokemonFillService(
             }
         }
 
-        // Pass B — Mega and Gigantamax only (same entry_number as base)
-        val megaAndGmaxForms = pokemonFormRepository.findAll().filter { form ->
-            form.isMega == true || form.formName == "gmax"
-        }
-        megaAndGmaxForms.forEach { form ->
-            val pokemon = form.pokemon ?: return@forEach
-            val species = pokemon.species ?: return@forEach
-            val versionGroup = form.versionGroup ?: return@forEach
-            pokedexVersionGroupService.findAll()
+        val megaAndGmaxForms = pokemonFormRepository.findAllMegaAndGmaxWithPokemonAndVersionGroup()
+        logger.info("Pass B: processing ${megaAndGmaxForms.size} mega/gmax forms...")
+        megaAndGmaxForms.forEachIndexed { index, form ->
+            if ((index + 1) % 50 == 0 || index == 0) {
+                logger.info("Pass B: ${index + 1}/${megaAndGmaxForms.size} forms")
+            }
+            val pokemon = form.pokemon ?: return@forEachIndexed
+            val species = pokemon.species ?: return@forEachIndexed
+            val versionGroup = form.versionGroup ?: return@forEachIndexed
+            pokedexVersionGroupService.findAllWithPokedexAndVersionGroup()
                 .filter { it.versionGroup.id == versionGroup.id }
                 .forEach { pvg ->
                     val entryNumber = speciesEntryByPokedexAndVersion[Triple(pvg.pokedex.id, versionGroup.id, species.id)]
@@ -102,10 +102,6 @@ class PokedexPokemonFillService(
         logger.info("PokedexPokemon fill finished.")
     }
 
-    /**
-     * Returns Pokemon of this species that appear in this version_group (form's version_group matches),
-     * or the default variety if none.
-     */
     private fun pokemonForSpeciesInVersionGroup(
         species: Species,
         versionGroupId: Int,
@@ -113,12 +109,10 @@ class PokedexPokemonFillService(
     ): List<Pokemon> {
         val bySpecies = pokemonRepository.findBySpecies_Id(species.id)
         val inVersion = bySpecies.filter { formsInVersion.containsKey(it.id) }
-        return if (inVersion.isNotEmpty()) {
-            inVersion
-        } else {
-            listOfNotNull(
-                bySpecies.find { it.isDefault == true } ?: bySpecies.firstOrNull()
-            )
+        return inVersion.ifEmpty {
+          listOfNotNull(
+            bySpecies.find { it.isDefault == true } ?: bySpecies.firstOrNull()
+          )
         }
     }
 }

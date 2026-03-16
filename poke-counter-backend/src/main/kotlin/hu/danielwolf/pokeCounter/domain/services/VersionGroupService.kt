@@ -27,5 +27,7 @@ class VersionGroupService(
 
     fun saveAll(versionGroups: Iterable<VersionGroup>): List<VersionGroup> =
         versionGroupRepository.saveAll(versionGroups)
+
+    fun findAll(): List<VersionGroup> = versionGroupRepository.findAll()
 }
 
