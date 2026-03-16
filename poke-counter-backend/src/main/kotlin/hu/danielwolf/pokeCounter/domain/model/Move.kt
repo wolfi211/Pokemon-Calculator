@@ -1,4 +1,4 @@
-package hu.danielwolf.pokeCounter.domain.entities
+package hu.danielwolf.pokeCounter.domain.model
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -12,8 +12,8 @@ import org.hibernate.annotations.JdbcTypeCode
 import org.hibernate.type.SqlTypes
 
 @Entity
-@Table(name = "pokedexes")
-data class Pokedex(
+@Table(name = "moves")
+data class Move(
     @Id
     @Column(name = "id")
     var id: Int,
@@ -21,22 +21,29 @@ data class Pokedex(
     @Column(name = "name", nullable = false, unique = true)
     var name: String,
 
-    @Column(name = "is_main_series")
-    var isMainSeries: Boolean?,
+    @Column(name = "priority")
+    var priority: Int?,
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "damage_class")
+    var damageClass: DamageClass?,
 
     @JdbcTypeCode(SqlTypes.JSON)
-    @Column(name = "descriptions", columnDefinition = "jsonb")
-    var descriptions: Map<String, String>? = emptyMap(),
+    @Column(name = "flavor_texts", columnDefinition = "jsonb")
+    var flavorTexts: Map<String, String>? = emptyMap(),
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "generation")
+    var generation: Generation?,
 
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "names", columnDefinition = "jsonb")
     var names: Map<String, String>? = emptyMap(),
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "region")
-    var region: Region?,
+    @OneToMany(mappedBy = "move")
+    var types: MutableSet<MoveType> = mutableSetOf(),
 
-    @OneToMany(mappedBy = "pokedex")
-    var entries: MutableSet<PokedexPokemon> = mutableSetOf(),
+    @OneToMany(mappedBy = "move")
+    var pokemonMoves: MutableSet<PokemonMove> = mutableSetOf(),
 )
 

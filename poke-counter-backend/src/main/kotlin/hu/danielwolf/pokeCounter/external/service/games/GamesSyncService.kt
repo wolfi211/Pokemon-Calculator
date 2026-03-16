@@ -1,11 +1,11 @@
 package hu.danielwolf.pokeCounter.external.service.games
 
-import hu.danielwolf.pokeCounter.domain.entities.Generation
-import hu.danielwolf.pokeCounter.domain.entities.Pokedex
-import hu.danielwolf.pokeCounter.domain.entities.PokedexVersionGroup
-import hu.danielwolf.pokeCounter.domain.entities.Region
-import hu.danielwolf.pokeCounter.domain.entities.Version
-import hu.danielwolf.pokeCounter.domain.entities.VersionGroup
+import hu.danielwolf.pokeCounter.domain.model.Generation
+import hu.danielwolf.pokeCounter.domain.model.Pokedex
+import hu.danielwolf.pokeCounter.domain.model.PokedexVersionGroup
+import hu.danielwolf.pokeCounter.domain.model.Region
+import hu.danielwolf.pokeCounter.domain.model.Version
+import hu.danielwolf.pokeCounter.domain.model.VersionGroup
 import hu.danielwolf.pokeCounter.domain.services.GenerationService
 import hu.danielwolf.pokeCounter.domain.services.PokedexService
 import hu.danielwolf.pokeCounter.domain.services.PokedexVersionGroupService

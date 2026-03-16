@@ -1,6 +1,6 @@
 package hu.danielwolf.pokeCounter.domain.repositories
 
-import hu.danielwolf.pokeCounter.domain.entities.MoveLearnMethod
+import hu.danielwolf.pokeCounter.domain.model.MoveLearnMethod
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface MoveLearnMethodRepository : JpaRepository<MoveLearnMethod, Int> {

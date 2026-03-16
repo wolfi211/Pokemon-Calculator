@@ -1,12 +1,12 @@
 package hu.danielwolf.pokeCounter.external.service.pokemon
 
-import hu.danielwolf.pokeCounter.domain.entities.Generation
-import hu.danielwolf.pokeCounter.domain.entities.Pokemon
-import hu.danielwolf.pokeCounter.domain.entities.PokemonAbility
-import hu.danielwolf.pokeCounter.domain.entities.PokemonMove
-import hu.danielwolf.pokeCounter.domain.entities.PokemonStat
-import hu.danielwolf.pokeCounter.domain.entities.PokemonType
-import hu.danielwolf.pokeCounter.domain.entities.Species
+import hu.danielwolf.pokeCounter.domain.model.Generation
+import hu.danielwolf.pokeCounter.domain.model.Pokemon
+import hu.danielwolf.pokeCounter.domain.model.PokemonAbility
+import hu.danielwolf.pokeCounter.domain.model.PokemonMove
+import hu.danielwolf.pokeCounter.domain.model.PokemonStat
+import hu.danielwolf.pokeCounter.domain.model.PokemonType
+import hu.danielwolf.pokeCounter.domain.model.Species
 import hu.danielwolf.pokeCounter.domain.services.AbilityService
 import hu.danielwolf.pokeCounter.domain.services.GenerationService
 import hu.danielwolf.pokeCounter.domain.services.MoveLearnMethodService
@@ -21,10 +21,12 @@ import hu.danielwolf.pokeCounter.domain.services.StatService
 import hu.danielwolf.pokeCounter.domain.services.TypeService
 import hu.danielwolf.pokeCounter.domain.services.VersionGroupService
 import hu.danielwolf.pokeCounter.external.api.pokemon.PokemonApi
+import hu.danielwolf.pokeCounter.external.api.pokemon.dto.ExternalAbility
 import hu.danielwolf.pokeCounter.external.api.pokemon.dto.ExternalPokemon
+import hu.danielwolf.pokeCounter.external.api.pokemon.dto.ExternalPokemonAbility
+import hu.danielwolf.pokeCounter.external.api.pokemon.dto.ExternalPokemonStat
 import hu.danielwolf.pokeCounter.external.api.pokemon.dto.ExternalPokemonType
 import hu.danielwolf.pokeCounter.external.config.toURI
-import jdk.jfr.internal.TypeLibrary.addType
 import org.slf4j.Logger
 import org.springframework.stereotype.Service
 
@@ -47,9 +49,6 @@ class PokemonSyncService(
   private val logger: Logger
 ) {
 
-  /**
-   * Syncs all Pokemon from species varieties and fills PokemonType, PokemonAbility, PokemonStat, PokemonMove.
-   */
   fun syncAll() {
     logger.info("Starting pokemon sync...")
     val externalPokemons = pokemonApi.getAllPokemon(limit = 10000)
@@ -79,7 +78,12 @@ class PokemonSyncService(
     if (types.isNotEmpty()) pokemonTypeService.saveAll(types)
   }
 
-  fun addPokemonType(t: ExternalPokemonType, types: MutableList<PokemonType>, pokemon: Pokemon, generation: Generation? = null) {
+  private fun addPokemonType(
+    t: ExternalPokemonType,
+    types: MutableList<PokemonType>,
+    pokemon: Pokemon,
+    generation: Generation? = null
+  ) {
     val type = typeService.getByName(t.type.name)
     types.add(
       pokemonTypeService.getBySlotAndPokemonAndGeneration(t.slot, pokemon, null)?.apply {
@@ -97,63 +101,72 @@ class PokemonSyncService(
   private fun fillPokemonAbilities(pokemon: Pokemon, external: ExternalPokemon) {
     val abilities = mutableListOf<PokemonAbility>()
     external.abilities.forEach { a ->
-      abilities.add(
-        PokemonAbility(
-          pokemon = pokemon,
-          ability = a.ability?.let { abilityService.getByName(it.name) },
-          isHidden = a.isHidden,
-          slot = a.slot,
-          generation = null
-        )
-      )
+      addPokemonAbility(abilities, a, pokemon)
     }
     external.pastAbilities.forEach { past ->
       val generation = generationService.getByName(past.generation.name)
       past.abilities.forEach { a ->
-        abilities.add(
-          PokemonAbility(
-            pokemon = pokemon,
-            ability = a.ability?.let { abilityService.getByName(it.name) },
-            isHidden = a.isHidden,
-            slot = a.slot,
-            generation = generation
-          )
-        )
+        addPokemonAbility(abilities, a, pokemon, generation)
       }
     }
     if (abilities.isNotEmpty()) pokemonAbilityService.saveAll(abilities)
   }
 
+  private fun addPokemonAbility(
+    abilities: MutableList<PokemonAbility>,
+    ability: ExternalPokemonAbility,
+    pokemon: Pokemon,
+    generation: Generation? = null
+  ) {
+    val a = ability.ability?.let { abilityService.getByName(it.name) }
+    abilities.add(
+      pokemonAbilityService.getByPokemonAndSlotAndGeneration(pokemon, ability.slot, generation)?.apply {
+        this.ability = a
+        this.isHidden = ability.isHidden
+      } ?: PokemonAbility(
+        pokemon = pokemon,
+        ability = ability.ability?.let { abilityService.getByName(it.name) },
+        isHidden = ability.isHidden,
+        slot = ability.slot,
+        generation = generation
+      )
+    )
+  }
+
   private fun fillPokemonStats(pokemon: Pokemon, external: ExternalPokemon) {
     val stats = mutableListOf<PokemonStat>()
     external.stats.forEach { s ->
-      val statEntity = statService.getByName(s.stat.name)
-
-      stats.add(
-        PokemonStat(
-          pokemon = pokemon,
-          stat = statService.getByName(s.stat.name),
-          generation = null,
-          baseStat = s.baseStat,
-          effort = s.effort
-        )
-      )
+      addPokemonStat(stats, s, pokemon)
     }
     external.pastStats.forEach { past ->
       val generation = generationService.getByName(past.generation.name)
       past.stats.forEach { s ->
-        stats.add(
-          PokemonStat(
-            pokemon = pokemon,
-            stat = statService.getByName(s.stat.name),
-            generation = generation,
-            baseStat = s.baseStat,
-            effort = s.effort
-          )
-        )
+        addPokemonStat(stats, s, pokemon, generation)
       }
     }
     if (stats.isNotEmpty()) pokemonStatService.saveAll(stats)
+  }
+
+  private fun addPokemonStat(
+    stats: MutableList<PokemonStat>,
+    s: ExternalPokemonStat,
+    pokemon: Pokemon,
+    generation: Generation? = null
+  ) {
+    val stat = statService.getByName(s.stat.name)
+
+    stats.add(
+      pokemonStatService.getByStatAndPokemonAndGeneration(stat, pokemon, generation)?.apply {
+        this.baseStat = s.baseStat
+        this.effort = s.effort
+      } ?: PokemonStat(
+        pokemon = pokemon,
+        stat = statService.getByName(s.stat.name),
+        generation = generation,
+        baseStat = s.baseStat,
+        effort = s.effort
+      )
+    )
   }
 
   private fun fillPokemonMoves(pokemon: Pokemon, external: ExternalPokemon) {
@@ -161,12 +174,18 @@ class PokemonSyncService(
     external.moves.forEach { m ->
       val move = moveService.getByName(m.move.name)
       m.versionGroupDetails.forEach { vgd ->
+        val learnMethod = moveLearnMethodService.getByName(vgd.moveLearnMethod.name)
+        val versionGroup = versionGroupService.getByName(vgd.versionGroup.name)
         moves.add(
-          PokemonMove(
+          pokemonMoveService.getByPokemonAndMoveAndVersionGroup(pokemon, move, versionGroup)?.apply {
+            this.moveLearnMethod = learnMethod
+            this.levelLearnedAt = vgd.levelLearnedAt
+            this.order = vgd.order
+          } ?: PokemonMove(
             pokemon = pokemon,
             move = move,
-            moveLearnMethod = moveLearnMethodService.getByName(vgd.moveLearnMethod.name),
-            versionGroup = versionGroupService.getByName(vgd.versionGroup.name),
+            moveLearnMethod = learnMethod,
+            versionGroup = versionGroup,
             levelLearnedAt = vgd.levelLearnedAt,
             order = vgd.order
           )

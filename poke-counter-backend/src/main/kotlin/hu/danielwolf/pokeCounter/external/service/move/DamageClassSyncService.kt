@@ -1,10 +1,9 @@
 package hu.danielwolf.pokeCounter.external.service.move
 
-import hu.danielwolf.pokeCounter.domain.entities.DamageClass
+import hu.danielwolf.pokeCounter.domain.model.DamageClass
 import hu.danielwolf.pokeCounter.domain.services.DamageClassService
 import hu.danielwolf.pokeCounter.external.api.move.MoveApi
 import hu.danielwolf.pokeCounter.external.api.move.dto.ExternalMoveDamageClass
-import hu.danielwolf.pokeCounter.external.api.utilities.dto.NamedAPIResource
 import hu.danielwolf.pokeCounter.external.config.toEntityMap
 import hu.danielwolf.pokeCounter.external.config.toURI
 import org.slf4j.Logger

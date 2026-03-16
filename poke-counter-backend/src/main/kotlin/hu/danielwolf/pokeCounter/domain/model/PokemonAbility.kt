@@ -1,4 +1,4 @@
-package hu.danielwolf.pokeCounter.domain.entities
+package hu.danielwolf.pokeCounter.domain.model
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -12,25 +12,30 @@ import jakarta.persistence.SequenceGenerator
 import jakarta.persistence.Table
 
 @Entity
-@Table(name = "pokemon_types")
-data class PokemonType(
+@Table(name = "pokemon_ability")
+data class PokemonAbility(
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pokemon_types_id_seq")
-    @SequenceGenerator(name = "pokemon_types_id_seq", sequenceName = "pokemon_types_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pokemon_ability_id_seq")
+    @SequenceGenerator(name = "pokemon_ability_id_seq", sequenceName = "pokemon_ability_id_seq", allocationSize = 1)
+    @Column(name = "id")
     var id: Int = 0,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pokemon_id", nullable = false)
+    @JoinColumn(name = "pokemon_id")
     var pokemon: Pokemon,
 
-    @Column(name = "slot", nullable = false)
-    var slot: Int,
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "type_id", nullable = false)
-    var type: Type,
+    @JoinColumn(name = "ability_id")
+    var ability: Ability? = null,
+
+    @Column(name = "is_hidden")
+    var isHidden: Boolean?,
+
+    @Column(name = "slot")
+    var slot: Int?,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "generation_id")
     var generation: Generation?,
 )
+

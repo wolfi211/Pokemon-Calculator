@@ -1,6 +1,9 @@
 package hu.danielwolf.pokeCounter.domain.services
 
-import hu.danielwolf.pokeCounter.domain.entities.PokemonStat
+import hu.danielwolf.pokeCounter.domain.model.Generation
+import hu.danielwolf.pokeCounter.domain.model.Pokemon
+import hu.danielwolf.pokeCounter.domain.model.PokemonStat
+import hu.danielwolf.pokeCounter.domain.model.Stat
 import hu.danielwolf.pokeCounter.domain.repositories.PokemonStatRepository
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
@@ -21,5 +24,8 @@ class PokemonStatService(
 
     fun saveAll(pokemonStats: Iterable<PokemonStat>): List<PokemonStat> =
         pokemonStatRepository.saveAll(pokemonStats)
+
+    fun getByStatAndPokemonAndGeneration(stat: Stat, pokemon: Pokemon, generation: Generation? = null): PokemonStat? =
+        pokemonStatRepository.findByStatAndPokemonAndGeneration(stat, pokemon, generation)
 }
 

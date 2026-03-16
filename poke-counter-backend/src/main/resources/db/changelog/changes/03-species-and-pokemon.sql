@@ -51,3 +51,6 @@ CREATE TABLE pokemon_forms
     names          JSONB,
     formNames      JSONB
 );
+
+--changeset daniel.wolf:alter-formnames-on-pokemon_forms context:alter-formnames
+ALTER TABLE pokemon_forms RENAME formNames TO form_names

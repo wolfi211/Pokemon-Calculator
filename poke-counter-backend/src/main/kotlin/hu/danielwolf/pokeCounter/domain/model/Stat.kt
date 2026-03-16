@@ -1,4 +1,4 @@
-package hu.danielwolf.pokeCounter.domain.entities
+package hu.danielwolf.pokeCounter.domain.model
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -9,8 +9,8 @@ import org.hibernate.annotations.JdbcTypeCode
 import org.hibernate.type.SqlTypes
 
 @Entity
-@Table(name = "types")
-data class Type(
+@Table(name = "stats")
+data class Stat(
     @Id
     @Column(name = "id")
     var id: Int,
@@ -22,16 +22,7 @@ data class Type(
     @Column(name = "names", columnDefinition = "jsonb")
     var names: Map<String, String>? = emptyMap(),
 
-    @OneToMany(mappedBy = "type")
-    var pokemonTypes: MutableSet<PokemonType> = mutableSetOf(),
-
-    @OneToMany(mappedBy = "type")
-    var moveTypes: MutableSet<MoveType> = mutableSetOf(),
-
-    @OneToMany(mappedBy = "damageFromType")
-    var damageFromRelations: MutableSet<TypeRelation> = mutableSetOf(),
-
-    @OneToMany(mappedBy = "damageToType")
-    var damageToRelations: MutableSet<TypeRelation> = mutableSetOf(),
+    @OneToMany(mappedBy = "stat")
+    var pokemonStats: MutableSet<PokemonStat> = mutableSetOf(),
 )
 

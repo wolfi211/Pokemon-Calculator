@@ -1,14 +1,12 @@
 package hu.danielwolf.pokeCounter.external.service.move
 
-import hu.danielwolf.pokeCounter.domain.entities.LearnMethodVersionGroup
-import hu.danielwolf.pokeCounter.domain.entities.MoveLearnMethod
-import hu.danielwolf.pokeCounter.domain.entities.VersionGroup
+import hu.danielwolf.pokeCounter.domain.model.LearnMethodVersionGroup
+import hu.danielwolf.pokeCounter.domain.model.MoveLearnMethod
 import hu.danielwolf.pokeCounter.domain.services.LearnMethodVersionGroupService
 import hu.danielwolf.pokeCounter.domain.services.MoveLearnMethodService
 import hu.danielwolf.pokeCounter.domain.services.VersionGroupService
 import hu.danielwolf.pokeCounter.external.api.move.MoveApi
 import hu.danielwolf.pokeCounter.external.api.move.dto.ExternalLearnMethod
-import hu.danielwolf.pokeCounter.external.api.utilities.dto.NamedAPIResource
 import hu.danielwolf.pokeCounter.external.config.toEntityMap
 import hu.danielwolf.pokeCounter.external.config.toURI
 import org.slf4j.Logger

@@ -1,6 +1,6 @@
 package hu.danielwolf.pokeCounter.external.service.pokemon
 
-import hu.danielwolf.pokeCounter.domain.entities.Stat
+import hu.danielwolf.pokeCounter.domain.model.Stat
 import org.slf4j.Logger
 import hu.danielwolf.pokeCounter.domain.services.StatService
 import hu.danielwolf.pokeCounter.external.api.pokemon.PokemonApi

@@ -1,6 +1,6 @@
 package hu.danielwolf.pokeCounter.domain.services
 
-import hu.danielwolf.pokeCounter.domain.entities.MoveLearnMethod
+import hu.danielwolf.pokeCounter.domain.model.MoveLearnMethod
 import hu.danielwolf.pokeCounter.domain.repositories.MoveLearnMethodRepository
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service

@@ -1,6 +1,6 @@
 package hu.danielwolf.pokeCounter.domain.repositories
 
-import hu.danielwolf.pokeCounter.domain.entities.PokemonForm
+import hu.danielwolf.pokeCounter.domain.model.PokemonForm
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface PokemonFormRepository : JpaRepository<PokemonForm, Int> {

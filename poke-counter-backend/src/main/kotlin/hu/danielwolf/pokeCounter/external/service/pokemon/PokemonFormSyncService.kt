@@ -1,8 +1,8 @@
 package hu.danielwolf.pokeCounter.external.service.pokemon
 
-import hu.danielwolf.pokeCounter.domain.entities.Pokemon
-import hu.danielwolf.pokeCounter.domain.entities.PokemonForm
-import hu.danielwolf.pokeCounter.domain.entities.VersionGroup
+import hu.danielwolf.pokeCounter.domain.model.Pokemon
+import hu.danielwolf.pokeCounter.domain.model.PokemonForm
+import hu.danielwolf.pokeCounter.domain.model.VersionGroup
 import hu.danielwolf.pokeCounter.domain.services.PokemonFormService
 import hu.danielwolf.pokeCounter.domain.services.PokemonService
 import hu.danielwolf.pokeCounter.domain.services.VersionGroupService

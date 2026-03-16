@@ -1,4 +1,4 @@
-package hu.danielwolf.pokeCounter.domain.entities
+package hu.danielwolf.pokeCounter.domain.model
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -53,7 +53,7 @@ data class PokemonForm(
     var names: Map<String, String>? = emptyMap(),
 
     @JdbcTypeCode(SqlTypes.JSON)
-    @Column(name = "formNames", columnDefinition = "jsonb")
+    @Column(name = "form_names", columnDefinition = "jsonb")
     var formNames: Map<String, String>? = emptyMap(),
 )
 

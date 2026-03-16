@@ -1,4 +1,4 @@
-package hu.danielwolf.pokeCounter.domain.entities
+package hu.danielwolf.pokeCounter.domain.model
 
 import jakarta.persistence.Column
 import jakarta.persistence.EmbeddedId

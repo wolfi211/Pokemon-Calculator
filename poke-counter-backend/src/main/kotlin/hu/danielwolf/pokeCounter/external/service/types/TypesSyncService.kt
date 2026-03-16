@@ -1,15 +1,14 @@
 package hu.danielwolf.pokeCounter.external.service.types
 
-import hu.danielwolf.pokeCounter.domain.entities.Generation
-import hu.danielwolf.pokeCounter.domain.entities.Type
-import hu.danielwolf.pokeCounter.domain.entities.TypeRelation
+import hu.danielwolf.pokeCounter.domain.model.Generation
+import hu.danielwolf.pokeCounter.domain.model.Type
+import hu.danielwolf.pokeCounter.domain.model.TypeRelation
 import hu.danielwolf.pokeCounter.domain.services.GenerationService
 import hu.danielwolf.pokeCounter.domain.services.TypeRelationService
 import hu.danielwolf.pokeCounter.domain.services.TypeService
 import hu.danielwolf.pokeCounter.external.api.pokemon.PokemonApi
 import hu.danielwolf.pokeCounter.external.api.pokemon.dto.ExternalType
 import hu.danielwolf.pokeCounter.external.api.pokemon.dto.ExternalTypeRelations
-import hu.danielwolf.pokeCounter.external.api.utilities.dto.NamedAPIResource
 import hu.danielwolf.pokeCounter.external.config.toEntityMap
 import hu.danielwolf.pokeCounter.external.config.toURI
 import org.slf4j.Logger

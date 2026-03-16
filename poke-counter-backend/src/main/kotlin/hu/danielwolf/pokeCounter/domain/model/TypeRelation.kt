@@ -1,4 +1,4 @@
-package hu.danielwolf.pokeCounter.domain.entities
+package hu.danielwolf.pokeCounter.domain.model
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -10,32 +10,30 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.SequenceGenerator
 import jakarta.persistence.Table
+import java.math.BigDecimal
 
 @Entity
-@Table(name = "pokemon_stats")
-data class PokemonStat(
+@Table(name = "type_relations")
+data class TypeRelation(
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pokemon_stats_id_seq")
-    @SequenceGenerator(name = "pokemon_stats_id_seq", sequenceName = "pokemon_stats_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "type_relations_id_seq")
+    @SequenceGenerator(name = "type_relations_id_seq", sequenceName = "type_relations_id_seq", allocationSize = 1)
     @Column(name = "id")
     var id: Int = 0,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pokemon_id")
-    var pokemon: Pokemon,
+    @JoinColumn(name = "damage_from")
+    var damageFromType: Type,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "stat_id")
-    var stat: Stat,
+    @JoinColumn(name = "damage_to")
+    var damageToType: Type,
+
+    @Column(name = "multiplier")
+    var multiplier: BigDecimal,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "generation_id")
+    @JoinColumn(name = "generation")
     var generation: Generation?,
-
-    @Column(name = "base_stat")
-    var baseStat: Int,
-
-    @Column(name = "effort")
-    var effort: Int,
 )
 

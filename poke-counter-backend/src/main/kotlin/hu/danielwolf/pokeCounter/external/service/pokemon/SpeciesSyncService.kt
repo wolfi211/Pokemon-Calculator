@@ -1,10 +1,9 @@
 package hu.danielwolf.pokeCounter.external.service.pokemon
 
-import hu.danielwolf.pokeCounter.domain.entities.Species
+import hu.danielwolf.pokeCounter.domain.model.Species
 import hu.danielwolf.pokeCounter.domain.services.SpeciesService
 import hu.danielwolf.pokeCounter.external.api.pokemon.PokemonApi
 import hu.danielwolf.pokeCounter.external.api.pokemon.dto.ExternalPokemonSpecies
-import hu.danielwolf.pokeCounter.external.api.utilities.dto.NamedAPIResource
 import hu.danielwolf.pokeCounter.external.config.toEntityMap
 import hu.danielwolf.pokeCounter.external.config.toURI
 import org.slf4j.Logger

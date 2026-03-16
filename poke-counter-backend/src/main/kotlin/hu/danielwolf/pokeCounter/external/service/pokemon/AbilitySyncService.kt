@@ -1,12 +1,11 @@
 package hu.danielwolf.pokeCounter.external.service.pokemon
 
-import hu.danielwolf.pokeCounter.domain.entities.Ability
-import hu.danielwolf.pokeCounter.domain.entities.Generation
+import hu.danielwolf.pokeCounter.domain.model.Ability
+import hu.danielwolf.pokeCounter.domain.model.Generation
 import hu.danielwolf.pokeCounter.domain.services.AbilityService
 import hu.danielwolf.pokeCounter.domain.services.GenerationService
 import hu.danielwolf.pokeCounter.external.api.pokemon.PokemonApi
 import hu.danielwolf.pokeCounter.external.api.pokemon.dto.ExternalAbility
-import hu.danielwolf.pokeCounter.external.api.utilities.dto.NamedAPIResource
 import hu.danielwolf.pokeCounter.external.config.toEntityMap
 import hu.danielwolf.pokeCounter.external.config.toURI
 import org.slf4j.Logger

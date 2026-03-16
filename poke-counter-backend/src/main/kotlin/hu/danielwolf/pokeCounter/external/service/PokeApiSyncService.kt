@@ -36,22 +36,22 @@ class PokeApiSyncService(
 //        gamesSyncService.syncAllGenerations()
 //        gamesSyncService.syncAllRegions()
 //        typesSyncService.syncAll()
+//        statSyncService.syncAll()
 //        damageClassSyncService.syncAll()
 //
 //        gamesSyncService.syncAllVersionGroups()
 //        gamesSyncService.syncAllVersions()
-//        val externalPokedexes = gamesSyncService.syncAllPokedexes()
+        val externalPokedexes = gamesSyncService.syncAllPokedexes()
 //        moveLearnMethodSyncService.syncAll()
 //
 //        abilitySyncService.syncAll()
 //        movesSyncService.syncAll()
 //
 //        speciesSyncService.syncAll()
-        statSyncService.syncAll()
-        pokemonSyncService.syncAll()
-        pokemonFormSyncService.syncAll()
+//        pokemonSyncService.syncAll()
+//        pokemonFormSyncService.syncAll()
 
-//        pokedexPokemonFillService.fill(externalPokedexes)
+        pokedexPokemonFillService.fill(externalPokedexes)
 
         logger.info("PokeAPI full sync finished.")
     }

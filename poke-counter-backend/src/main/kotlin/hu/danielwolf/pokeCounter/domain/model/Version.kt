@@ -1,16 +1,18 @@
-package hu.danielwolf.pokeCounter.domain.entities
+package hu.danielwolf.pokeCounter.domain.model
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import jakarta.persistence.FetchType
 import jakarta.persistence.Id
-import jakarta.persistence.OneToMany
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import org.hibernate.annotations.JdbcTypeCode
 import org.hibernate.type.SqlTypes
 
 @Entity
-@Table(name = "stats")
-data class Stat(
+@Table(name = "version")
+data class Version(
     @Id
     @Column(name = "id")
     var id: Int,
@@ -22,7 +24,8 @@ data class Stat(
     @Column(name = "names", columnDefinition = "jsonb")
     var names: Map<String, String>? = emptyMap(),
 
-    @OneToMany(mappedBy = "stat")
-    var pokemonStats: MutableSet<PokemonStat> = mutableSetOf(),
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "version_group_id")
+    var versionGroup: VersionGroup?,
 )
 

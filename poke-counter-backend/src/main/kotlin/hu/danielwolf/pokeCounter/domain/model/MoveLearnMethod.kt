@@ -1,4 +1,4 @@
-package hu.danielwolf.pokeCounter.domain.entities
+package hu.danielwolf.pokeCounter.domain.model
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -9,8 +9,8 @@ import org.hibernate.annotations.JdbcTypeCode
 import org.hibernate.type.SqlTypes
 
 @Entity
-@Table(name = "damage_classes")
-data class DamageClass(
+@Table(name = "move_learn_methods")
+data class MoveLearnMethod(
     @Id
     @Column(name = "id")
     var id: Int,
@@ -19,14 +19,17 @@ data class DamageClass(
     var name: String,
 
     @JdbcTypeCode(SqlTypes.JSON)
-    @Column(name = "names", columnDefinition = "jsonb")
-    var names: Map<String, String>? = emptyMap(),
-
-    @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "descriptions", columnDefinition = "jsonb")
     var descriptions: Map<String, String>? = emptyMap(),
 
-    @OneToMany(mappedBy = "damageClass")
-    var moves: MutableSet<Move> = mutableSetOf(),
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "names", columnDefinition = "jsonb")
+    var names: Map<String, String>? = emptyMap(),
+
+    @OneToMany(mappedBy = "learnMethod")
+    var versionGroups: MutableSet<LearnMethodVersionGroup> = mutableSetOf(),
+
+    @OneToMany(mappedBy = "moveLearnMethod")
+    var pokemonMoves: MutableSet<PokemonMove> = mutableSetOf(),
 )
 

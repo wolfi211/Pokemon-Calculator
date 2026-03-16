@@ -1,9 +1,9 @@
 package hu.danielwolf.pokeCounter.external.service.move
 
-import hu.danielwolf.pokeCounter.domain.entities.DamageClass
-import hu.danielwolf.pokeCounter.domain.entities.Generation
-import hu.danielwolf.pokeCounter.domain.entities.Move
-import hu.danielwolf.pokeCounter.domain.entities.MoveType
+import hu.danielwolf.pokeCounter.domain.model.DamageClass
+import hu.danielwolf.pokeCounter.domain.model.Generation
+import hu.danielwolf.pokeCounter.domain.model.Move
+import hu.danielwolf.pokeCounter.domain.model.MoveType
 import hu.danielwolf.pokeCounter.domain.services.DamageClassService
 import hu.danielwolf.pokeCounter.domain.services.GenerationService
 import hu.danielwolf.pokeCounter.domain.services.MoveService
@@ -12,8 +12,6 @@ import hu.danielwolf.pokeCounter.domain.services.TypeService
 import hu.danielwolf.pokeCounter.domain.services.VersionGroupService
 import hu.danielwolf.pokeCounter.external.api.move.MoveApi
 import hu.danielwolf.pokeCounter.external.api.move.dto.ExternalMove
-import hu.danielwolf.pokeCounter.external.api.move.dto.ExternalPastMoveStatValue
-import hu.danielwolf.pokeCounter.external.api.utilities.dto.NamedAPIResource
 import hu.danielwolf.pokeCounter.external.config.toEntityMap
 import hu.danielwolf.pokeCounter.external.config.toURI
 import org.slf4j.Logger
