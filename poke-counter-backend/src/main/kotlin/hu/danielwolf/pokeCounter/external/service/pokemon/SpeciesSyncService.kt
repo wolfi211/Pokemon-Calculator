@@ -20,7 +20,7 @@ class SpeciesSyncService(
     /**
      * Syncs all species and returns the list of ExternalPokemonSpecies for later Pokemon sync (varieties).
      */
-    fun syncAll(): List<ExternalPokemonSpecies> {
+    fun syncAll() {
         logger.info("Starting species sync...")
         val stored = mutableListOf<ExternalPokemonSpecies>()
         val summaries = pokemonApi.getAllPokemonSpecies(0, 2000)
@@ -30,7 +30,6 @@ class SpeciesSyncService(
             stored.add(external)
         }
         logger.info("Finished species sync (${stored.size} species).")
-        return stored
     }
 }
 

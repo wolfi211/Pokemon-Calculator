@@ -26,7 +26,7 @@ data class PokemonAbility(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ability_id")
-    var ability: Ability,
+    var ability: Ability? = null,
 
     @Column(name = "is_hidden")
     var isHidden: Boolean?,

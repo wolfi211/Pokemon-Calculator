@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.http.client.reactive.ReactorClientHttpConnector
+import org.springframework.web.reactive.function.client.ExchangeStrategies
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.publisher.Mono
 import org.springframework.web.reactive.function.client.support.WebClientAdapter
@@ -30,11 +31,14 @@ class WebclientConfig(private val pokeApiProperties: PokeApiProperties) {
 
   @Bean
   fun pokeWebClient(): WebClient {
-    val rateLimiter = PokeApiRateLimiter(pokeApiProperties.minDelayBetweenRequestsMs)
     return WebClient.builder()
       .baseUrl(pokeApiProperties.baseUrl)
+      .exchangeStrategies(ExchangeStrategies.builder().codecs { configurer ->
+        configurer.defaultCodecs().maxInMemorySize(10 * 1024 * 1024)
+      }.build())
       .filter { request, next ->
-        Mono.fromRunnable<Void> { rateLimiter.acquire() }.then(next.exchange(request))
+        Mono.delay(Duration.ofMillis(pokeApiProperties.minDelayBetweenRequestsMs))
+          .then(next.exchange(request))
       }
       .clientConnector(
         ReactorClientHttpConnector(

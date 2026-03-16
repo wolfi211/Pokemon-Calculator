@@ -5,9 +5,9 @@ spring:
     name: poke-counter-backend
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/poke_counter
-    username: poke_counter
-    password: poke_counter_dev
+    url: jdbc:postgresql://localhost:5432/pokecounter
+    username: pokecounter
+    password: pokecounter
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 10

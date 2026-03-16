@@ -9,7 +9,7 @@ import jakarta.persistence.Converter
 class JsonMapConverter : AttributeConverter<Map<String, String>, String> {
 
   override fun convertToDatabaseColumn(attribute: Map<String, String>?): String? {
-    if (attribute == null || attribute.isEmpty()) return null
+    if (attribute.isNullOrEmpty()) return null
     return jsonMapper.writeValueAsString(attribute)
   }
 
