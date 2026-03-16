@@ -7,8 +7,7 @@ import hu.danielwolf.pokeCounter.external.api.move.dto.ExternalMoveBattleStyle
 import hu.danielwolf.pokeCounter.external.api.move.dto.ExternalMoveCategory
 import hu.danielwolf.pokeCounter.external.api.move.dto.ExternalMoveDamageClass
 import hu.danielwolf.pokeCounter.external.api.move.dto.ExternalMoveTarget
-import hu.danielwolf.pokeCounter.external.api.utilities.dto.NamedApiResourceList
-import hu.danielwolf.pokeCounter.external.api.utilities.dto.PageRequest
+import hu.danielwolf.pokeCounter.external.api.utilities.dto.NamedAPIResourceList
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.service.annotation.GetExchange
@@ -19,7 +18,7 @@ import java.net.URI
 interface MoveApi {
 
     @GetExchange(PATH_MOVE)
-    fun getAllMoves(@RequestParam pager: PageRequest): NamedApiResourceList
+    fun getAllMoves(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList
 
     @GetExchange("$PATH_MOVE/{id}")
     fun getMoveById(@PathVariable id: Int): ExternalMove
@@ -28,7 +27,7 @@ interface MoveApi {
     fun followMove(url: URI): ExternalMove
 
     @GetExchange(PATH_MOVE_AILMENT)
-    fun getAllMoveAilments(@RequestParam pager: PageRequest): NamedApiResourceList
+    fun getAllMoveAilments(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList
 
     @GetExchange("$PATH_MOVE_AILMENT/{id}")
     fun getMoveAilmentById(@PathVariable id: Int): ExternalMoveAilment
@@ -37,7 +36,7 @@ interface MoveApi {
     fun followMoveAilment(url: URI): ExternalMoveAilment
 
     @GetExchange(PATH_MOVE_BATTLE_STYLE)
-    fun getAllMoveBattleStyles(@RequestParam pager: PageRequest): NamedApiResourceList
+    fun getAllMoveBattleStyles(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList
 
     @GetExchange("$PATH_MOVE_BATTLE_STYLE/{id}")
     fun getMoveBattleStyleById(@PathVariable id: Int): ExternalMoveBattleStyle
@@ -46,7 +45,7 @@ interface MoveApi {
     fun followMoveBattleStyle(url: URI): ExternalMoveBattleStyle
 
     @GetExchange(PATH_MOVE_CATEGORY)
-    fun getAllMoveCategories(@RequestParam pager: PageRequest): NamedApiResourceList
+    fun getAllMoveCategories(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList
 
     @GetExchange("$PATH_MOVE_CATEGORY/{id}")
     fun getMoveCategoryById(@PathVariable id: Int): ExternalMoveCategory
@@ -55,7 +54,7 @@ interface MoveApi {
     fun followMoveCategory(url: URI): ExternalMoveCategory
 
     @GetExchange(PATH_MOVE_DAMAGE_CLASS)
-    fun getAllMoveDamageClasses(@RequestParam pager: PageRequest): NamedApiResourceList
+    fun getAllMoveDamageClasses(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList
 
     @GetExchange("$PATH_MOVE_DAMAGE_CLASS/{id}")
     fun getMoveDamageClassById(@PathVariable id: Int): ExternalMoveDamageClass
@@ -64,7 +63,7 @@ interface MoveApi {
     fun followMoveDamageClass(url: URI): ExternalMoveDamageClass
 
     @GetExchange(PATH_MOVE_LEARN_METHOD)
-    fun getAllMoveLearnMethods(@RequestParam pager: PageRequest): NamedApiResourceList
+    fun getAllMoveLearnMethods(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList
 
     @GetExchange("$PATH_MOVE_LEARN_METHOD/{id}")
     fun getMoveLearnMethodById(@PathVariable id: Int): ExternalLearnMethod
@@ -73,7 +72,7 @@ interface MoveApi {
     fun followMoveLearnMethod(url: URI): ExternalLearnMethod
 
     @GetExchange(PATH_MOVE_TARGET)
-    fun getAllMoveTargets(@RequestParam pager: PageRequest): NamedApiResourceList
+    fun getAllMoveTargets(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList
 
     @GetExchange("$PATH_MOVE_TARGET/{id}")
     fun getMoveTargetById(@PathVariable id: Int): ExternalMoveTarget

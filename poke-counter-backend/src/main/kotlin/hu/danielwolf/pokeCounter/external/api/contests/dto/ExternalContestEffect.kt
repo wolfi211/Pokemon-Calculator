@@ -2,13 +2,11 @@ package hu.danielwolf.pokeCounter.external.api.contests.dto
 
 import hu.danielwolf.pokeCounter.external.api.utilities.dto.ExternalEffect
 import hu.danielwolf.pokeCounter.external.api.utilities.dto.ExternalFlavorText
-import kotlinx.serialization.Serializable
-
-@Serializable
+import com.fasterxml.jackson.annotation.JsonProperty
 data class ExternalContestEffect(
     val id: Int,
     val appeal: Int,
     val jam: Int,
-    val effectEntries: List<ExternalEffect>,
-    val flavorTextEntries: List<ExternalFlavorText>,
+    @JsonProperty("effect_entries") val effectEntries: List<ExternalEffect>,
+    @JsonProperty("flavor_text_entries") val flavorTextEntries: List<ExternalFlavorText>,
 )

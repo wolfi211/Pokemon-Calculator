@@ -5,7 +5,6 @@ import hu.danielwolf.pokeCounter.domain.services.SpeciesService
 import hu.danielwolf.pokeCounter.external.api.pokemon.PokemonApi
 import hu.danielwolf.pokeCounter.external.api.pokemon.dto.ExternalPokemonSpecies
 import hu.danielwolf.pokeCounter.external.api.utilities.dto.NamedAPIResource
-import hu.danielwolf.pokeCounter.external.api.utilities.dto.PageRequest
 import hu.danielwolf.pokeCounter.external.config.toEntityMap
 import hu.danielwolf.pokeCounter.external.config.toURI
 import org.slf4j.Logger
@@ -24,15 +23,11 @@ class SpeciesSyncService(
     fun syncAll(): List<ExternalPokemonSpecies> {
         logger.info("Starting species sync...")
         val stored = mutableListOf<ExternalPokemonSpecies>()
-        val summaries = pokemonApi.getAllPokemonSpecies(PageRequest(0, 2000))
+        val summaries = pokemonApi.getAllPokemonSpecies(0, 2000)
         summaries.results.forEach {
-            try {
-                val external = pokemonApi.followPokemonSpecies(it.url.toURI())
-                speciesService.save(external.toEntity())
-                stored.add(external)
-            } catch (e: Exception) {
-                logger.error("Error syncing species ${it.name}: ${e.message}")
-            }
+            val external = pokemonApi.followPokemonSpecies(it.url.toURI())
+            speciesService.save(external.toEntity())
+            stored.add(external)
         }
         logger.info("Finished species sync (${stored.size} species).")
         return stored

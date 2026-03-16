@@ -2,30 +2,26 @@ package hu.danielwolf.pokeCounter.external.api.pokemon.dto
 
 import hu.danielwolf.pokeCounter.external.api.utilities.dto.ExternalName
 import hu.danielwolf.pokeCounter.external.api.utilities.dto.NamedAPIResource
-import kotlinx.serialization.Serializable
-
-@Serializable
+import com.fasterxml.jackson.annotation.JsonProperty
 data class ExternalNature (
     val id: Int,
     val name: String,
-    val decreasedStat: NamedAPIResource,
-    val increasedStat: NamedAPIResource,
-    val hatesFlavor: NamedAPIResource,
-    val likesFlavor: NamedAPIResource,
-    val pokeathlonStatChanges: List<ExternalNatureStatChange>,
-    val moveBattleStylePreferences: List<ExternalMoveBattleStylePreference>,
+    @JsonProperty("decreased_stat") val decreasedStat: NamedAPIResource?,
+    @JsonProperty("increased_stat") val increasedStat: NamedAPIResource?,
+    @JsonProperty("hates_flavor") val hatesFlavor: NamedAPIResource?,
+    @JsonProperty("likes_flavor") val likesFlavor: NamedAPIResource?,
+    @JsonProperty("pokeathlon_stat_changes") val pokeathlonStatChanges: List<ExternalNatureStatChange>,
+    @JsonProperty("move_battle_style_preferences") val moveBattleStylePreferences: List<ExternalMoveBattleStylePreference>,
     val names: List<ExternalName>
 )
 
-@Serializable
 data class ExternalNatureStatChange(
-    val maxChange: Int,
-    val pokeathlonStat: NamedAPIResource,
+    @JsonProperty("max_change") val maxChange: Int,
+    @JsonProperty("pokeathlon_stat") val pokeathlonStat: NamedAPIResource,
 )
 
-@Serializable
 data class ExternalMoveBattleStylePreference(
-    val lowHpPreference: Int,
-    val highHpPreference: Int,
-    val moveBattleStyle: NamedAPIResource,
+    @JsonProperty("low_hp_preference") val lowHpPreference: Int,
+    @JsonProperty("high_hp_preference") val highHpPreference: Int,
+    @JsonProperty("move_battle_style") val moveBattleStyle: NamedAPIResource,
 )

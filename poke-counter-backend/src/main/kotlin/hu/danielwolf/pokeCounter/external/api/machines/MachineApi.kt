@@ -1,8 +1,7 @@
 package hu.danielwolf.pokeCounter.external.api.machines
 
 import hu.danielwolf.pokeCounter.external.api.machines.dto.ExternalMachine
-import hu.danielwolf.pokeCounter.external.api.utilities.dto.PageRequest
-import hu.danielwolf.pokeCounter.external.api.utilities.dto.UnnamedApiResourceList
+import hu.danielwolf.pokeCounter.external.api.utilities.dto.UnnamedAPIResourceList
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.service.annotation.GetExchange
@@ -13,7 +12,7 @@ import java.net.URI
 interface MachineApi {
 
     @GetExchange(PATH_MACHINE)
-    fun getAllMachines(@RequestParam pager: PageRequest): UnnamedApiResourceList
+    fun getAllMachines(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): UnnamedAPIResourceList
 
     @GetExchange("$PATH_MACHINE/{id}")
     fun getMachineById(@PathVariable id: Int): ExternalMachine

@@ -7,7 +7,6 @@ import hu.danielwolf.pokeCounter.domain.services.GenerationService
 import hu.danielwolf.pokeCounter.external.api.pokemon.PokemonApi
 import hu.danielwolf.pokeCounter.external.api.pokemon.dto.ExternalAbility
 import hu.danielwolf.pokeCounter.external.api.utilities.dto.NamedAPIResource
-import hu.danielwolf.pokeCounter.external.api.utilities.dto.PageRequest
 import hu.danielwolf.pokeCounter.external.config.toEntityMap
 import hu.danielwolf.pokeCounter.external.config.toURI
 import org.slf4j.Logger
@@ -23,14 +22,10 @@ class AbilitySyncService(
 
     fun syncAll() {
         logger.info("Starting ability sync...")
-        val summaries = pokemonApi.getAllAbilities(PageRequest(0, 500))
+        val summaries = pokemonApi.getAllAbilities(0, 500)
         summaries.results.forEach {
-            try {
-                val external = pokemonApi.followAbility(it.url.toURI())
-                abilityService.save(external.toEntity(generationService.getByName(external.generation.name)))
-            } catch (e: Exception) {
-                logger.error("Error syncing ability ${it.name}: ${e.message}")
-            }
+            val external = pokemonApi.followAbility(it.url.toURI())
+            abilityService.save(external.toEntity(generationService.getByName(external.generation.name)))
         }
         logger.info("Finished ability sync.")
     }

@@ -29,17 +29,12 @@ repositories {
 dependencies {
   implementation("org.springframework.boot:spring-boot-starter-data-jpa")
   implementation("org.springframework.boot:spring-boot-starter-liquibase")
-  implementation("org.springframework.boot:spring-boot-starter-webmvc")
   implementation("org.springframework.boot:spring-boot-starter-web")
   implementation("org.springframework.boot:spring-boot-starter-webflux")
   implementation("org.springframework.boot:spring-boot-starter-validation")
 
   implementation("org.jetbrains.kotlin:kotlin-reflect")
-  implementation("tools.jackson.module:jackson-module-kotlin")
-  implementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
-
-  developmentOnly("org.springframework.boot:spring-boot-devtools")
-  developmentOnly("org.springframework.boot:spring-boot-docker-compose")
+  implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
   runtimeOnly("org.postgresql:postgresql")
 

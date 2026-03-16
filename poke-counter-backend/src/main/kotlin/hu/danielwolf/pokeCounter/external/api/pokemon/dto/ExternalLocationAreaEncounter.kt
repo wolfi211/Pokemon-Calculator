@@ -2,10 +2,8 @@ package hu.danielwolf.pokeCounter.external.api.pokemon.dto
 
 import hu.danielwolf.pokeCounter.external.api.utilities.dto.ExternalVersionEncounterDetail
 import hu.danielwolf.pokeCounter.external.api.utilities.dto.NamedAPIResource
-import kotlinx.serialization.Serializable
-
-@Serializable
+import com.fasterxml.jackson.annotation.JsonProperty
 data class ExternalLocationAreaEncounter(
-    val locationArea: NamedAPIResource,
-    val versionDetails: List<ExternalVersionEncounterDetail>
+    @JsonProperty("location_area") val locationArea: NamedAPIResource,
+    @JsonProperty("version_details") val versionDetails: List<ExternalVersionEncounterDetail>
 )

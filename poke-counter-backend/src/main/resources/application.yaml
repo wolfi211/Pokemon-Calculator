@@ -1,10 +1,68 @@
+# Defaults when not using Docker Compose (e.g. production or CI).
+# When using spring-boot-docker-compose, datasource is auto-configured from compose.yaml.
 spring:
   application:
     name: poke-counter-backend
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/poke_counter
+    username: poke_counter
+    password: poke_counter_dev
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 20000
+      idle-timeout: 300000
+      max-lifetime: 1200000
+      pool-name: PokeCounterHikariPool
+
   jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
     properties:
       hibernate:
         globally_quoted_identifiers: true
+        jdbc:
+          batch_size: 25
+        order_inserts: true
+        order_updates: true
+        default_batch_fetch_size: 16
+    show-sql: false
+
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yml
+
+  docker:
+    compose:
+      # start-only: start Postgres when app starts, leave it running when app stops
+      lifecycle-management: start-only
+
+server:
+  port: 8080
+  compression:
+    enabled: true
+
+# Application and dependency logging
+logging:
+  level:
+    root: INFO
+    hu.danielwolf.pokeCounter: INFO
+    org.hibernate.SQL: INFO
+    org.springframework.web: INFO
+    reactor:
+      netty:
+        http:
+          client:
+            HttpClient: DEBUG
+    org:
+      springframework:
+        web:
+          reactive:
+            function:
+              client:
+                ExchangeFunctions: DEBUG
 
 poke-api:
   base-url: https://pokeapi.co/api/v2

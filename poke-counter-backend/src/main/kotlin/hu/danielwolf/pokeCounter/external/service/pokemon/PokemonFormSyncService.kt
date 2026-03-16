@@ -8,7 +8,6 @@ import hu.danielwolf.pokeCounter.domain.services.PokemonService
 import hu.danielwolf.pokeCounter.domain.services.VersionGroupService
 import hu.danielwolf.pokeCounter.external.api.pokemon.PokemonApi
 import hu.danielwolf.pokeCounter.external.api.pokemon.dto.ExternalPokemonForm
-import hu.danielwolf.pokeCounter.external.api.utilities.dto.PageRequest
 import hu.danielwolf.pokeCounter.external.config.toEntityMap
 import hu.danielwolf.pokeCounter.external.config.toURI
 import org.slf4j.Logger
@@ -25,16 +24,12 @@ class PokemonFormSyncService(
 
     fun syncAll() {
         logger.info("Starting pokemon form sync...")
-        val summaries = pokemonApi.getAllPokemonForms(PageRequest(0, 2000))
+        val summaries = pokemonApi.getAllPokemonForms(0, 2000)
         summaries.results.forEach {
-            try {
-                val external = pokemonApi.followPokemonForm(it.url.toURI())
-                val pokemon = pokemonService.getByName(external.pokemon.name)
-                val versionGroup = versionGroupService.getByName(external.versionGroup.name)
-                pokemonFormService.save(external.toEntity(pokemon, versionGroup))
-            } catch (e: Exception) {
-                logger.error("Error syncing pokemon form ${it.name}: ${e.message}")
-            }
+            val external = pokemonApi.followPokemonForm(it.url.toURI())
+            val pokemon = pokemonService.getByName(external.pokemon.name)
+            val versionGroup = versionGroupService.getByName(external.versionGroup.name)
+            pokemonFormService.save(external.toEntity(pokemon, versionGroup))
         }
         logger.info("Finished pokemon form sync.")
     }

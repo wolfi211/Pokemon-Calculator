@@ -10,7 +10,6 @@ import hu.danielwolf.pokeCounter.external.api.pokemon.PokemonApi
 import hu.danielwolf.pokeCounter.external.api.pokemon.dto.ExternalType
 import hu.danielwolf.pokeCounter.external.api.pokemon.dto.ExternalTypeRelations
 import hu.danielwolf.pokeCounter.external.api.utilities.dto.NamedAPIResource
-import hu.danielwolf.pokeCounter.external.api.utilities.dto.PageRequest
 import hu.danielwolf.pokeCounter.external.config.toEntityMap
 import hu.danielwolf.pokeCounter.external.config.toURI
 import org.slf4j.Logger
@@ -29,27 +28,19 @@ class TypesSyncService(
     fun syncAll() {
         logger.info("Starting type sync (phase 1: types)...")
         val externalTypes = mutableListOf<ExternalType>()
-        val typeSummaries = pokemonApi.getAllTypes(PageRequest(0, 100))
+        val typeSummaries = pokemonApi.getAllTypes(0, 100)
         typeSummaries.results.forEach {
-            try {
-                val external = pokemonApi.followType(it.url.toURI())
-                typeService.save(external.toEntity())
-                externalTypes.add(external)
-            } catch (e: Exception) {
-                logger.error("Error syncing type ${it.name}: ${e.message}")
-            }
+            val external = pokemonApi.followType(it.url.toURI())
+            typeService.save(external.toEntity())
+            externalTypes.add(external)
         }
         logger.info("Starting type sync (phase 2: type relations)...")
         val relations = mutableListOf<TypeRelation>()
         externalTypes.forEach { external ->
-            try {
-                relations.addAll(buildTypeRelations(external.damageRelations, external.name, null))
-                external.pastDamageRelations.forEach { past ->
-                    val generation = generationService.getByName(past.generation.name)
-                    relations.addAll(buildTypeRelations(past.damageRelation, external.name, generation))
-                }
-            } catch (e: Exception) {
-                logger.error("Error building type relations for ${external.name}: ${e.message}")
+            relations.addAll(buildTypeRelations(external.damageRelations, external.name, null))
+            external.pastDamageRelations.forEach { past ->
+                val generation = generationService.getByName(past.generation.name)
+                relations.addAll(buildTypeRelations(past.damageRelations, external.name, generation))
             }
         }
         if (relations.isNotEmpty()) {

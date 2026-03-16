@@ -2,9 +2,8 @@ package hu.danielwolf.pokeCounter.external.api.evolution
 
 import hu.danielwolf.pokeCounter.external.api.evolution.dto.ExternalEvolutionChain
 import hu.danielwolf.pokeCounter.external.api.evolution.dto.ExternalEvolutionTrigger
-import hu.danielwolf.pokeCounter.external.api.utilities.dto.NamedApiResourceList
-import hu.danielwolf.pokeCounter.external.api.utilities.dto.PageRequest
-import hu.danielwolf.pokeCounter.external.api.utilities.dto.UnnamedApiResourceList
+import hu.danielwolf.pokeCounter.external.api.utilities.dto.NamedAPIResourceList
+import hu.danielwolf.pokeCounter.external.api.utilities.dto.UnnamedAPIResourceList
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.service.annotation.GetExchange
@@ -15,7 +14,7 @@ import java.net.URI
 interface EvolutionApi {
 
     @GetExchange(PATH_EVOLUTION_CHAIN)
-    fun getAllEvolutionChains(@RequestParam pager: PageRequest): UnnamedApiResourceList
+    fun getAllEvolutionChains(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): UnnamedAPIResourceList
 
     @GetExchange("$PATH_EVOLUTION_CHAIN/{id}")
     fun getEvolutionChainById(@PathVariable id: Int): ExternalEvolutionChain
@@ -24,7 +23,7 @@ interface EvolutionApi {
     fun followEvolutionChain(url: URI): ExternalEvolutionChain
 
     @GetExchange(PATH_EVOLUTION_TRIGGER)
-    fun getAllEvolutionTriggers(@RequestParam pager: PageRequest): NamedApiResourceList
+    fun getAllEvolutionTriggers(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList
 
     @GetExchange("$PATH_EVOLUTION_TRIGGER/{id}")
     fun getEvolutionTriggerById(@PathVariable id: Int): ExternalEvolutionTrigger

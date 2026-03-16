@@ -5,7 +5,6 @@ import hu.danielwolf.pokeCounter.domain.entities.PokemonAbility
 import hu.danielwolf.pokeCounter.domain.entities.PokemonMove
 import hu.danielwolf.pokeCounter.domain.entities.PokemonStat
 import hu.danielwolf.pokeCounter.domain.entities.PokemonType
-import hu.danielwolf.pokeCounter.domain.entities.PokemonTypeId
 import hu.danielwolf.pokeCounter.domain.entities.Species
 import hu.danielwolf.pokeCounter.domain.services.AbilityService
 import hu.danielwolf.pokeCounter.domain.services.GenerationService
@@ -54,18 +53,14 @@ class PokemonSyncService(
         var count = 0
         externalSpeciesList.forEach { externalSpecies ->
             externalSpecies.varieties.forEach { variety ->
-                try {
-                    val external = pokemonApi.followPokemon(variety.pokemon.url.toURI())
-                    val species = speciesService.getByName(externalSpecies.name)
-                    val pokemon = pokemonService.save(external.toEntity(species))
-                    fillPokemonTypes(pokemon, external)
-                    fillPokemonAbilities(pokemon, external)
-                    fillPokemonStats(pokemon, external)
-                    fillPokemonMoves(pokemon, external)
-                    count++
-                } catch (e: Exception) {
-                    logger.error("Error syncing pokemon ${variety.pokemon.name}: ${e.message}")
-                }
+                val external = pokemonApi.followPokemon(variety.pokemon.url.toURI())
+                val species = speciesService.getByName(externalSpecies.name)
+                val pokemon = pokemonService.save(external.toEntity(species))
+                fillPokemonTypes(pokemon, external)
+                fillPokemonAbilities(pokemon, external)
+                fillPokemonStats(pokemon, external)
+                fillPokemonMoves(pokemon, external)
+                count++
             }
         }
         logger.info("Finished pokemon sync ($count pokemon).")
@@ -76,10 +71,10 @@ class PokemonSyncService(
         external.types.forEach { t ->
             types.add(
                 PokemonType(
-                    id = PokemonTypeId(pokemon.id, t.slot, null),
                     pokemon = pokemon,
-                    generation = null,
-                    type = typeService.getByName(t.type.name)
+                    slot = t.slot,
+                    type = typeService.getByName(t.type.name),
+                    generation = null
                 )
             )
         }
@@ -88,10 +83,10 @@ class PokemonSyncService(
             past.types.forEach { t ->
                 types.add(
                     PokemonType(
-                        id = PokemonTypeId(pokemon.id, t.slot, generation.id),
                         pokemon = pokemon,
-                        generation = generation,
-                        type = typeService.getByName(t.type.name)
+                        slot = t.slot,
+                        type = typeService.getByName(t.type.name),
+                        generation = generation
                     )
                 )
             }

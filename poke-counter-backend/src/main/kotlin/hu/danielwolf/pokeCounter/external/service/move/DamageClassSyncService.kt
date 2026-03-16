@@ -5,7 +5,6 @@ import hu.danielwolf.pokeCounter.domain.services.DamageClassService
 import hu.danielwolf.pokeCounter.external.api.move.MoveApi
 import hu.danielwolf.pokeCounter.external.api.move.dto.ExternalMoveDamageClass
 import hu.danielwolf.pokeCounter.external.api.utilities.dto.NamedAPIResource
-import hu.danielwolf.pokeCounter.external.api.utilities.dto.PageRequest
 import hu.danielwolf.pokeCounter.external.config.toEntityMap
 import hu.danielwolf.pokeCounter.external.config.toURI
 import org.slf4j.Logger
@@ -20,14 +19,10 @@ class DamageClassSyncService(
 
     fun syncAll() {
         logger.info("Starting damage class sync...")
-        val summaries = moveApi.getAllMoveDamageClasses(PageRequest(0, 100))
+        val summaries = moveApi.getAllMoveDamageClasses(0, 100)
         summaries.results.forEach {
-            try {
-                val external = moveApi.followMoveDamageClass(it.url.toURI())
-                damageClassService.save(external.toEntity())
-            } catch (e: Exception) {
-                logger.error("Error syncing damage class ${it.name}: ${e.message}")
-            }
+            val external = moveApi.followMoveDamageClass(it.url.toURI())
+            damageClassService.save(external.toEntity())
         }
         logger.info("Finished damage class sync.")
     }

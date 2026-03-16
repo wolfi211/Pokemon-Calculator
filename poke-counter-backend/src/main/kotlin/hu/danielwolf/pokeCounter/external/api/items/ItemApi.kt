@@ -5,8 +5,7 @@ import hu.danielwolf.pokeCounter.external.api.items.dto.ExternalItemAttribute
 import hu.danielwolf.pokeCounter.external.api.items.dto.ExternalItemCategory
 import hu.danielwolf.pokeCounter.external.api.items.dto.ExternalItemFlingEffect
 import hu.danielwolf.pokeCounter.external.api.items.dto.ExternalItemPocket
-import hu.danielwolf.pokeCounter.external.api.utilities.dto.NamedApiResourceList
-import hu.danielwolf.pokeCounter.external.api.utilities.dto.PageRequest
+import hu.danielwolf.pokeCounter.external.api.utilities.dto.NamedAPIResourceList
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.service.annotation.GetExchange
@@ -17,7 +16,7 @@ import java.net.URI
 interface ItemApi {
 
     @GetExchange(PATH_ITEM)
-    fun getAllItems(@RequestParam pager: PageRequest): NamedApiResourceList
+    fun getAllItems(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList
 
     @GetExchange("$PATH_ITEM/{id}")
     fun getItemById(@PathVariable id: Int): ExternalItem
@@ -26,7 +25,7 @@ interface ItemApi {
     fun followItem(url: URI): ExternalItem
 
     @GetExchange(PATH_ITEM_ATTRIBUTE)
-    fun getAllItemAttributes(@RequestParam pager: PageRequest): NamedApiResourceList
+    fun getAllItemAttributes(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList
 
     @GetExchange("$PATH_ITEM_ATTRIBUTE/{id}")
     fun getItemAttributeById(@PathVariable id: Int): ExternalItemAttribute
@@ -35,7 +34,7 @@ interface ItemApi {
     fun followItemAttribute(url: URI): ExternalItemAttribute
 
     @GetExchange(PATH_ITEM_CATEGORY)
-    fun getAllItemCategories(@RequestParam pager: PageRequest): NamedApiResourceList
+    fun getAllItemCategories(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList
 
     @GetExchange("$PATH_ITEM_CATEGORY/{id}")
     fun getItemCategoryById(@PathVariable id: Int): ExternalItemCategory
@@ -44,7 +43,7 @@ interface ItemApi {
     fun followItemCategory(url: URI): ExternalItemCategory
 
     @GetExchange(PATH_ITEM_FLING_EFFECT)
-    fun getAllItemFlingEffects(@RequestParam pager: PageRequest): NamedApiResourceList
+    fun getAllItemFlingEffects(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList
 
     @GetExchange("$PATH_ITEM_FLING_EFFECT/{id}")
     fun getItemFlingEffectById(@PathVariable id: Int): ExternalItemFlingEffect
@@ -53,7 +52,7 @@ interface ItemApi {
     fun followItemFlingEffect(url: URI): ExternalItemFlingEffect
 
     @GetExchange(PATH_ITEM_POCKET)
-    fun getAllItemPockets(@RequestParam pager: PageRequest): NamedApiResourceList
+    fun getAllItemPockets(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList
 
     @GetExchange("$PATH_ITEM_POCKET/{id}")
     fun getItemPocketById(@PathVariable id: Int): ExternalItemPocket

@@ -4,8 +4,7 @@ import hu.danielwolf.pokeCounter.external.api.locations.dto.ExternalLocation
 import hu.danielwolf.pokeCounter.external.api.locations.dto.ExternalLocationArea
 import hu.danielwolf.pokeCounter.external.api.locations.dto.ExternalPalParkArea
 import hu.danielwolf.pokeCounter.external.api.locations.dto.ExternalRegion
-import hu.danielwolf.pokeCounter.external.api.utilities.dto.NamedApiResourceList
-import hu.danielwolf.pokeCounter.external.api.utilities.dto.PageRequest
+import hu.danielwolf.pokeCounter.external.api.utilities.dto.NamedAPIResourceList
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.service.annotation.GetExchange
@@ -16,7 +15,7 @@ import java.net.URI
 interface LocationApi {
 
     @GetExchange(PATH_LOCATION)
-    fun getAllLocations(@RequestParam pager: PageRequest): NamedApiResourceList
+    fun getAllLocations(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList
 
     @GetExchange("$PATH_LOCATION/{id}")
     fun getLocationById(@PathVariable id: Int): ExternalLocation
@@ -25,7 +24,7 @@ interface LocationApi {
     fun followLocation(url: URI): ExternalLocation
 
     @GetExchange(PATH_LOCATION_AREA)
-    fun getAllLocationAreas(@RequestParam pager: PageRequest): NamedApiResourceList
+    fun getAllLocationAreas(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList
 
     @GetExchange("$PATH_LOCATION_AREA/{id}")
     fun getLocationAreaById(@PathVariable id: Int): ExternalLocationArea
@@ -34,7 +33,7 @@ interface LocationApi {
     fun followLocationArea(url: URI): ExternalLocationArea
 
     @GetExchange(PATH_PAL_PARK_AREA)
-    fun getAllPalParkAreas(@RequestParam pager: PageRequest): NamedApiResourceList
+    fun getAllPalParkAreas(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList
 
     @GetExchange("$PATH_PAL_PARK_AREA/{id}")
     fun getPalParkAreaById(@PathVariable id: Int): ExternalPalParkArea
@@ -43,7 +42,7 @@ interface LocationApi {
     fun followPalParkArea(url: URI): ExternalPalParkArea
 
     @GetExchange(PATH_REGION)
-    fun getAllRegions(@RequestParam pager: PageRequest): NamedApiResourceList
+    fun getAllRegions(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList
 
     @GetExchange("$PATH_REGION/{id}")
     fun getRegionById(@PathVariable id: Int): ExternalRegion

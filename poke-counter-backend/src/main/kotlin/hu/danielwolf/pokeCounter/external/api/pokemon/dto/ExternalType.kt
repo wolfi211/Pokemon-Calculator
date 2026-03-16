@@ -3,40 +3,35 @@ package hu.danielwolf.pokeCounter.external.api.pokemon.dto
 import hu.danielwolf.pokeCounter.external.api.utilities.dto.ExternalGenerationGameIndex
 import hu.danielwolf.pokeCounter.external.api.utilities.dto.ExternalName
 import hu.danielwolf.pokeCounter.external.api.utilities.dto.NamedAPIResource
-import kotlinx.serialization.Serializable
-
-@Serializable
+import com.fasterxml.jackson.annotation.JsonProperty
 data class ExternalType (
     val id: Int,
     val name: String,
-    val damageRelations: ExternalTypeRelations,
-    val pastDamageRelations: List<ExternalTypeRelationsPast>,
-    val gameIndeces: List<ExternalGenerationGameIndex>,
+    @JsonProperty("damage_relations") val damageRelations: ExternalTypeRelations,
+    @JsonProperty("past_damage_relations") val pastDamageRelations: List<ExternalTypeRelationsPast>,
+    @JsonProperty("game_indices") val gameIndices: List<ExternalGenerationGameIndex>,
     val generation: NamedAPIResource,
-    val moveDamageClass: NamedAPIResource,
+    @JsonProperty("move_damage_class") val moveDamageClass: NamedAPIResource?,
     val names: List<ExternalName>,
     val pokemon: List<ExternalTypePokemon>,
     val moves: List<NamedAPIResource>,
 )
 
-@Serializable
 data class ExternalTypePokemon(
     val slot: Int,
     val pokemon: NamedAPIResource,
 )
 
-@Serializable
 data class ExternalTypeRelations(
-    val noDamageTo: List<NamedAPIResource>,
-    val halfDamageTo: List<NamedAPIResource>,
-    val doubleDamageTo: List<NamedAPIResource>,
-    val noDamageFrom: List<NamedAPIResource>,
-    val halfDamageFrom: List<NamedAPIResource>,
-    val doubleDamageFrom: List<NamedAPIResource>,
+    @JsonProperty("no_damage_to") val noDamageTo: List<NamedAPIResource>,
+    @JsonProperty("half_damage_to") val halfDamageTo: List<NamedAPIResource>,
+    @JsonProperty("double_damage_to") val doubleDamageTo: List<NamedAPIResource>,
+    @JsonProperty("no_damage_from") val noDamageFrom: List<NamedAPIResource>,
+    @JsonProperty("half_damage_from") val halfDamageFrom: List<NamedAPIResource>,
+    @JsonProperty("double_damage_from") val doubleDamageFrom: List<NamedAPIResource>,
 )
 
-@Serializable
 data class ExternalTypeRelationsPast(
     val generation: NamedAPIResource,
-    val damageRelation: ExternalTypeRelations,
+    @JsonProperty("damage_relations") val damageRelations: ExternalTypeRelations,
 )

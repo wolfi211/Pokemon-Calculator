@@ -4,37 +4,32 @@ import hu.danielwolf.pokeCounter.external.api.utilities.dto.ExternalEffect
 import hu.danielwolf.pokeCounter.external.api.utilities.dto.ExternalName
 import hu.danielwolf.pokeCounter.external.api.utilities.dto.ExternalVerboseEffect
 import hu.danielwolf.pokeCounter.external.api.utilities.dto.NamedAPIResource
-import kotlinx.serialization.Serializable
-
-@Serializable
+import com.fasterxml.jackson.annotation.JsonProperty
 data class ExternalAbility(
     val id: Int,
     val name: String,
-    val isMainSeries: Boolean,
+    @JsonProperty("is_main_series") val isMainSeries: Boolean,
     val generation: NamedAPIResource,
     val names: List<ExternalName>,
-    val effectEntries: List<ExternalVerboseEffect>,
-    val effectChanges: List<ExternalAbilityEffectChange>,
-    val flavorTextEntries: List<ExternalAbilityFlavorText>,
+    @JsonProperty("effect_entries") val effectEntries: List<ExternalVerboseEffect>,
+    @JsonProperty("effect_changes") val effectChanges: List<ExternalAbilityEffectChange>,
+    @JsonProperty("flavor_text_entries") val flavorTextEntries: List<ExternalAbilityFlavorText>,
     val pokemon: List<ExternalAbilityPokemon>,
 )
 
-@Serializable
 data class ExternalAbilityEffectChange(
-    val effectEntries: List<ExternalEffect>,
-    val versionGroup: NamedAPIResource,
+    @JsonProperty("effect_entries") val effectEntries: List<ExternalEffect>,
+    @JsonProperty("version_group") val versionGroup: NamedAPIResource,
 )
 
-@Serializable
 data class ExternalAbilityFlavorText(
-    val flavorText: String,
+    @JsonProperty("flavor_text") val flavorText: String,
     val language: NamedAPIResource,
-    val versionGroup: NamedAPIResource,
+    @JsonProperty("version_group") val versionGroup: NamedAPIResource,
 )
 
-@Serializable
 data class ExternalAbilityPokemon(
-    val isHidden: Boolean,
+    @JsonProperty("is_hidden") val isHidden: Boolean,
     val slot: Int,
     val pokemon: NamedAPIResource,
 )

@@ -12,17 +12,12 @@ import hu.danielwolf.pokeCounter.external.api.move.MoveApi
 import hu.danielwolf.pokeCounter.external.api.pokemon.PokemonApi
 import hu.danielwolf.pokeCounter.external.api.utilities.UtilityApi
 import io.netty.channel.ChannelOption.CONNECT_TIMEOUT_MILLIS
-import kotlinx.serialization.json.Json
 import java.time.Duration
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.http.client.reactive.ReactorClientHttpConnector
-import org.springframework.http.codec.json.KotlinSerializationJsonDecoder
-import org.springframework.http.codec.json.KotlinSerializationJsonEncoder
-import org.springframework.web.reactive.function.client.ClientResponse
-import org.springframework.web.reactive.function.client.ExchangeFilterFunction
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.publisher.Mono
 import org.springframework.web.reactive.function.client.support.WebClientAdapter
@@ -31,10 +26,7 @@ import org.springframework.web.service.invoker.createClient
 import reactor.netty.http.client.HttpClient
 
 @Configuration
-class WebclientConfig(
-  private val pokeApiProperties: PokeApiProperties,
-  private val json: Json
-) {
+class WebclientConfig(private val pokeApiProperties: PokeApiProperties) {
 
   @Bean
   fun pokeWebClient(): WebClient {
@@ -42,29 +34,22 @@ class WebclientConfig(
     return WebClient.builder()
       .baseUrl(pokeApiProperties.baseUrl)
       .filter { request, next ->
-          val response = next.exchange(request)
-          val result: Mono<ClientResponse> = Mono.fromRunnable<Void> { rateLimiter.acquire() }.then(response)
-          result
+        Mono.fromRunnable<Void> { rateLimiter.acquire() }.then(next.exchange(request))
       }
-        .codecs { configurer ->
-        configurer.defaultCodecs().kotlinSerializationJsonDecoder(KotlinSerializationJsonDecoder(json))
-        configurer.defaultCodecs().kotlinSerializationJsonEncoder(KotlinSerializationJsonEncoder(json))
-      }
-      .clientConnector(ReactorClientHttpConnector(
-        HttpClient.create()
-          .responseTimeout(Duration.ofSeconds(RESPONSE_TIMEOUT_SECONDS))
-          .option(CONNECT_TIMEOUT_MILLIS, CONNECT_TIMEOUT_IN_MILLIS)
-      ))
+      .clientConnector(
+        ReactorClientHttpConnector(
+          HttpClient.create()
+            .responseTimeout(Duration.ofSeconds(RESPONSE_TIMEOUT_SECONDS))
+            .option(CONNECT_TIMEOUT_MILLIS, CONNECT_TIMEOUT_IN_MILLIS)
+        )
+      )
       .defaultHeader(HttpHeaders.CONTENT_TYPE, APPLICATION_JSON_VALUE)
       .build()
   }
 
   @Bean
-  fun pokeApiFactory(pokeWebClient: WebClient): HttpServiceProxyFactory {
-    return HttpServiceProxyFactory
-      .builderFor(WebClientAdapter.create(pokeWebClient))
-      .build()
-  }
+  fun pokeApiFactory(pokeWebClient: WebClient): HttpServiceProxyFactory =
+    HttpServiceProxyFactory.builderFor(WebClientAdapter.create(pokeWebClient)).build()
 
   @Bean
   fun berryApi(factory: HttpServiceProxyFactory) = factory.createClient<BerryApi>()

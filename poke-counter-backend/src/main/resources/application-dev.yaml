@@ -1,0 +1,13 @@
+# Dev profile: SQL logging and more verbose app logging.
+# Use with: --spring.profiles.active=dev (or set SPRING_PROFILES_ACTIVE=dev)
+spring:
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+logging:
+  level:
+    hu.danielwolf.pokeCounter: DEBUG
+    org.hibernate.SQL: DEBUG

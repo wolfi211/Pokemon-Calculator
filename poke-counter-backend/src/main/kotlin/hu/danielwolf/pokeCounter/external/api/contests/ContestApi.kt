@@ -3,8 +3,7 @@ package hu.danielwolf.pokeCounter.external.api.contests
 import hu.danielwolf.pokeCounter.external.api.contests.dto.ExternalContestEffect
 import hu.danielwolf.pokeCounter.external.api.contests.dto.ExternalContestType
 import hu.danielwolf.pokeCounter.external.api.contests.dto.ExternalSuperContestEffect
-import hu.danielwolf.pokeCounter.external.api.utilities.dto.NamedApiResourceList
-import hu.danielwolf.pokeCounter.external.api.utilities.dto.PageRequest
+import hu.danielwolf.pokeCounter.external.api.utilities.dto.NamedAPIResourceList
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.service.annotation.GetExchange
@@ -15,7 +14,7 @@ import java.net.URI
 interface ContestApi {
 
     @GetExchange(PATH_CONTEST_TYPE)
-    fun getAllContestTypes(@RequestParam pager: PageRequest): NamedApiResourceList
+    fun getAllContestTypes(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList
 
     @GetExchange("$PATH_CONTEST_TYPE/{id}")
     fun getContestTypeById(@PathVariable id: Int): ExternalContestType
@@ -24,7 +23,7 @@ interface ContestApi {
     fun followContestType(url: URI): ExternalContestType
 
     @GetExchange(PATH_CONTEST_EFFECT)
-    fun getAllContestEffects(@RequestParam pager: PageRequest): NamedApiResourceList
+    fun getAllContestEffects(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList
 
     @GetExchange("$PATH_CONTEST_EFFECT/{id}")
     fun getContestEffectById(@PathVariable id: Int): ExternalContestEffect
@@ -33,7 +32,7 @@ interface ContestApi {
     fun followContestEffect(url: URI): ExternalContestEffect
 
     @GetExchange(PATH_SUPER_CONTEST_EFFECT)
-    fun getAllSuperContestEffects(@RequestParam pager: PageRequest): NamedApiResourceList
+    fun getAllSuperContestEffects(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList
 
     @GetExchange("$PATH_SUPER_CONTEST_EFFECT/{id}")
     fun getSuperContestEffectById(@PathVariable id: Int): ExternalSuperContestEffect

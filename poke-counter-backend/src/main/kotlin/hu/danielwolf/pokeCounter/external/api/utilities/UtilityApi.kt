@@ -1,8 +1,7 @@
 package hu.danielwolf.pokeCounter.external.api.utilities
 
 import hu.danielwolf.pokeCounter.external.api.utilities.dto.ExternalLanguage
-import hu.danielwolf.pokeCounter.external.api.utilities.dto.NamedApiResourceList
-import hu.danielwolf.pokeCounter.external.api.utilities.dto.PageRequest
+import hu.danielwolf.pokeCounter.external.api.utilities.dto.NamedAPIResourceList
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.service.annotation.GetExchange
@@ -13,7 +12,7 @@ import java.net.URI
 interface UtilityApi {
 
     @GetExchange(PATH_LANGUAGE)
-    fun getAllLanguages(@RequestParam pager: PageRequest): NamedApiResourceList
+    fun getAllLanguages(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList
 
     @GetExchange("$PATH_LANGUAGE/{id}")
     fun getLanguageById(@PathVariable id: Int): ExternalLanguage

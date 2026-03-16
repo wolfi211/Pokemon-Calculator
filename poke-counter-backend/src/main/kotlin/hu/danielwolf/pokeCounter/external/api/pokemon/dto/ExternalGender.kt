@@ -1,18 +1,15 @@
 package hu.danielwolf.pokeCounter.external.api.pokemon.dto
 
 import hu.danielwolf.pokeCounter.external.api.utilities.dto.NamedAPIResource
-import kotlinx.serialization.Serializable
-
-@Serializable
+import com.fasterxml.jackson.annotation.JsonProperty
 data class ExternalGender(
     val id: Int,
     val name: String,
-    val pokemonSpeciesDetails: List<ExternalPokemonSpeciesGender>,
-    val requiredForEvolution: List<NamedAPIResource>
+    @JsonProperty("pokemon_species_details") val pokemonSpeciesDetails: List<ExternalPokemonSpeciesGender>,
+    @JsonProperty("required_for_evolution") val requiredForEvolution: List<NamedAPIResource>
 )
 
-@Serializable
 data class ExternalPokemonSpeciesGender(
   val rate: Int,
-  val pokemonSpecies: NamedAPIResource
+  @JsonProperty("pokemon_species") val pokemonSpecies: NamedAPIResource
 )

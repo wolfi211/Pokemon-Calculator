@@ -16,9 +16,8 @@ import hu.danielwolf.pokeCounter.external.api.pokemon.dto.ExternalPokemonShape
 import hu.danielwolf.pokeCounter.external.api.pokemon.dto.ExternalPokemonSpecies
 import hu.danielwolf.pokeCounter.external.api.pokemon.dto.ExternalStat
 import hu.danielwolf.pokeCounter.external.api.pokemon.dto.ExternalType
-import hu.danielwolf.pokeCounter.external.api.utilities.dto.NamedApiResourceList
-import hu.danielwolf.pokeCounter.external.api.utilities.dto.PageRequest
-import hu.danielwolf.pokeCounter.external.api.utilities.dto.UnnamedApiResourceList
+import hu.danielwolf.pokeCounter.external.api.utilities.dto.NamedAPIResourceList
+import hu.danielwolf.pokeCounter.external.api.utilities.dto.UnnamedAPIResourceList
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.service.annotation.GetExchange
@@ -29,7 +28,7 @@ import java.net.URI
 interface PokemonApi {
 
     @GetExchange(PATH_ABILITY)
-    fun getAllAbilities(@RequestParam pager: PageRequest): NamedApiResourceList
+    fun getAllAbilities(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList
 
     @GetExchange("$PATH_ABILITY/{id}")
     fun getAbilityById(@PathVariable id: Int): ExternalAbility
@@ -38,7 +37,7 @@ interface PokemonApi {
     fun followAbility(url: URI): ExternalAbility
 
     @GetExchange(PATH_CHARACTERISTIC)
-    fun getAllCharacteristics(@RequestParam pager: PageRequest): UnnamedApiResourceList
+    fun getAllCharacteristics(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): UnnamedAPIResourceList
 
     @GetExchange("$PATH_CHARACTERISTIC/{id}")
     fun getCharacteristicById(@PathVariable id: Int): ExternalCharacteristic
@@ -47,7 +46,7 @@ interface PokemonApi {
     fun followCharacteristic(url: URI): ExternalCharacteristic
 
     @GetExchange(PATH_EGG_GROUP)
-    fun getAllEggGroups(@RequestParam pager: PageRequest): NamedApiResourceList
+    fun getAllEggGroups(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList
 
     @GetExchange("$PATH_EGG_GROUP/{id}")
     fun getEggGroupById(@PathVariable id: Int): ExternalEggGroup
@@ -56,7 +55,7 @@ interface PokemonApi {
     fun followEggGroup(url: URI): ExternalEggGroup
 
     @GetExchange(PATH_GENDER)
-    fun getAllGenders(@RequestParam pager: PageRequest): NamedApiResourceList
+    fun getAllGenders(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList
 
     @GetExchange("$PATH_GENDER/{id}")
     fun getGenderById(@PathVariable id: Int): ExternalGender
@@ -65,7 +64,7 @@ interface PokemonApi {
     fun followGender(url: URI): ExternalGender
 
     @GetExchange(PATH_GROWTH_RATE)
-    fun getAllGrowthRates(@RequestParam pager: PageRequest): NamedApiResourceList
+    fun getAllGrowthRates(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList
 
     @GetExchange("$PATH_GROWTH_RATE/{id}")
     fun getGrowthRateById(@PathVariable id: Int): ExternalGrowthRate
@@ -74,7 +73,7 @@ interface PokemonApi {
     fun followGrowthRate(url: URI): ExternalGrowthRate
 
     @GetExchange(PATH_NATURE)
-    fun getAllNatures(@RequestParam pager: PageRequest): NamedApiResourceList
+    fun getAllNatures(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList
 
     @GetExchange("$PATH_NATURE/{id}")
     fun getNatureById(@PathVariable id: Int): ExternalNature
@@ -83,7 +82,7 @@ interface PokemonApi {
     fun followNature(url: URI): ExternalNature
 
     @GetExchange(PATH_POKEATHLON_STAT)
-    fun getAllPokeathlonStats(@RequestParam pager: PageRequest): NamedApiResourceList
+    fun getAllPokeathlonStats(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList
 
     @GetExchange("$PATH_POKEATHLON_STAT/{id}")
     fun getPokeathlonStatById(@PathVariable id: Int): ExternalPokeathlonStat
@@ -92,7 +91,7 @@ interface PokemonApi {
     fun followPokeathlonStat(url: URI): ExternalPokeathlonStat
 
     @GetExchange(PATH_POKEMON)
-    fun getAllPokemon(@RequestParam pager: PageRequest): NamedApiResourceList
+    fun getAllPokemon(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList
 
     @GetExchange("$PATH_POKEMON/{id}")
     fun getPokemonById(@PathVariable id: Int): ExternalPokemon
@@ -107,7 +106,7 @@ interface PokemonApi {
     fun followPokemonLocationAreaEncounters(url: URI): List<ExternalLocationAreaEncounter>
 
     @GetExchange(PATH_POKEMON_COLOR)
-    fun getAllPokemonColors(@RequestParam pager: PageRequest): NamedApiResourceList
+    fun getAllPokemonColors(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList
 
     @GetExchange("$PATH_POKEMON_COLOR/{id}")
     fun getPokemonColorById(@PathVariable id: Int): ExternalPokemonColor
@@ -116,7 +115,7 @@ interface PokemonApi {
     fun followPokemonColor(url: URI): ExternalPokemonColor
 
     @GetExchange(PATH_POKEMON_FORM)
-    fun getAllPokemonForms(@RequestParam pager: PageRequest): NamedApiResourceList
+    fun getAllPokemonForms(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList
 
     @GetExchange("$PATH_POKEMON_FORM/{id}")
     fun getPokemonFormById(@PathVariable id: Int): ExternalPokemonForm
@@ -125,7 +124,7 @@ interface PokemonApi {
     fun followPokemonForm(url: URI): ExternalPokemonForm
 
     @GetExchange(PATH_POKEMON_HABITAT)
-    fun getAllPokemonHabitats(@RequestParam pager: PageRequest): NamedApiResourceList
+    fun getAllPokemonHabitats(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList
 
     @GetExchange("$PATH_POKEMON_HABITAT/{id}")
     fun getPokemonHabitatById(@PathVariable id: Int): ExternalPokemonHabitat
@@ -134,7 +133,7 @@ interface PokemonApi {
     fun followPokemonHabitat(url: URI): ExternalPokemonHabitat
 
     @GetExchange(PATH_POKEMON_SHAPE)
-    fun getAllPokemonShapes(@RequestParam pager: PageRequest): NamedApiResourceList
+    fun getAllPokemonShapes(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList
 
     @GetExchange("$PATH_POKEMON_SHAPE/{id}")
     fun getPokemonShapeById(@PathVariable id: Int): ExternalPokemonShape
@@ -143,7 +142,7 @@ interface PokemonApi {
     fun followPokemonShape(url: URI): ExternalPokemonShape
 
     @GetExchange(PATH_POKEMON_SPECIES)
-    fun getAllPokemonSpecies(@RequestParam pager: PageRequest): NamedApiResourceList
+    fun getAllPokemonSpecies(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList
 
     @GetExchange("$PATH_POKEMON_SPECIES/{id}")
     fun getPokemonSpeciesById(@PathVariable id: Int): ExternalPokemonSpecies
@@ -152,7 +151,7 @@ interface PokemonApi {
     fun followPokemonSpecies(url: URI): ExternalPokemonSpecies
 
     @GetExchange(PATH_STAT)
-    fun getAllStats(@RequestParam pager: PageRequest): NamedApiResourceList
+    fun getAllStats(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList
 
     @GetExchange("$PATH_STAT/{id}")
     fun getStatById(@PathVariable id: Int): ExternalStat
@@ -161,7 +160,7 @@ interface PokemonApi {
     fun followStat(url: URI): ExternalStat
 
     @GetExchange(PATH_TYPE)
-    fun getAllTypes(@RequestParam pager: PageRequest): NamedApiResourceList
+    fun getAllTypes(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList
 
     @GetExchange("$PATH_TYPE/{id}")
     fun getTypeById(@PathVariable id: Int): ExternalType

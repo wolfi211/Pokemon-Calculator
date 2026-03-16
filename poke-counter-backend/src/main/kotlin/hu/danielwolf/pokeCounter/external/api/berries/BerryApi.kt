@@ -3,8 +3,7 @@ package hu.danielwolf.pokeCounter.external.api.berries
 import hu.danielwolf.pokeCounter.external.api.berries.dto.ExternalBerry
 import hu.danielwolf.pokeCounter.external.api.berries.dto.ExternalBerryFirmness
 import hu.danielwolf.pokeCounter.external.api.berries.dto.ExternalBerryFlavor
-import hu.danielwolf.pokeCounter.external.api.utilities.dto.NamedApiResourceList
-import hu.danielwolf.pokeCounter.external.api.utilities.dto.PageRequest
+import hu.danielwolf.pokeCounter.external.api.utilities.dto.NamedAPIResourceList
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.service.annotation.GetExchange
@@ -15,7 +14,7 @@ import java.net.URI
 interface BerryApi {
 
     @GetExchange(PATH_BERRY)
-    fun getAllBerries(@RequestParam pager: PageRequest): NamedApiResourceList
+    fun getAllBerries(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList
 
     @GetExchange("$PATH_BERRY/{id}")
     fun getBerryById(@PathVariable id: Int): ExternalBerry
@@ -24,7 +23,7 @@ interface BerryApi {
     fun followBerry(url: URI): ExternalBerry
 
     @GetExchange(PATH_BERRY_FIRMNESS)
-    fun getAllBerryFirmness(@RequestParam pager: PageRequest): NamedApiResourceList
+    fun getAllBerryFirmness(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList
 
     @GetExchange("$PATH_BERRY_FIRMNESS/{id}")
     fun getBerryFirmnessById(@PathVariable id: Int): ExternalBerryFirmness
@@ -33,7 +32,7 @@ interface BerryApi {
     fun followBerryFirmness(url: URI): ExternalBerryFirmness
 
     @GetExchange(PATH_BERRY_FLAVOR)
-    fun getAllBerryFlavors(@RequestParam pager: PageRequest): NamedApiResourceList
+    fun getAllBerryFlavors(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList
 
     @GetExchange("$PATH_BERRY_FLAVOR/{id}")
     fun getBerryFlavorById(@PathVariable id: Int): ExternalBerryFlavor

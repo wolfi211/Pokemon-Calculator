@@ -3,8 +3,7 @@ package hu.danielwolf.pokeCounter.external.api.encounters
 import hu.danielwolf.pokeCounter.external.api.encounters.dto.ExternalEncounterCondition
 import hu.danielwolf.pokeCounter.external.api.encounters.dto.ExternalEncounterConditionValue
 import hu.danielwolf.pokeCounter.external.api.encounters.dto.ExternalEncounterMethod
-import hu.danielwolf.pokeCounter.external.api.utilities.dto.NamedApiResourceList
-import hu.danielwolf.pokeCounter.external.api.utilities.dto.PageRequest
+import hu.danielwolf.pokeCounter.external.api.utilities.dto.NamedAPIResourceList
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.service.annotation.GetExchange
@@ -15,7 +14,7 @@ import java.net.URI
 interface EncounterApi {
 
     @GetExchange(PATH_ENCOUNTER_METHOD)
-    fun getAllEncounterMethods(@RequestParam pager: PageRequest): NamedApiResourceList
+    fun getAllEncounterMethods(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList
 
     @GetExchange("$PATH_ENCOUNTER_METHOD/{id}")
     fun getEncounterMethodById(@PathVariable id: Int): ExternalEncounterMethod
@@ -24,7 +23,7 @@ interface EncounterApi {
     fun followEncounterMethod(url: URI): ExternalEncounterMethod
 
     @GetExchange(PATH_ENCOUNTER_CONDITION)
-    fun getAllEncounterConditions(@RequestParam pager: PageRequest): NamedApiResourceList
+    fun getAllEncounterConditions(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList
 
     @GetExchange("$PATH_ENCOUNTER_CONDITION/{id}")
     fun getEncounterConditionById(@PathVariable id: Int): ExternalEncounterCondition
@@ -33,7 +32,7 @@ interface EncounterApi {
     fun followEncounterCondition(url: URI): ExternalEncounterCondition
 
     @GetExchange(PATH_ENCOUNTER_CONDITION_VALUE)
-    fun getAllEncounterConditionValues(@RequestParam pager: PageRequest): NamedApiResourceList
+    fun getAllEncounterConditionValues(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList
 
     @GetExchange("$PATH_ENCOUNTER_CONDITION_VALUE/{id}")
     fun getEncounterConditionValueById(@PathVariable id: Int): ExternalEncounterConditionValue

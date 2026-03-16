@@ -2,26 +2,24 @@ package hu.danielwolf.pokeCounter.external.api.pokemon.dto
 
 import hu.danielwolf.pokeCounter.external.api.utilities.dto.ExternalVersionGameIndex
 import hu.danielwolf.pokeCounter.external.api.utilities.dto.NamedAPIResource
-import kotlinx.serialization.Serializable
-
-@Serializable
+import com.fasterxml.jackson.annotation.JsonProperty
 data class ExternalPokemon(
     val id: Int,
     val name: String,
-    val baseExperience: Int,
+    @JsonProperty("base_experience") val baseExperience: Int,
     val height: Int,
-    val isDefault: Boolean,
+    @JsonProperty("is_default") val isDefault: Boolean,
     val order: Int,
     val weight: Int,
     val abilities: List<ExternalPokemonAbility>,
     val forms: List<NamedAPIResource>,
-    val gameIndices: List<ExternalVersionGameIndex>,
-    val heldItems: List<ExternalPokemonHeldItem>,
-    val locationAreaEncounters: String,
+    @JsonProperty("game_indices") val gameIndices: List<ExternalVersionGameIndex>,
+    @JsonProperty("held_items") val heldItems: List<ExternalPokemonHeldItem>,
+    @JsonProperty("location_area_encounters") val locationAreaEncounters: String,
     val moves: List<ExternalPokemonMove>,
-    val pastTypes: List<ExternalPokemonTypePast>,
-    val pastAbilities: List<ExternalPokemonAbilityPast>,
-    val pastStats: List<ExternalPokemonStatPast>,
+    @JsonProperty("past_types") val pastTypes: List<ExternalPokemonTypePast>,
+    @JsonProperty("past_abilities") val pastAbilities: List<ExternalPokemonAbilityPast>,
+    @JsonProperty("past_stats") val pastStats: List<ExternalPokemonStatPast>,
     val sprites: ExternalPokemonSprites,
     val cries: ExternalPokemonCries,
     val species: NamedAPIResource,
@@ -29,90 +27,77 @@ data class ExternalPokemon(
     val types: List<ExternalPokemonType>,
 )
 
-@Serializable
 data class ExternalPokemonAbility(
-    val isHidden: Boolean,
+    @JsonProperty("is_hidden") val isHidden: Boolean,
     val slot: Int,
     val ability: NamedAPIResource,
 )
 
-@Serializable
 data class ExternalPokemonType(
     val slot: Int,
     val type: NamedAPIResource,
 )
 
-@Serializable
 data class ExternalPokemonFormType(
     val slot: Int,
     val type: NamedAPIResource,
 )
 
-@Serializable
 data class ExternalPokemonTypePast(
     val generation: NamedAPIResource,
     val types: List<ExternalPokemonType>,
 )
 
-@Serializable
 data class ExternalPokemonAbilityPast(
     val generation: NamedAPIResource,
     val abilities: List<ExternalPokemonAbility>,
 )
 
-@Serializable
 data class ExternalPokemonStatPast(
     val generation: NamedAPIResource,
     val stats: List<ExternalPokemonStat>,
 )
 
-@Serializable
 data class ExternalPokemonHeldItem(
     val item: NamedAPIResource,
-    val versionDetails: List<ExternalPokemonHeldItemVersion>,
+    @JsonProperty("version_details") val versionDetails: List<ExternalPokemonHeldItemVersion>,
 )
 
-@Serializable
 data class ExternalPokemonHeldItemVersion(
     val version: NamedAPIResource,
     val rarity: Int,
 )
 
-@Serializable
 data class ExternalPokemonMove(
     val move: NamedAPIResource,
-    val versionGroupDetails: List<ExternalPokemonMoveVersion>,
+    @JsonProperty("version_group_details") val versionGroupDetails: List<ExternalPokemonMoveVersion>,
 )
 
-@Serializable
 data class ExternalPokemonMoveVersion(
-    val moveLearnMethod: NamedAPIResource,
-    val versionGroup: NamedAPIResource,
-    val levelLearnedAt: Int,
+    @JsonProperty("move_learn_method") val moveLearnMethod: NamedAPIResource,
+    @JsonProperty("version_group") val versionGroup: NamedAPIResource,
+    @JsonProperty("level_learned_at") val levelLearnedAt: Int,
     val order: Int,
 )
 
-@Serializable
 data class ExternalPokemonStat(
     val stat: NamedAPIResource,
     val effort: Int,
-    val baseStat: Int,
+    @JsonProperty("base_stat") val baseStat: Int,
 )
 
-@Serializable
 data class ExternalPokemonSprites(
-  val frontDefault: String,
-  val frontShiny: String,
-  val frontFemale: String,
-  val frontShinyFemale: String,
-  val backDefault: String,
-  val backShiny: String,
-  val backFemale: String,
-  val backShinyFemale: String,
+  @JsonProperty("front_default") val frontDefault: String?,
+  @JsonProperty("front_shiny") val frontShiny: String?,
+  @JsonProperty("front_female") val frontFemale: String?,
+  @JsonProperty("front_shiny_female") val frontShinyFemale: String?,
+  @JsonProperty("back_default") val backDefault: String?,
+  @JsonProperty("back_shiny") val backShiny: String?,
+  @JsonProperty("back_female") val backFemale: String?,
+  @JsonProperty("back_shiny_female") val backShinyFemale: String?,
 )
 
-@Serializable
 data class ExternalPokemonCries(
-  val latest: String,
-  val legacy: String,
+  val latest: String?,
+  val legacy: String?,
 )

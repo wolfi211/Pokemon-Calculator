@@ -1,108 +1,91 @@
 package hu.danielwolf.pokeCounter.external.api.utilities.dto
 
-import kotlinx.serialization.Serializable
-
-@Serializable
+import com.fasterxml.jackson.annotation.JsonProperty
 data class NamedAPIResource(
   val name: String,
   val url: String,
 )
 
-@Serializable
 data class APIResource(
   val url: String,
 )
 
-@Serializable
-data class NamedApiResourceList(
+data class NamedAPIResourceList(
   val count: Int,
-  val next: String,
-  val previous: String,
+  val next: String?,
+  val previous: String?,
   val results: List<NamedAPIResource>
 )
 
-@Serializable
-data class UnnamedApiResourceList(
+data class UnnamedAPIResourceList(
   val count: Int,
   val next: String,
   val previous: String,
   val results: List<APIResource>
 )
 
-@Serializable
 data class ExternalName(
   val name: String,
   val language: NamedAPIResource
 )
 
-@Serializable
 data class ExternalDescription(
   val description: String,
   val language: NamedAPIResource
 )
 
-@Serializable
 data class ExternalEffect(
   val effect: String,
   val language: NamedAPIResource
 )
 
-@Serializable
 data class ExternalEncounter(
-  val minLevel: Int,
-  val maxLevel: Int,
-  val conditionValues: List<NamedAPIResource>,
+  @JsonProperty("min_level") val minLevel: Int,
+  @JsonProperty("max_level") val maxLevel: Int,
+  @JsonProperty("condition_values") val conditionValues: List<NamedAPIResource>,
   val chance: Int,
   val method: NamedAPIResource
 )
 
-@Serializable
 data class ExternalFlavorText(
-  val flavorText: String,
+  @JsonProperty("flavor_text") val flavorText: String,
   val language: NamedAPIResource,
   val version: NamedAPIResource,
 )
 
-@Serializable
 data class ExternalGenerationGameIndex(
-  val gameIndex: Int,
+  @JsonProperty("game_index") val gameIndex: Int,
   val generation: NamedAPIResource,
 )
 
-@Serializable
 data class ExternalMachineVersionDetail(
   val machine: APIResource,
-  val versionGroup: NamedAPIResource,
+  @JsonProperty("version_group") val versionGroup: NamedAPIResource,
 )
 
-@Serializable
 data class ExternalVerboseEffect(
   val effect: String,
-  val shortEffect: String,
+  @JsonProperty("short_effect") val shortEffect: String,
   val language: NamedAPIResource,
 )
 
-@Serializable
 data class ExternalVersionEncounterDetail(
   val version: NamedAPIResource,
-  val maxChance: Int,
-  val encounterDetails: List<ExternalEncounter>,
+  @JsonProperty("max_chance") val maxChance: Int,
+  @JsonProperty("encounter_details") val encounterDetails: List<ExternalEncounter>,
 )
 
-@Serializable
 data class ExternalVersionGameIndex(
-  val gameIndex: Int,
+  @JsonProperty("game_index") val gameIndex: Int,
   val version: NamedAPIResource,
 )
 
-@Serializable
 data class ExternalVersionGroupFlavorText(
   val text: String,
   val language: NamedAPIResource,
-  val versionGroup: NamedAPIResource,
+  @JsonProperty("version_group") val versionGroup: NamedAPIResource,
 )
 
-@Serializable
 data class ExternalLanguage(
   val id: Int,
   val name: String,
@@ -110,10 +93,4 @@ data class ExternalLanguage(
   val iso639: String,
   val iso3166: String,
   val names: List<ExternalName>,
-)
-
-@Serializable
-data class PageRequest(
-  val offset: Int = 0,
-  val limit: Int = 20,
 )

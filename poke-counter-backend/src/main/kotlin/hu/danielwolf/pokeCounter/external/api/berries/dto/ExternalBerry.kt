@@ -1,25 +1,22 @@
 package hu.danielwolf.pokeCounter.external.api.berries.dto
 
 import hu.danielwolf.pokeCounter.external.api.utilities.dto.NamedAPIResource
-import kotlinx.serialization.Serializable
-
-@Serializable
+import com.fasterxml.jackson.annotation.JsonProperty
 data class ExternalBerry(
     val id: Int,
     val name: String,
-    val growthTime: Int,
-    val maxHarvest: Int,
-    val naturalGiftPower: Int,
+    @JsonProperty("growth_time") val growthTime: Int,
+    @JsonProperty("max_harvest") val maxHarvest: Int,
+    @JsonProperty("natural_gift_power") val naturalGiftPower: Int,
     val size: Int,
     val smoothness: Int,
-    val soilDryness: Int,
+    @JsonProperty("soil_dryness") val soilDryness: Int,
     val firmness: NamedAPIResource,
     val flavors: List<ExternalBerryFlavorMap>,
     val item: NamedAPIResource,
-    val naturalGiftType: NamedAPIResource,
+    @JsonProperty("natural_gift_type") val naturalGiftType: NamedAPIResource,
 )
 
-@Serializable
 data class ExternalBerryFlavorMap(
     val potency: Int,
     val flavor: NamedAPIResource,

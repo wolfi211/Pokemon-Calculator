@@ -1,21 +1,24 @@
 package hu.danielwolf.pokeCounter.config
 
+import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import jakarta.persistence.AttributeConverter
 import jakarta.persistence.Converter
-import tools.jackson.core.type.TypeReference
-import tools.jackson.module.kotlin.jacksonObjectMapper
-
-val jsonMapper = jacksonObjectMapper()
 
 @Converter
 class JsonMapConverter : AttributeConverter<Map<String, String>, String> {
 
   override fun convertToDatabaseColumn(attribute: Map<String, String>?): String? {
-    return attribute?.let { jsonMapper.writeValueAsString(it) }
+    if (attribute == null || attribute.isEmpty()) return null
+    return jsonMapper.writeValueAsString(attribute)
   }
 
   override fun convertToEntityAttribute(dbData: String?): Map<String, String> {
     if (dbData.isNullOrBlank()) return emptyMap()
     return jsonMapper.readValue(dbData, object : TypeReference<Map<String, String>>() {})
+  }
+
+  companion object {
+    private val jsonMapper = jacksonObjectMapper()
   }
 }

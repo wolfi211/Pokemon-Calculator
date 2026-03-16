@@ -9,7 +9,6 @@ import hu.danielwolf.pokeCounter.domain.services.VersionGroupService
 import hu.danielwolf.pokeCounter.external.api.move.MoveApi
 import hu.danielwolf.pokeCounter.external.api.move.dto.ExternalLearnMethod
 import hu.danielwolf.pokeCounter.external.api.utilities.dto.NamedAPIResource
-import hu.danielwolf.pokeCounter.external.api.utilities.dto.PageRequest
 import hu.danielwolf.pokeCounter.external.config.toEntityMap
 import hu.danielwolf.pokeCounter.external.config.toURI
 import org.slf4j.Logger
@@ -26,19 +25,15 @@ class MoveLearnMethodSyncService(
 
     fun syncAll() {
         logger.info("Starting move learn method sync...")
-        val summaries = moveApi.getAllMoveLearnMethods(PageRequest(0, 100))
+        val summaries = moveApi.getAllMoveLearnMethods(0, 100)
         summaries.results.forEach {
-            try {
-                val external = moveApi.followMoveLearnMethod(it.url.toURI())
-                val method = moveLearnMethodService.save(external.toEntity())
-                val versionGroups = external.versionGroups.map { vg -> versionGroupService.getByName(vg.name) }
-                val junctions = versionGroups.map { vg ->
-                    LearnMethodVersionGroup(learnMethod = method, versionGroup = vg)
-                }
-                learnMethodVersionGroupService.saveAll(junctions)
-            } catch (e: Exception) {
-                logger.error("Error syncing move learn method ${it.name}: ${e.message}")
+            val external = moveApi.followMoveLearnMethod(it.url.toURI())
+            val method = moveLearnMethodService.save(external.toEntity())
+            val versionGroups = external.versionGroups.map { vg -> versionGroupService.getByName(vg.name) }
+            val junctions = versionGroups.map { vg ->
+                LearnMethodVersionGroup(learnMethod = method, versionGroup = vg)
             }
+            learnMethodVersionGroupService.saveAll(junctions)
         }
         logger.info("Finished move learn method sync.")
     }
