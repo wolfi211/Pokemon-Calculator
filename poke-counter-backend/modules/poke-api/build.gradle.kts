@@ -27,7 +27,8 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-logging")
 
   implementation("org.jetbrains.kotlin:kotlin-reflect")
-  implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+  // Jackson 3 Kotlin module for WebClient JSON codec (Kotlin data class deserialization)
+  implementation("tools.jackson.module:jackson-module-kotlin")
 
   testImplementation(kotlin("test"))
 }

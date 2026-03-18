@@ -1,6 +1,8 @@
 package hu.danielwolf.pokeCounter.domain.service.games
 
+import hu.danielwolf.pokeCounter.domain.model.games.Pokedex
 import hu.danielwolf.pokeCounter.domain.model.games.PokedexVersionGroup
+import hu.danielwolf.pokeCounter.domain.model.games.VersionGroup
 import hu.danielwolf.pokeCounter.domain.repository.games.PokedexVersionGroupRepository
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
@@ -27,5 +29,8 @@ class PokedexVersionGroupService(
     /** Loads all with pokedex and versionGroup eagerly (avoids LazyInitializationException in long-running loops). */
     fun findAllWithPokedexAndVersionGroup(): List<PokedexVersionGroup> =
         pokedexVersionGroupRepository.findAllWithPokedexAndVersionGroup()
+
+    fun findByPokedexAndVersionGroup(pokedex: Pokedex, versionGroup: VersionGroup): PokedexVersionGroup? =
+        pokedexVersionGroupRepository.findByPokedexAndVersionGroup(pokedex, versionGroup)
 }
 

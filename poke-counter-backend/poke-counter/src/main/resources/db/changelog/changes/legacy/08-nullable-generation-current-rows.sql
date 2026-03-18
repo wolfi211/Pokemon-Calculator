@@ -25,3 +25,4 @@ ALTER TABLE pokemon_stats
 
 CREATE UNIQUE INDEX pokemon_stats_current_unique ON pokemon_stats (pokemon_id, stat_id)
     WHERE generation_id IS NULL;
+

@@ -1,5 +1,7 @@
 package hu.danielwolf.pokeCounter.domain.service.moves
 
+import hu.danielwolf.pokeCounter.domain.model.games.VersionGroup
+import hu.danielwolf.pokeCounter.domain.model.moves.Move
 import hu.danielwolf.pokeCounter.domain.model.moves.MoveType
 import hu.danielwolf.pokeCounter.domain.repository.moves.MoveTypeRepository
 import org.springframework.http.HttpStatus
@@ -21,5 +23,8 @@ class MoveTypeService(
 
     fun saveAll(moveTypes: Iterable<MoveType>): List<MoveType> =
         moveTypeRepository.saveAll(moveTypes)
+
+    fun findByMoveAndVersionGroup(move: Move, versionGroup: VersionGroup?): MoveType? =
+        moveTypeRepository.findByMoveAndVersionGroup(move, versionGroup)
 }
 

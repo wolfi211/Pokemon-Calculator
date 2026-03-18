@@ -20,3 +20,4 @@ ALTER TABLE pokemon_stats ALTER COLUMN id SET DEFAULT nextval('pokemon_stats_id_
 ALTER TABLE move_types ALTER COLUMN id SET DEFAULT nextval('move_types_id_seq');
 ALTER TABLE pokedex_version_group ALTER COLUMN id SET DEFAULT nextval('pokedex_version_group_id_seq');
 ALTER TABLE learn_method_version_group ALTER COLUMN id SET DEFAULT nextval('learn_method_version_group_id_seq');
+

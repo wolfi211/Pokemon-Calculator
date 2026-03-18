@@ -36,43 +36,61 @@ class TypesSyncService(
             externalTypes.add(external)
         }
         logger.info("Starting type sync (phase 2: type relations)...")
-        val relations = mutableListOf<TypeRelation>()
+        val relationsByKey = mutableMapOf<String, TypeRelation>()
         externalTypes.forEach { external ->
-            relations.addAll(buildTypeRelations(external.damageRelations, external.name, null))
+            addTypeRelations(relationsByKey, external.damageRelations, external.name, null)
             external.pastDamageRelations.forEach { past ->
                 val generation = generationService.getByName(past.generation.name)
-                relations.addAll(buildTypeRelations(past.damageRelations, external.name, generation))
+                addTypeRelations(relationsByKey, past.damageRelations, external.name, generation)
             }
         }
+        val relations = relationsByKey.values.toList()
         if (relations.isNotEmpty()) {
             typeRelationService.saveAll(relations)
         }
         logger.info("Finished type sync.")
     }
 
-    private fun buildTypeRelations(
+    private fun addTypeRelations(
+        relationsByKey: MutableMap<String, TypeRelation>,
         relations: ExternalTypeRelations,
         fromTypeName: String,
         generation: Generation?
-    ): List<TypeRelation> {
+    ) {
         val fromType = typeService.getByName(fromTypeName)
-        val result = mutableListOf<TypeRelation>()
-        relations.noDamageTo.forEach { to -> result.add(relation(fromType, typeService.getByName(to.name), BigDecimal.ZERO, generation)) }
-        relations.halfDamageTo.forEach { to -> result.add(relation(fromType, typeService.getByName(to.name), BigDecimal("0.5"), generation)) }
-        relations.doubleDamageTo.forEach { to -> result.add(relation(fromType, typeService.getByName(to.name), BigDecimal("2"), generation)) }
-        relations.noDamageFrom.forEach { from -> result.add(relation(typeService.getByName(from.name), fromType, BigDecimal.ZERO, generation)) }
-        relations.halfDamageFrom.forEach { from -> result.add(relation(typeService.getByName(from.name), fromType, BigDecimal("0.5"), generation)) }
-        relations.doubleDamageFrom.forEach { from -> result.add(relation(typeService.getByName(from.name), fromType, BigDecimal("2"), generation)) }
-        return result
+        relations.noDamageTo.forEach { to -> putRelation(relationsByKey, fromType, typeService.getByName(to.name), BigDecimal.ZERO, generation) }
+        relations.halfDamageTo.forEach { to -> putRelation(relationsByKey, fromType, typeService.getByName(to.name), BigDecimal("0.5"), generation) }
+        relations.doubleDamageTo.forEach { to -> putRelation(relationsByKey, fromType, typeService.getByName(to.name), BigDecimal("2"), generation) }
+        relations.noDamageFrom.forEach { from -> putRelation(relationsByKey, typeService.getByName(from.name), fromType, BigDecimal.ZERO, generation) }
+        relations.halfDamageFrom.forEach { from -> putRelation(relationsByKey, typeService.getByName(from.name), fromType, BigDecimal("0.5"), generation) }
+        relations.doubleDamageFrom.forEach { from -> putRelation(relationsByKey, typeService.getByName(from.name), fromType, BigDecimal("2"), generation) }
     }
 
-    private fun relation(damageFrom: Type, damageTo: Type, multiplier: BigDecimal, generation: Generation?): TypeRelation =
-        TypeRelation(
-            damageFromType = damageFrom,
-            damageToType = damageTo,
-            multiplier = multiplier,
-            generation = generation
-        )
+    private fun relationKey(damageFrom: Type, damageTo: Type, generation: Generation?): String =
+        "${damageFrom.id}_${damageTo.id}_${generation?.id ?: "null"}"
+
+    private fun putRelation(
+        relationsByKey: MutableMap<String, TypeRelation>,
+        damageFrom: Type,
+        damageTo: Type,
+        multiplier: BigDecimal,
+        generation: Generation?
+    ) {
+        val key = relationKey(damageFrom, damageTo, generation)
+        val existing = relationsByKey[key]
+            ?: typeRelationService.findByDamageFromTypeAndDamageToTypeAndGeneration(damageFrom, damageTo, generation)
+        if (existing != null) {
+            existing.multiplier = multiplier
+            if (relationsByKey[key] == null) relationsByKey[key] = existing
+        } else {
+            relationsByKey[key] = TypeRelation(
+                damageFromType = damageFrom,
+                damageToType = damageTo,
+                multiplier = multiplier,
+                generation = generation
+            )
+        }
+    }
 }
 
 fun ExternalType.toEntity(): Type = Type(

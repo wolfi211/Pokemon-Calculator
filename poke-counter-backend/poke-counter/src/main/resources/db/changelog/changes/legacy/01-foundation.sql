@@ -46,3 +46,4 @@ CREATE TABLE move_learn_methods
     descriptions JSONB,
     names        JSONB
 );
+

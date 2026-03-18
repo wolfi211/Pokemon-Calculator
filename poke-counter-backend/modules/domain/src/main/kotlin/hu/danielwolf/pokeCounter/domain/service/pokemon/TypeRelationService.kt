@@ -1,5 +1,7 @@
 package hu.danielwolf.pokeCounter.domain.service.pokemon
 
+import hu.danielwolf.pokeCounter.domain.model.games.Generation
+import hu.danielwolf.pokeCounter.domain.model.pokemon.Type
 import hu.danielwolf.pokeCounter.domain.model.pokemon.TypeRelation
 import hu.danielwolf.pokeCounter.domain.repository.pokemon.TypeRelationRepository
 import org.springframework.http.HttpStatus
@@ -21,5 +23,12 @@ class TypeRelationService(
 
     fun saveAll(typeRelations: Iterable<TypeRelation>): List<TypeRelation> =
         typeRelationRepository.saveAll(typeRelations)
+
+    fun findByDamageFromTypeAndDamageToTypeAndGeneration(
+        damageFromType: Type,
+        damageToType: Type,
+        generation: Generation?,
+    ): TypeRelation? =
+        typeRelationRepository.findByDamageFromTypeAndDamageToTypeAndGeneration(damageFromType, damageToType, generation)
 }
 

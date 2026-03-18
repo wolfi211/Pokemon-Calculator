@@ -16,3 +16,4 @@ ALTER TABLE pokedex_pokemon
 
 ALTER TABLE pokedex_pokemon
     ADD CONSTRAINT pokedex_pokemon_pkey PRIMARY KEY (pokedex_id, version_group_id, pokemon_id);
+

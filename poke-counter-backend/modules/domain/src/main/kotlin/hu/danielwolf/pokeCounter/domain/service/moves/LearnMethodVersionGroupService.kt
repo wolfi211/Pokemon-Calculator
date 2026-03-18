@@ -1,6 +1,8 @@
 package hu.danielwolf.pokeCounter.domain.service.moves
 
+import hu.danielwolf.pokeCounter.domain.model.games.VersionGroup
 import hu.danielwolf.pokeCounter.domain.model.moves.LearnMethodVersionGroup
+import hu.danielwolf.pokeCounter.domain.model.moves.MoveLearnMethod
 import hu.danielwolf.pokeCounter.domain.repository.moves.LearnMethodVersionGroupRepository
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
@@ -21,5 +23,11 @@ class LearnMethodVersionGroupService(
 
     fun saveAll(learnMethodVersionGroups: Iterable<LearnMethodVersionGroup>): List<LearnMethodVersionGroup> =
         learnMethodVersionGroupRepository.saveAll(learnMethodVersionGroups)
+
+    fun findByLearnMethodAndVersionGroup(
+        learnMethod: MoveLearnMethod,
+        versionGroup: VersionGroup,
+    ): LearnMethodVersionGroup? =
+        learnMethodVersionGroupRepository.findByLearnMethodAndVersionGroup(learnMethod, versionGroup)
 }
 

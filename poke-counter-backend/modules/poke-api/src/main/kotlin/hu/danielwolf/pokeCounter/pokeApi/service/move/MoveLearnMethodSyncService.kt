@@ -31,7 +31,8 @@ class MoveLearnMethodSyncService(
             val method = moveLearnMethodService.save(external.toEntity())
             val versionGroups = external.versionGroups.map { vg -> versionGroupService.getByName(vg.name) }
             val junctions = versionGroups.map { vg ->
-                LearnMethodVersionGroup(learnMethod = method, versionGroup = vg)
+                learnMethodVersionGroupService.findByLearnMethodAndVersionGroup(method, vg)
+                    ?: LearnMethodVersionGroup(learnMethod = method, versionGroup = vg)
             }
             learnMethodVersionGroupService.saveAll(junctions)
         }

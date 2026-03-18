@@ -58,3 +58,4 @@ CREATE TABLE pokedex_pokemon
     entry_number INTEGER,
     PRIMARY KEY (pokedex_id, species_id)
 );
+

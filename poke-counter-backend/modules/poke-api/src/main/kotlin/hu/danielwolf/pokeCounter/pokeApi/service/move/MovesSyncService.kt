@@ -51,7 +51,14 @@ class MovesSyncService(
     val result = mutableListOf<MoveType>()
     val currentType = typeService.getByName(external.type.name)
     result.add(
-      MoveType(
+      moveTypeService.findByMoveAndVersionGroup(move, null)?.apply {
+        this.accuracy = external.accuracy
+        this.effectChance = external.effectChance
+        this.pp = external.pp ?: -1
+        this.power = external.power
+        this.effectEntries = external.effectEntries.associate { it.language.name to it.shortEffect }
+        this.type = currentType
+      } ?: MoveType(
         move = move,
         accuracy = external.accuracy,
         effectChance = external.effectChance,
@@ -70,7 +77,14 @@ class MovesSyncService(
           .takeIf { !it.isNullOrEmpty() }
           ?: external.effectEntries.associate { it.language.name to it.shortEffect }
       result.add(
-        MoveType(
+        moveTypeService.findByMoveAndVersionGroup(move, versionGroup)?.apply {
+          this.accuracy = past.accuracy ?: external.accuracy
+          this.effectChance = past.effectChance ?: external.effectChance
+          this.pp = past.pp ?: external.pp
+          this.power = past.power ?: external.power
+          this.effectEntries = effectEntries
+          this.type = pastType
+        } ?: MoveType(
           move = move,
           accuracy = past.accuracy ?: external.accuracy,
           effectChance = past.effectChance ?: external.effectChance,

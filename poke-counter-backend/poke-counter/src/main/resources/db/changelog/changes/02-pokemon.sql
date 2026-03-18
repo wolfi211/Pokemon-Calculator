@@ -1,7 +1,7 @@
 --liquibase formatted sql
 
---changeset daniel.wolf:3 context:species_and_pokemon
---comment: Creating the core Pokémon and species tables
+--changeset daniel.wolf:baseline-02-pokemon context:baseline
+--comment: Baseline - species, pokemon, and forms
 CREATE TABLE species
 (
     id                     INTEGER PRIMARY KEY,
@@ -49,8 +49,6 @@ CREATE TABLE pokemon_forms
     sprite         TEXT,
     version_group  INTEGER REFERENCES version_groups (id),
     names          JSONB,
-    formNames      JSONB
+    form_names     JSONB
 );
 
---changeset daniel.wolf:alter-formnames-on-pokemon_forms context:alter-formnames
-ALTER TABLE pokemon_forms RENAME formNames TO form_names

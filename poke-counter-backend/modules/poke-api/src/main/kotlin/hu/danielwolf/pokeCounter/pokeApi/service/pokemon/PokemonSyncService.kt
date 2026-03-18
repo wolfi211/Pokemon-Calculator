@@ -171,28 +171,35 @@ class PokemonSyncService(
   }
 
   private fun fillPokemonMoves(pokemon: Pokemon, external: ExternalPokemon) {
-    val moves = mutableListOf<PokemonMove>()
+    val movesByKey = mutableMapOf<String, PokemonMove>()
     external.moves.forEach { m ->
       val move = moveService.getByName(m.move.name)
       m.versionGroupDetails.forEach { vgd ->
         val learnMethod = moveLearnMethodService.getByName(vgd.moveLearnMethod.name)
         val versionGroup = versionGroupService.getByName(vgd.versionGroup.name)
-        moves.add(
-          pokemonMoveService.getByPokemonAndMoveAndVersionGroup(pokemon, move, versionGroup)?.apply {
-            this.moveLearnMethod = learnMethod
-            this.levelLearnedAt = vgd.levelLearnedAt
-            this.order = vgd.order
-          } ?: PokemonMove(
-            pokemon = pokemon,
-            move = move,
-            moveLearnMethod = learnMethod,
-            versionGroup = versionGroup,
-            levelLearnedAt = vgd.levelLearnedAt,
-            order = vgd.order
-          )
-        )
+        val key = "${pokemon.id}_${move.id}_${versionGroup.id}"
+        val existing =
+          movesByKey[key] ?: pokemonMoveService.getByPokemonAndMoveAndVersionGroup(pokemon, move, versionGroup)
+
+        if (existing != null) {
+          existing.moveLearnMethod = learnMethod
+          existing.levelLearnedAt = vgd.levelLearnedAt
+          existing.order = vgd.order
+          if (movesByKey[key] == null) movesByKey[key] = existing
+        } else {
+          movesByKey[key] =
+            PokemonMove(
+              pokemon = pokemon,
+              move = move,
+              moveLearnMethod = learnMethod,
+              versionGroup = versionGroup,
+              levelLearnedAt = vgd.levelLearnedAt,
+              order = vgd.order
+            )
+        }
       }
     }
+    val moves = movesByKey.values.toList()
     if (moves.isNotEmpty()) pokemonMoveService.saveAll(moves)
   }
 }
@@ -205,7 +212,7 @@ fun ExternalPokemon.toEntity(species: Species): Pokemon = Pokemon(
   isDefault = this.isDefault,
   order = this.order,
   weight = this.weight,
-  sprite = this.sprites.frontDefault ?: this.sprites.other["official-artwork"]?.get("front-default"),
+  sprite = (this.sprites.other?.get("official-artwork") as? Map<*, *>)?.get("front_default") as? String ?: this.sprites.frontDefault,
   cry = this.cries.latest,
   species = species
 )

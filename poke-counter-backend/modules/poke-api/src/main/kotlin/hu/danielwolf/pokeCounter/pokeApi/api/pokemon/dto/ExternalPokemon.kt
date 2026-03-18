@@ -12,7 +12,7 @@ data class ExternalPokemon(
   @param:JsonProperty("base_experience") val baseExperience: Int?,
   val height: Int,
   @param:JsonProperty("is_default") val isDefault: Boolean,
-  val order: Int,
+  val order: Int?,
   val weight: Int,
   val abilities: List<ExternalPokemonAbility>,
   val forms: List<NamedAPIResource>,
@@ -98,7 +98,7 @@ data class ExternalPokemonSprites(
   @param:JsonProperty("back_shiny") val backShiny: String?,
   @param:JsonProperty("back_female") val backFemale: String?,
   @param:JsonProperty("back_shiny_female") val backShinyFemale: String?,
-  val other: Map<String, Map<String, String>>
+  val other: Map<String, Any?>?
 )
 
 data class ExternalPokemonCries(

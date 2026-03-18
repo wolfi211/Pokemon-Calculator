@@ -35,3 +35,4 @@ CREATE TABLE move_types
     type_id          INTEGER REFERENCES types (id),
     version_group_id INTEGER REFERENCES version_groups (id)
 );
+

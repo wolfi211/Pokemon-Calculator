@@ -101,7 +101,8 @@ class GamesSyncService(
                 val allVersionGroups = versionGroupService.findAll()
                 allVersionGroups.forEach { versionGroup ->
                     pokedexVersionGroupService.save(
-                        PokedexVersionGroup(pokedex = pokedex, versionGroup = versionGroup)
+                        pokedexVersionGroupService.findByPokedexAndVersionGroup(pokedex, versionGroup)
+                            ?: PokedexVersionGroup(pokedex = pokedex, versionGroup = versionGroup)
                     )
                 }
                 logger.info("Pokedex '${pokedex.name}' (id=${pokedex.id}) has no version_groups in API; linked to all ${allVersionGroups.size} version groups.")
@@ -109,7 +110,8 @@ class GamesSyncService(
                 external.versionGroups.forEach { vgResource ->
                     val versionGroup = versionGroupService.getByName(vgResource.name)
                     pokedexVersionGroupService.save(
-                        PokedexVersionGroup(pokedex = pokedex, versionGroup = versionGroup)
+                        pokedexVersionGroupService.findByPokedexAndVersionGroup(pokedex, versionGroup)
+                            ?: PokedexVersionGroup(pokedex = pokedex, versionGroup = versionGroup)
                     )
                 }
             }

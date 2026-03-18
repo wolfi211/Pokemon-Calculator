@@ -18,8 +18,11 @@ import java.time.Duration
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpHeaders
+import org.springframework.http.MediaType
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.http.client.reactive.ReactorClientHttpConnector
+import org.springframework.http.codec.json.JacksonJsonDecoder
+import org.springframework.http.codec.json.JacksonJsonEncoder
 import org.springframework.web.reactive.function.client.ExchangeStrategies
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.support.WebClientAdapter
@@ -27,17 +30,31 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory
 import org.springframework.web.service.invoker.createClient
 import reactor.core.publisher.Mono
 import reactor.netty.http.client.HttpClient
+import tools.jackson.databind.json.JsonMapper
+import tools.jackson.module.kotlin.KotlinModule
 
 @Configuration
 class WebclientConfig(private val pokeApiProperties: PokeApiProperties) {
 
   @Bean
   fun pokeWebClient(): WebClient {
+    val jsonMapper =
+      JsonMapper.builder()
+        .addModule(KotlinModule.Builder().build())
+        .build()
+    val decoder = JacksonJsonDecoder(jsonMapper, MediaType.APPLICATION_JSON).apply {
+      setMaxInMemorySize(10 * 1024 * 1024)
+    }
+    val encoder = JacksonJsonEncoder(jsonMapper, MediaType.APPLICATION_JSON)
     return WebClient.builder()
       .baseUrl(pokeApiProperties.baseUrl)
-      .exchangeStrategies(ExchangeStrategies.builder().codecs { configurer ->
-        configurer.defaultCodecs().maxInMemorySize(10 * 1024 * 1024)
-      }.build())
+      .exchangeStrategies(
+        ExchangeStrategies.builder().codecs { configurer ->
+          configurer.defaultCodecs().jacksonJsonDecoder(decoder)
+          configurer.defaultCodecs().jacksonJsonEncoder(encoder)
+          configurer.defaultCodecs().maxInMemorySize(10 * 1024 * 1024)
+        }.build()
+      )
       .filter { request, next ->
         Mono.delay(Duration.ofMillis(pokeApiProperties.minDelayBetweenRequestsMs))
           .then(next.exchange(request))
