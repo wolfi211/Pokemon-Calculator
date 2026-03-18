@@ -42,6 +42,7 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-webflux")
   implementation("org.springframework.boot:spring-boot-starter-validation")
   implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.2")
+  implementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
 
   implementation("org.jetbrains.kotlin:kotlin-reflect")
   implementation("com.fasterxml.jackson.module:jackson-module-kotlin")

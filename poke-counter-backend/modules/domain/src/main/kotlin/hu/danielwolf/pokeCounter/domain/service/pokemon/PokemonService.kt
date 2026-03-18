@@ -30,5 +30,9 @@ class PokemonService(
 
     fun saveAll(pokemon: Iterable<Pokemon>): List<Pokemon> =
         pokemonRepository.saveAll(pokemon)
+
+  fun searchPokemonByNameAndVersionGroup(searchText: String?, versionGroup: String?): List<Pokemon> {
+//      return pokemonRepository.
+  }
 }
 
