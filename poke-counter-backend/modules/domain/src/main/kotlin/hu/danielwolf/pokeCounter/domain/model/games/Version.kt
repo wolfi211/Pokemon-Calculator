@@ -27,5 +27,13 @@ data class Version(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "version_group_id")
     var versionGroup: VersionGroup?,
-)
+) {
+  override fun equals(other: Any?): Boolean {
+    if (this === other) return true
+    if (other == null || javaClass != other.javaClass) return false
+    return id == (other as Version).id
+  }
+
+  override fun hashCode(): Int = id
+}
 

@@ -4,7 +4,7 @@ package hu.danielwolf.pokeCounter.pokeApi.service.pokemon
 
 import hu.danielwolf.pokeCounter.domain.model.pokemon.Species
 import hu.danielwolf.pokeCounter.domain.service.pokemon.SpeciesService
-import hu.danielwolf.pokeCounter.pokeApi.api.pokemon.PokemonApi
+import hu.danielwolf.pokeCounter.pokeApi.api.pokemon.PokemonApiClient
 import hu.danielwolf.pokeCounter.pokeApi.api.pokemon.dto.ExternalPokemonSpecies
 import hu.danielwolf.pokeCounter.pokeApi.config.toEntityMap
 import hu.danielwolf.pokeCounter.pokeApi.config.toURI
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class SpeciesSyncService(
-    private val pokemonApi: PokemonApi,
+    private val pokemonApiClient: PokemonApiClient,
     private val speciesService: SpeciesService,
     private val logger: Logger
 ) {
@@ -21,9 +21,9 @@ class SpeciesSyncService(
     fun syncAll() {
         logger.info("Starting species sync...")
         val stored = mutableListOf<ExternalPokemonSpecies>()
-        val summaries = pokemonApi.getAllPokemonSpecies(0, 2000)
+        val summaries = pokemonApiClient.getAllPokemonSpecies(0, 2000)
         summaries.results.forEach {
-            val external = pokemonApi.followPokemonSpecies(it.url.toURI())
+            val external = pokemonApiClient.followPokemonSpecies(it.url.toURI())
             speciesService.save(external.toEntity())
             stored.add(external)
         }

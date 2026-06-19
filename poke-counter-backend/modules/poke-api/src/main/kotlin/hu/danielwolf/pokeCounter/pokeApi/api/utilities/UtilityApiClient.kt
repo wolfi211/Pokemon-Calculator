@@ -11,7 +11,7 @@ import org.springframework.web.service.annotation.GetExchange
 import org.springframework.web.service.annotation.HttpExchange
 
 @HttpExchange
-interface UtilityApi {
+interface UtilityApiClient {
 
     @GetExchange(PATH_LANGUAGE)
     fun getAllLanguages(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList

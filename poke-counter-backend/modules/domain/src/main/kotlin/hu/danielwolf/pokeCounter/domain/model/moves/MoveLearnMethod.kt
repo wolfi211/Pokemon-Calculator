@@ -32,5 +32,13 @@ data class MoveLearnMethod(
 
     @OneToMany(mappedBy = "moveLearnMethod")
     var pokemonMoves: MutableSet<PokemonMove> = mutableSetOf(),
-)
+) {
+  override fun equals(other: Any?): Boolean {
+    if (this === other) return true
+    if (other == null || javaClass != other.javaClass) return false
+    return id == (other as MoveLearnMethod).id
+  }
+
+  override fun hashCode(): Int = id
+}
 

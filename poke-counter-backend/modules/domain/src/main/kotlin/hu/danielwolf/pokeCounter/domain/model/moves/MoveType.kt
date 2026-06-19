@@ -1,5 +1,6 @@
 package hu.danielwolf.pokeCounter.domain.model.moves
 
+import hu.danielwolf.pokeCounter.domain.model.persistenceHashCode
 import hu.danielwolf.pokeCounter.domain.model.games.VersionGroup
 import hu.danielwolf.pokeCounter.domain.model.pokemon.Type
 import jakarta.persistence.Column
@@ -50,5 +51,15 @@ data class MoveType(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "version_group_id")
     var versionGroup: VersionGroup?,
-)
+) {
+  override fun equals(other: Any?): Boolean {
+    if (this === other) return true
+    if (other == null || javaClass != other.javaClass) return false
+    other as MoveType
+    if (id == 0 || other.id == 0) return false
+    return id == other.id
+  }
+
+  override fun hashCode(): Int = persistenceHashCode(id)
+}
 

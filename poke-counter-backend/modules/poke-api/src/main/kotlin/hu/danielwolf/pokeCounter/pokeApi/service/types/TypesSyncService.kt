@@ -8,7 +8,7 @@ import hu.danielwolf.pokeCounter.domain.model.pokemon.TypeRelation
 import hu.danielwolf.pokeCounter.domain.service.games.GenerationService
 import hu.danielwolf.pokeCounter.domain.service.pokemon.TypeRelationService
 import hu.danielwolf.pokeCounter.domain.service.pokemon.TypeService
-import hu.danielwolf.pokeCounter.pokeApi.api.pokemon.PokemonApi
+import hu.danielwolf.pokeCounter.pokeApi.api.pokemon.PokemonApiClient
 import hu.danielwolf.pokeCounter.pokeApi.api.pokemon.dto.ExternalType
 import hu.danielwolf.pokeCounter.pokeApi.api.pokemon.dto.ExternalTypeRelations
 import hu.danielwolf.pokeCounter.pokeApi.config.toEntityMap
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class TypesSyncService(
-    private val pokemonApi: PokemonApi,
+    private val pokemonApiClient: PokemonApiClient,
     private val typeService: TypeService,
     private val typeRelationService: TypeRelationService,
     private val generationService: GenerationService,
@@ -29,9 +29,9 @@ class TypesSyncService(
     fun syncAll() {
         logger.info("Starting type sync (phase 1: types)...")
         val externalTypes = mutableListOf<ExternalType>()
-        val typeSummaries = pokemonApi.getAllTypes(0, 100)
+        val typeSummaries = pokemonApiClient.getAllTypes(0, 100)
         typeSummaries.results.forEach {
-            val external = pokemonApi.followType(it.url.toURI())
+            val external = pokemonApiClient.followType(it.url.toURI())
             typeService.save(external.toEntity())
             externalTypes.add(external)
         }

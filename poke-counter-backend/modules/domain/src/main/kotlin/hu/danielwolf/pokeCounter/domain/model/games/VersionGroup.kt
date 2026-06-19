@@ -47,5 +47,13 @@ data class VersionGroup(
 
     @OneToMany(mappedBy = "versionGroup")
     var pokemonForms: MutableSet<PokemonForm> = mutableSetOf(),
-)
+) {
+  override fun equals(other: Any?): Boolean {
+    if (this === other) return true
+    if (other == null || javaClass != other.javaClass) return false
+    return id == (other as VersionGroup).id
+  }
+
+  override fun hashCode(): Int = id
+}
 

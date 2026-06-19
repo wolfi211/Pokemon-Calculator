@@ -13,7 +13,7 @@ import org.springframework.web.service.annotation.GetExchange
 import org.springframework.web.service.annotation.HttpExchange
 
 @HttpExchange
-interface ContestApi {
+interface ContestApiClient {
 
     @GetExchange(PATH_CONTEST_TYPE)
     fun getAllContestTypes(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList

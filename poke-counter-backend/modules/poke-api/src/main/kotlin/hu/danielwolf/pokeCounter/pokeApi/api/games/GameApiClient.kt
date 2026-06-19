@@ -14,7 +14,7 @@ import org.springframework.web.service.annotation.GetExchange
 import org.springframework.web.service.annotation.HttpExchange
 
 @HttpExchange
-interface GameApi {
+interface GameApiClient {
 
     @GetExchange(PATH_GENERATION)
     fun getAllGenerations(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList

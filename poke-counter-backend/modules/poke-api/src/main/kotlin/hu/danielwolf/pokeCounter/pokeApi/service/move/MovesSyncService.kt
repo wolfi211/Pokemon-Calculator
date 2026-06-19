@@ -12,7 +12,7 @@ import hu.danielwolf.pokeCounter.domain.service.moves.DamageClassService
 import hu.danielwolf.pokeCounter.domain.service.moves.MoveService
 import hu.danielwolf.pokeCounter.domain.service.moves.MoveTypeService
 import hu.danielwolf.pokeCounter.domain.service.pokemon.TypeService
-import hu.danielwolf.pokeCounter.pokeApi.api.move.MoveApi
+import hu.danielwolf.pokeCounter.pokeApi.api.move.MoveApiClient
 import hu.danielwolf.pokeCounter.pokeApi.api.move.dto.ExternalMove
 import hu.danielwolf.pokeCounter.pokeApi.config.toEntityMap
 import hu.danielwolf.pokeCounter.pokeApi.config.toURI
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class MovesSyncService(
-  private val moveApi: MoveApi,
+  private val moveApiClient: MoveApiClient,
   private val moveService: MoveService,
   private val moveTypeService: MoveTypeService,
   private val damageClassService: DamageClassService,
@@ -33,9 +33,9 @@ class MovesSyncService(
 
   fun syncAll() {
     logger.info("Starting move sync...")
-    val summaries = moveApi.getAllMoves(0, 2000)
+    val summaries = moveApiClient.getAllMoves(0, 2000)
     summaries.results.forEach {
-      val external = moveApi.followMove(it.url.toURI())
+      val external = moveApiClient.followMove(it.url.toURI())
       val damageClass = damageClassService.getByName(external.damageClass.name)
       val generation = generationService.getByName(external.generation.name)
       val move = moveService.save(external.toEntity(damageClass, generation))

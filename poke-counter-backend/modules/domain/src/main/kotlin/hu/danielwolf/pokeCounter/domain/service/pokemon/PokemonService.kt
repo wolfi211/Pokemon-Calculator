@@ -8,31 +8,37 @@ import org.springframework.web.server.ResponseStatusException
 
 @Service
 class PokemonService(
-    private val pokemonRepository: PokemonRepository,
+  private val pokemonRepository: PokemonRepository,
 ) {
 
-    fun getById(id: Int): Pokemon =
-        pokemonRepository.findById(id).orElseThrow {
-            ResponseStatusException(HttpStatus.BAD_REQUEST, "pokemon.not-found")
-        }
+  fun getById(id: Int): Pokemon =
+    pokemonRepository.findById(id).orElseThrow {
+      ResponseStatusException(HttpStatus.BAD_REQUEST, "pokemon.not-found")
+    }
 
-    fun getByName(name: String): Pokemon =
-        pokemonRepository.findByName(name) ?: throw ResponseStatusException(
-            HttpStatus.BAD_REQUEST,
-            "pokemon.not-found",
-        )
+  fun getByName(name: String): Pokemon =
+    pokemonRepository.findByName(name) ?: throw ResponseStatusException(
+      HttpStatus.BAD_REQUEST,
+      "pokemon.not-found",
+    )
 
-    fun getAll(): List<Pokemon> =
-        pokemonRepository.findAll()
+  fun getAll(): List<Pokemon> =
+    pokemonRepository.findAll()
 
-    fun save(pokemon: Pokemon): Pokemon =
-        pokemonRepository.save(pokemon)
+  fun save(pokemon: Pokemon): Pokemon =
+    pokemonRepository.save(pokemon)
 
-    fun saveAll(pokemon: Iterable<Pokemon>): List<Pokemon> =
-        pokemonRepository.saveAll(pokemon)
+  fun saveAll(pokemon: Iterable<Pokemon>): List<Pokemon> =
+    pokemonRepository.saveAll(pokemon)
 
-  fun searchPokemonByNameAndVersionGroup(searchText: String?, versionGroup: String?): List<Pokemon> {
-//      return pokemonRepository.
-  }
+  fun searchPokemonByNameAndVersionGroup(searchText: String?, versionGroup: Int?): List<Pokemon> =
+    pokemonRepository.findIdsForLocalizedSearch(searchText, versionGroup).let { ids ->
+      if (ids.isEmpty()) {
+        emptyList()
+      } else {
+        pokemonRepository.findAllByIdWithSpeciesAndForms(ids)
+        pokemonRepository.findAllByIdWithTypesAndTypeEntity(ids).sortedBy { it.id }
+      }
+    }
 }
 

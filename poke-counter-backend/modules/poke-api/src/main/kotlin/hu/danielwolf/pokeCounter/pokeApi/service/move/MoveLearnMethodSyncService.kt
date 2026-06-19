@@ -7,7 +7,7 @@ import hu.danielwolf.pokeCounter.domain.model.moves.MoveLearnMethod
 import hu.danielwolf.pokeCounter.domain.service.games.VersionGroupService
 import hu.danielwolf.pokeCounter.domain.service.moves.LearnMethodVersionGroupService
 import hu.danielwolf.pokeCounter.domain.service.moves.MoveLearnMethodService
-import hu.danielwolf.pokeCounter.pokeApi.api.move.MoveApi
+import hu.danielwolf.pokeCounter.pokeApi.api.move.MoveApiClient
 import hu.danielwolf.pokeCounter.pokeApi.api.move.dto.ExternalLearnMethod
 import hu.danielwolf.pokeCounter.pokeApi.config.toEntityMap
 import hu.danielwolf.pokeCounter.pokeApi.config.toURI
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class MoveLearnMethodSyncService(
-    private val moveApi: MoveApi,
+    private val moveApiClient: MoveApiClient,
     private val moveLearnMethodService: MoveLearnMethodService,
     private val versionGroupService: VersionGroupService,
     private val learnMethodVersionGroupService: LearnMethodVersionGroupService,
@@ -25,9 +25,9 @@ class MoveLearnMethodSyncService(
 
     fun syncAll() {
         logger.info("Starting move learn method sync...")
-        val summaries = moveApi.getAllMoveLearnMethods(0, 100)
+        val summaries = moveApiClient.getAllMoveLearnMethods(0, 100)
         summaries.results.forEach {
-            val external = moveApi.followMoveLearnMethod(it.url.toURI())
+            val external = moveApiClient.followMoveLearnMethod(it.url.toURI())
             val method = moveLearnMethodService.save(external.toEntity())
             val versionGroups = external.versionGroups.map { vg -> versionGroupService.getByName(vg.name) }
             val junctions = versionGroups.map { vg ->

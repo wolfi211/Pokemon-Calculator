@@ -24,5 +24,13 @@ data class Stat(
 
     @OneToMany(mappedBy = "stat")
     var pokemonStats: MutableSet<PokemonStat> = mutableSetOf(),
-)
+) {
+  override fun equals(other: Any?): Boolean {
+    if (this === other) return true
+    if (other == null || javaClass != other.javaClass) return false
+    return id == (other as Stat).id
+  }
+
+  override fun hashCode(): Int = id
+}
 

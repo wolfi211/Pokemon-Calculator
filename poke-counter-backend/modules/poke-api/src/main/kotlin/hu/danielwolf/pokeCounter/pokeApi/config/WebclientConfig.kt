@@ -2,17 +2,17 @@
 
 package hu.danielwolf.pokeCounter.pokeApi.config
 
-import hu.danielwolf.pokeCounter.pokeApi.api.berries.BerryApi
-import hu.danielwolf.pokeCounter.pokeApi.api.contests.ContestApi
-import hu.danielwolf.pokeCounter.pokeApi.api.encounters.EncounterApi
-import hu.danielwolf.pokeCounter.pokeApi.api.evolution.EvolutionApi
-import hu.danielwolf.pokeCounter.pokeApi.api.games.GameApi
-import hu.danielwolf.pokeCounter.pokeApi.api.items.ItemApi
-import hu.danielwolf.pokeCounter.pokeApi.api.locations.LocationApi
-import hu.danielwolf.pokeCounter.pokeApi.api.machines.MachineApi
-import hu.danielwolf.pokeCounter.pokeApi.api.move.MoveApi
-import hu.danielwolf.pokeCounter.pokeApi.api.pokemon.PokemonApi
-import hu.danielwolf.pokeCounter.pokeApi.api.utilities.UtilityApi
+import hu.danielwolf.pokeCounter.pokeApi.api.berries.BerryApiClient
+import hu.danielwolf.pokeCounter.pokeApi.api.contests.ContestApiClient
+import hu.danielwolf.pokeCounter.pokeApi.api.encounters.EncounterApiClient
+import hu.danielwolf.pokeCounter.pokeApi.api.evolution.EvolutionApiClient
+import hu.danielwolf.pokeCounter.pokeApi.api.games.GameApiClient
+import hu.danielwolf.pokeCounter.pokeApi.api.items.ItemApiClient
+import hu.danielwolf.pokeCounter.pokeApi.api.locations.LocationApiClient
+import hu.danielwolf.pokeCounter.pokeApi.api.machines.MachineApiClient
+import hu.danielwolf.pokeCounter.pokeApi.api.move.MoveApiClient
+import hu.danielwolf.pokeCounter.pokeApi.api.pokemon.PokemonApiClient
+import hu.danielwolf.pokeCounter.pokeApi.api.utilities.UtilityApiClient
 import io.netty.channel.ChannelOption.CONNECT_TIMEOUT_MILLIS
 import java.time.Duration
 import org.springframework.context.annotation.Bean
@@ -75,37 +75,37 @@ class WebclientConfig(private val pokeApiProperties: PokeApiProperties) {
     HttpServiceProxyFactory.builderFor(WebClientAdapter.create(pokeWebClient)).build()
 
   @Bean
-  fun berryApi(factory: HttpServiceProxyFactory) = factory.createClient<BerryApi>()
+  fun berryApiClient(factory: HttpServiceProxyFactory) = factory.createClient<BerryApiClient>()
 
   @Bean
-  fun contestApi(factory: HttpServiceProxyFactory) = factory.createClient<ContestApi>()
+  fun contestApiClient(factory: HttpServiceProxyFactory) = factory.createClient<ContestApiClient>()
 
   @Bean
-  fun encounterApi(factory: HttpServiceProxyFactory) = factory.createClient<EncounterApi>()
+  fun encounterApiClient(factory: HttpServiceProxyFactory) = factory.createClient<EncounterApiClient>()
 
   @Bean
-  fun evolutionApi(factory: HttpServiceProxyFactory) = factory.createClient<EvolutionApi>()
+  fun evolutionApiClient(factory: HttpServiceProxyFactory) = factory.createClient<EvolutionApiClient>()
 
   @Bean
-  fun gameApi(factory: HttpServiceProxyFactory) = factory.createClient<GameApi>()
+  fun gameApiClient(factory: HttpServiceProxyFactory) = factory.createClient<GameApiClient>()
 
   @Bean
-  fun itemApi(factory: HttpServiceProxyFactory) = factory.createClient<ItemApi>()
+  fun itemApiClient(factory: HttpServiceProxyFactory) = factory.createClient<ItemApiClient>()
 
   @Bean
-  fun locationApi(factory: HttpServiceProxyFactory) = factory.createClient<LocationApi>()
+  fun locationApiClient(factory: HttpServiceProxyFactory) = factory.createClient<LocationApiClient>()
 
   @Bean
-  fun machineApi(factory: HttpServiceProxyFactory) = factory.createClient<MachineApi>()
+  fun machineApiClient(factory: HttpServiceProxyFactory) = factory.createClient<MachineApiClient>()
 
   @Bean
-  fun moveApi(factory: HttpServiceProxyFactory) = factory.createClient<MoveApi>()
+  fun moveApiClient(factory: HttpServiceProxyFactory) = factory.createClient<MoveApiClient>()
 
   @Bean
-  fun pokemonApi(factory: HttpServiceProxyFactory) = factory.createClient<PokemonApi>()
+  fun pokemonApiClient(factory: HttpServiceProxyFactory) = factory.createClient<PokemonApiClient>()
 
   @Bean
-  fun utilityApi(factory: HttpServiceProxyFactory) = factory.createClient<UtilityApi>()
+  fun utilityApiClient(factory: HttpServiceProxyFactory) = factory.createClient<UtilityApiClient>()
 
   companion object {
     private const val CONNECT_TIMEOUT_IN_MILLIS = 5000

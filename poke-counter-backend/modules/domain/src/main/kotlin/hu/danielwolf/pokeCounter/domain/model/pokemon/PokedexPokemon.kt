@@ -34,4 +34,12 @@ data class PokedexPokemon(
 
     @Column(name = "entry_number")
     var entryNumber: Int,
-)
+) {
+  override fun equals(other: Any?): Boolean {
+    if (this === other) return true
+    if (other == null || javaClass != other.javaClass) return false
+    return id == (other as PokedexPokemon).id
+  }
+
+  override fun hashCode(): Int = id.hashCode()
+}

@@ -27,7 +27,7 @@ import org.springframework.web.service.annotation.GetExchange
 import org.springframework.web.service.annotation.HttpExchange
 
 @HttpExchange
-interface PokemonApi {
+interface PokemonApiClient {
 
     @GetExchange(PATH_ABILITY)
     fun getAllAbilities(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList

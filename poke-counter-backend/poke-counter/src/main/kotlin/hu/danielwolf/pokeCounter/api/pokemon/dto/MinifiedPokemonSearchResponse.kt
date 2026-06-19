@@ -19,7 +19,16 @@ fun Pokemon.toMinifiedDto(): MinifiedPokemonSearchResponse {
     name = this.name,
     sprite = this.sprite,
     cry = this.cry,
-    localizedName = this.forms.first().names?.get("en").takeIf { this.forms.first().names?.isNotEmpty() ?: false } ?: this.species?.names?.get("en")!!,
+    localizedName = resolveLocalizedDisplayName(),
     types = this.types.map { it.toMinifiedType() }.toSet(),
   )
+}
+
+private fun Pokemon.resolveLocalizedDisplayName(): String {
+  val defaultForm = forms.firstOrNull { it.isDefault == true }
+  val fromForm =
+    defaultForm?.names?.get("en")?.takeIf { it.isNotBlank() }
+      ?: forms.firstOrNull()?.names?.get("en")?.takeIf { it.isNotBlank() }
+  val fromSpecies = species?.names?.get("en")?.takeIf { it.isNotBlank() }
+  return fromForm ?: fromSpecies ?: name
 }

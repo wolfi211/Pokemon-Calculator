@@ -1,5 +1,6 @@
 package hu.danielwolf.pokeCounter.domain.model.games
 
+import hu.danielwolf.pokeCounter.domain.model.persistenceHashCode
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
@@ -25,5 +26,15 @@ data class PokedexVersionGroup(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "version_group_id")
     var versionGroup: VersionGroup,
-)
+) {
+  override fun equals(other: Any?): Boolean {
+    if (this === other) return true
+    if (other == null || javaClass != other.javaClass) return false
+    other as PokedexVersionGroup
+    if (id == 0 || other.id == 0) return false
+    return id == other.id
+  }
+
+  override fun hashCode(): Int = persistenceHashCode(id)
+}
 

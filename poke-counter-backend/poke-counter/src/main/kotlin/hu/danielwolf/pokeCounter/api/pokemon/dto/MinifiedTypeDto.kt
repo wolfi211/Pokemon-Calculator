@@ -1,5 +1,6 @@
 package hu.danielwolf.pokeCounter.api.pokemon.dto
 
+import hu.danielwolf.pokeCounter.domain.model.moves.MoveType
 import hu.danielwolf.pokeCounter.domain.model.pokemon.PokemonType
 import kotlinx.serialization.Serializable
 
@@ -16,6 +17,16 @@ fun PokemonType.toMinifiedType(): MinifiedTypeDto {
     id = this.type.id,
     slot = this.slot,
     name = this.type.name,
-    localizedName = this.type.names?.get("en")!!
+    localizedName = this.type.names?.get("en")?.takeIf { it.isNotBlank() } ?: this.type.name
+  )
+}
+
+fun MoveType.toMinifiedType(): MinifiedTypeDto {
+  val t = requireNotNull(type) { "move_types row without type" }
+  return MinifiedTypeDto(
+    id = t.id,
+    slot = null,
+    name = t.name,
+    localizedName = t.names?.get("en")?.takeIf { it.isNotBlank() } ?: t.name,
   )
 }

@@ -1,5 +1,6 @@
 package hu.danielwolf.pokeCounter.domain.model.pokemon
 
+import hu.danielwolf.pokeCounter.domain.model.persistenceHashCode
 import hu.danielwolf.pokeCounter.domain.model.games.VersionGroup
 import hu.danielwolf.pokeCounter.domain.model.moves.Move
 import hu.danielwolf.pokeCounter.domain.model.moves.MoveLearnMethod
@@ -43,5 +44,15 @@ data class PokemonMove(
 
     @Column(name = "order")
     var order: Int?,
-)
+) {
+  override fun equals(other: Any?): Boolean {
+    if (this === other) return true
+    if (other == null || javaClass != other.javaClass) return false
+    other as PokemonMove
+    if (id == 0 || other.id == 0) return false
+    return id == other.id
+  }
+
+  override fun hashCode(): Int = persistenceHashCode(id)
+}
 

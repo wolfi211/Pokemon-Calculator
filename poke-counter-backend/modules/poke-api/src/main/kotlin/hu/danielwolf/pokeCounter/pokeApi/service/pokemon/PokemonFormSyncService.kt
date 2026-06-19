@@ -8,7 +8,7 @@ import hu.danielwolf.pokeCounter.domain.model.pokemon.PokemonForm
 import hu.danielwolf.pokeCounter.domain.service.games.VersionGroupService
 import hu.danielwolf.pokeCounter.domain.service.pokemon.PokemonFormService
 import hu.danielwolf.pokeCounter.domain.service.pokemon.PokemonService
-import hu.danielwolf.pokeCounter.pokeApi.api.pokemon.PokemonApi
+import hu.danielwolf.pokeCounter.pokeApi.api.pokemon.PokemonApiClient
 import hu.danielwolf.pokeCounter.pokeApi.api.pokemon.dto.ExternalPokemonForm
 import hu.danielwolf.pokeCounter.pokeApi.config.toEntityMap
 import hu.danielwolf.pokeCounter.pokeApi.config.toURI
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class PokemonFormSyncService(
-    private val pokemonApi: PokemonApi,
+    private val pokemonApiClient: PokemonApiClient,
     private val pokemonFormService: PokemonFormService,
     private val pokemonService: PokemonService,
     private val versionGroupService: VersionGroupService,
@@ -26,9 +26,9 @@ class PokemonFormSyncService(
 
     fun syncAll() {
         logger.info("Starting pokemon form sync...")
-        val summaries = pokemonApi.getAllPokemonForms(0, 2000)
+        val summaries = pokemonApiClient.getAllPokemonForms(0, 2000)
         summaries.results.forEach {
-            val external = pokemonApi.followPokemonForm(it.url.toURI())
+            val external = pokemonApiClient.followPokemonForm(it.url.toURI())
             val pokemon = pokemonService.getByName(external.pokemon.name)
             val versionGroup = versionGroupService.getByName(external.versionGroup.name)
             pokemonFormService.save(external.toEntity(pokemon, versionGroup))

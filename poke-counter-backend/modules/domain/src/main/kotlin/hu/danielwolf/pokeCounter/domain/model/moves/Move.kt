@@ -47,5 +47,13 @@ data class Move(
 
     @OneToMany(mappedBy = "move")
     var pokemonMoves: MutableSet<PokemonMove> = mutableSetOf(),
-)
+) {
+  override fun equals(other: Any?): Boolean {
+    if (this === other) return true
+    if (other == null || javaClass != other.javaClass) return false
+    return id == (other as Move).id
+  }
+
+  override fun hashCode(): Int = id
+}
 

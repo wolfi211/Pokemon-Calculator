@@ -14,12 +14,12 @@ import hu.danielwolf.pokeCounter.domain.service.games.PokedexVersionGroupService
 import hu.danielwolf.pokeCounter.domain.service.games.VersionGroupService
 import hu.danielwolf.pokeCounter.domain.service.games.VersionService
 import hu.danielwolf.pokeCounter.domain.service.locations.RegionService
-import hu.danielwolf.pokeCounter.pokeApi.api.games.GameApi
+import hu.danielwolf.pokeCounter.pokeApi.api.games.GameApiClient
 import hu.danielwolf.pokeCounter.pokeApi.api.games.dto.ExternalGeneration
 import hu.danielwolf.pokeCounter.pokeApi.api.games.dto.ExternalPokedex
 import hu.danielwolf.pokeCounter.pokeApi.api.games.dto.ExternalVersion
 import hu.danielwolf.pokeCounter.pokeApi.api.games.dto.ExternalVersionGroup
-import hu.danielwolf.pokeCounter.pokeApi.api.locations.LocationApi
+import hu.danielwolf.pokeCounter.pokeApi.api.locations.LocationApiClient
 import hu.danielwolf.pokeCounter.pokeApi.api.locations.dto.ExternalRegion
 import hu.danielwolf.pokeCounter.pokeApi.api.utilities.dto.NamedAPIResource
 import hu.danielwolf.pokeCounter.pokeApi.config.toEntityMap
@@ -29,8 +29,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class GamesSyncService(
-    private val gameApi: GameApi,
-    private val locationApi: LocationApi,
+    private val gameApiClient: GameApiClient,
+    private val locationApiClient: LocationApiClient,
     private val generationService: GenerationService,
     private val regionService: RegionService,
     private val versionGroupService: VersionGroupService,
@@ -42,36 +42,36 @@ class GamesSyncService(
 
     fun syncAllGenerations() {
         logger.info("Starting generation sync...")
-        val generationSummaries = gameApi.getAllGenerations(0, 1000)
+        val generationSummaries = gameApiClient.getAllGenerations(0, 1000)
         generationSummaries.results.forEach { syncGeneration(it) }
         logger.info("Finished generation sync...")
     }
 
     fun syncGeneration(apiResource: NamedAPIResource) {
         logger.info("Syncing generation ${apiResource.name}")
-        val externalGeneration = gameApi.followGeneration(apiResource.url.toURI())
+        val externalGeneration = gameApiClient.followGeneration(apiResource.url.toURI())
         generationService.save(externalGeneration.toEntity())
     }
 
     fun syncAllRegions() {
         logger.info("Starting region sync...")
-        val regionSummaries = locationApi.getAllRegions(0, 100)
+        val regionSummaries = locationApiClient.getAllRegions(0, 100)
         regionSummaries.results.forEach { syncRegion(it) }
         logger.info("Finished region sync...")
     }
 
     fun syncRegion(apiResource: NamedAPIResource) {
         logger.info("Syncing region ${apiResource.name}")
-        val externalRegion = locationApi.followRegion(apiResource.url.toURI())
+        val externalRegion = locationApiClient.followRegion(apiResource.url.toURI())
         val mainGeneration = externalRegion.mainGeneration?.let { generationService.getByName(it.name) }
         regionService.save(externalRegion.toEntity(mainGeneration))
     }
 
     fun syncAllVersionGroups() {
         logger.info("Starting version group sync...")
-        val summaries = gameApi.getAllVersionGroups(0, 100)
+        val summaries = gameApiClient.getAllVersionGroups(0, 100)
         summaries.results.forEach {
-            val external = gameApi.followVersionGroup(it.url.toURI())
+            val external = gameApiClient.followVersionGroup(it.url.toURI())
             val generation = generationService.getByName(external.generation.name)
             versionGroupService.save(external.toEntity(generation))
         }
@@ -80,9 +80,9 @@ class GamesSyncService(
 
     fun syncAllVersions() {
         logger.info("Starting version sync...")
-        val summaries = gameApi.getAllVersions(0, 500)
+        val summaries = gameApiClient.getAllVersions(0, 500)
         summaries.results.forEach {
-            val external = gameApi.followVersion(it.url.toURI())
+            val external = gameApiClient.followVersion(it.url.toURI())
             val versionGroup = versionGroupService.getByName(external.versionGroup.name)
             versionService.save(external.toEntity(versionGroup))
         }
@@ -92,9 +92,9 @@ class GamesSyncService(
     fun syncAllPokedexes(): List<ExternalPokedex> {
         logger.info("Starting pokedex sync...")
         val stored = mutableListOf<ExternalPokedex>()
-        val summaries = gameApi.getAllPokedexes(0, 100)
+        val summaries = gameApiClient.getAllPokedexes(0, 100)
         summaries.results.forEach {
-            val external = gameApi.followPokedex(it.url.toURI())
+            val external = gameApiClient.followPokedex(it.url.toURI())
             val region = external.region?.let { regionService.getByName(it.name) }
             val pokedex = pokedexService.save(external.toEntity(region))
             if (external.versionGroups.isEmpty()) {

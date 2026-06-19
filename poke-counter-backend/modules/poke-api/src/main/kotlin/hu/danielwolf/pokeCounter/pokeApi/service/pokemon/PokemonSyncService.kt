@@ -22,7 +22,7 @@ import hu.danielwolf.pokeCounter.domain.service.pokemon.PokemonTypeService
 import hu.danielwolf.pokeCounter.domain.service.pokemon.SpeciesService
 import hu.danielwolf.pokeCounter.domain.service.pokemon.StatService
 import hu.danielwolf.pokeCounter.domain.service.pokemon.TypeService
-import hu.danielwolf.pokeCounter.pokeApi.api.pokemon.PokemonApi
+import hu.danielwolf.pokeCounter.pokeApi.api.pokemon.PokemonApiClient
 import hu.danielwolf.pokeCounter.pokeApi.api.pokemon.dto.ExternalPokemon
 import hu.danielwolf.pokeCounter.pokeApi.api.pokemon.dto.ExternalPokemonAbility
 import hu.danielwolf.pokeCounter.pokeApi.api.pokemon.dto.ExternalPokemonStat
@@ -33,7 +33,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class PokemonSyncService(
-  private val pokemonApi: PokemonApi,
+  private val pokemonApiClient: PokemonApiClient,
   private val pokemonService: PokemonService,
   private val speciesService: SpeciesService,
   private val pokemonTypeService: PokemonTypeService,
@@ -52,9 +52,9 @@ class PokemonSyncService(
 
   fun syncAll() {
     logger.info("Starting pokemon sync...")
-    val externalPokemons = pokemonApi.getAllPokemon(limit = 10000)
+    val externalPokemons = pokemonApiClient.getAllPokemon(limit = 10000)
     externalPokemons.results.forEach { entry ->
-      val externalPokemon = pokemonApi.followPokemon(entry.url.toURI())
+      val externalPokemon = pokemonApiClient.followPokemon(entry.url.toURI())
       val species = speciesService.getByName(externalPokemon.species.name)
       val pokemon = pokemonService.save(externalPokemon.toEntity(species))
       fillPokemonTypes(pokemon, externalPokemon)

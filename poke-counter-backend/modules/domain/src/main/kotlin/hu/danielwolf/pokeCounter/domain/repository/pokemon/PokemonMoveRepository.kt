@@ -5,8 +5,19 @@ import hu.danielwolf.pokeCounter.domain.model.moves.Move
 import hu.danielwolf.pokeCounter.domain.model.pokemon.Pokemon
 import hu.danielwolf.pokeCounter.domain.model.pokemon.PokemonMove
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Query
+import org.springframework.data.repository.query.Param
 
 interface PokemonMoveRepository : JpaRepository<PokemonMove, Int> {
     fun findByPokemonAndMoveAndVersionGroup(pokemon: Pokemon, move: Move, versionGroup: VersionGroup): PokemonMove?
+
+    @Query(
+        "SELECT pm.move.id, pm.versionGroup.id FROM PokemonMove pm " +
+            "WHERE pm.pokemon.id = :pokemonId AND pm.move.id IN :moveIds",
+    )
+    fun findMoveIdAndVersionGroupIdByPokemonAndMoveIdIn(
+        @Param("pokemonId") pokemonId: Int,
+        @Param("moveIds") moveIds: Collection<Int>,
+    ): List<Array<Any>>
 }
 

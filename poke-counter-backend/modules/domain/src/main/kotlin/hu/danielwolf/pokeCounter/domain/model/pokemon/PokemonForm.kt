@@ -56,5 +56,13 @@ data class PokemonForm(
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "form_names", columnDefinition = "jsonb")
     var formNames: Map<String, String>? = emptyMap(),
-)
+) {
+  override fun equals(other: Any?): Boolean {
+    if (this === other) return true
+    if (other == null || javaClass != other.javaClass) return false
+    return id == (other as PokemonForm).id
+  }
+
+  override fun hashCode(): Int = id
+}
 

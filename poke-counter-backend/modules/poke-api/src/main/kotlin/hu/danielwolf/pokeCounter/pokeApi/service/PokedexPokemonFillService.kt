@@ -109,7 +109,7 @@ class PokedexPokemonFillService(
         versionGroupId: Int,
         formsInVersion: Map<Int, Pokemon>
     ): List<Pokemon> {
-        val bySpecies = pokemonRepository.findBySpecies_Id(species.id)
+        val bySpecies = pokemonRepository.findBySpeciesId(species.id)
         val inVersion = bySpecies.filter { formsInVersion.containsKey(it.id) }
         return inVersion.ifEmpty {
           listOfNotNull(

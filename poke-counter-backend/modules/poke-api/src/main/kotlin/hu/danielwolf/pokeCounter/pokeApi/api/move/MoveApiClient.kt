@@ -17,7 +17,7 @@ import org.springframework.web.service.annotation.GetExchange
 import org.springframework.web.service.annotation.HttpExchange
 
 @HttpExchange
-interface MoveApi {
+interface MoveApiClient {
 
     @GetExchange(PATH_MOVE)
     fun getAllMoves(@RequestParam("offset") offset: Int = 0, @RequestParam("limit") limit: Int = 20): NamedAPIResourceList
