@@ -6,10 +6,11 @@ import hu.danielwolf.pokeCounter.domain.model.pokemon.TypeRelation
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface TypeRelationRepository : JpaRepository<TypeRelation, Int> {
+    fun findByGenerationIsNull(): List<TypeRelation>
+
     fun findByDamageFromTypeAndDamageToTypeAndGeneration(
         damageFromType: Type,
         damageToType: Type,
         generation: Generation?,
     ): TypeRelation?
 }
-

@@ -1,56 +1,16 @@
-import { supabase } from '@/services/supabase'
-import { type Move, toMove } from '@/types/move'
-import { toPokemon, type Pokemon } from '@/types/pokemon'
+import { searchMoves as apiSearchMoves } from '@/api/moveApi'
+import { searchPokemon as apiSearchPokemon } from '@/api/pokemonApi'
+import type { MinifiedMoveSearchResponse } from '@/types/api/moveSummary'
+import type { PokemonSummaryDto } from '@/types/api/pokemonSummary'
 
 export class PokemonService {
+  async queryPokemon(query: string): Promise<PokemonSummaryDto[]> {
+    if (!query) return []
+    return apiSearchPokemon(query)
+  }
 
-    async getAllPokemon() {
-        const { data: pokemons } = await supabase
-            .from('pokemon')
-            .select('*')
-
-        return pokemons as Pokemon[]
-    }
-
-    async getPokemonById(id: number): Promise<Pokemon | undefined> {
-        const { data, error } = await supabase
-            .from('pokemon')
-            .select('*')
-            .eq('id', id)
-
-        if (error) {
-            console.error(error)
-            return undefined
-        }
-
-        return toPokemon(data)
-    }
-
-    async queryPokemon(query: string): Promise<Pokemon[]> {
-        const { data, error } = await supabase
-            .from('pokemon')
-            .select('*')
-            .ilike("name", `%${query}%`)
-
-        if (error) {
-            console.error(error)
-            return []
-        }
-
-        return data.map(toPokemon)
-    }
-
-    async queryMoves(query: string): Promise<Move[]> {
-        const { data, error } = await supabase
-            .from('moves')
-            .select('*')
-            .ilike("name", `%${query}%`)
-
-        if (error) {
-            console.error(error)
-            return []
-        }
-
-        return data.map(toMove)
-    }
+  async queryMoves(query: string, pokemonId?: number): Promise<MinifiedMoveSearchResponse[]> {
+    if (!query) return []
+    return apiSearchMoves(query, pokemonId)
+  }
 }

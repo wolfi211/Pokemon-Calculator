@@ -27,6 +27,9 @@ dependencies {
 
   testImplementation(kotlin("test"))
   testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test")
+  testImplementation("org.mockito:mockito-core:5.14.2")
+  testImplementation("org.mockito:mockito-junit-jupiter:5.14.2")
+  testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
 }
 
 kotlin {

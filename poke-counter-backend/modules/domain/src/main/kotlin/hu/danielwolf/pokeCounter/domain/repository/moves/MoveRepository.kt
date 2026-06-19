@@ -53,5 +53,17 @@ interface MoveRepository : JpaRepository<Move, Int> {
     fun findAllByIdWithMinifiedSearchGraph(
         @Param("ids") ids: Collection<Int>,
     ): List<Move>
+
+    @Query(
+        "SELECT DISTINCT m FROM Move m " +
+            "LEFT JOIN FETCH m.damageClass " +
+            "LEFT JOIN FETCH m.types mt " +
+            "LEFT JOIN FETCH mt.type " +
+            "LEFT JOIN FETCH mt.versionGroup " +
+            "WHERE m.id IN :ids",
+    )
+    fun findAllByIdWithDamageClassAndTypes(
+        @Param("ids") ids: Collection<Int>,
+    ): List<Move>
 }
 

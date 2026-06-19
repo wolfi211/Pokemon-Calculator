@@ -36,9 +36,29 @@ class PokemonService(
       if (ids.isEmpty()) {
         emptyList()
       } else {
-        pokemonRepository.findAllByIdWithSpeciesAndForms(ids)
-        pokemonRepository.findAllByIdWithTypesAndTypeEntity(ids).sortedBy { it.id }
+        loadPokemonGraphByIds(ids)
+        ids.mapNotNull { pokemonRepository.findById(it).orElse(null) }.sortedBy { it.id }
       }
     }
+
+  fun getByIdWithSummaryGraph(id: Int): Pokemon {
+    loadPokemonGraphByIds(listOf(id))
+    return getById(id)
+  }
+
+  fun findAllWithTypesAndCurrentStats(): List<Pokemon> =
+    pokemonRepository.findAllWithTypesAndCurrentStats().sortedBy { it.id }
+
+  fun loadSummaryGraphByIds(ids: Collection<Int>): List<Pokemon> {
+    if (ids.isEmpty()) return emptyList()
+    loadPokemonGraphByIds(ids)
+    return ids.mapNotNull { pokemonRepository.findById(it).orElse(null) }.sortedBy { it.id }
+  }
+
+  private fun loadPokemonGraphByIds(ids: Collection<Int>) {
+    pokemonRepository.findAllByIdWithSpeciesAndForms(ids)
+    pokemonRepository.findAllByIdWithTypesAndTypeEntity(ids)
+    pokemonRepository.findAllByIdWithCurrentStats(ids)
+  }
 }
 

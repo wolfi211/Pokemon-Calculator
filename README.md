@@ -1,82 +1,76 @@
-# 🛡️ PokéCounter
-A high-performance Pokémon counter dashboard built with Vue 3, Vite, and Supabase. This tool allows you to find "Perfect Walls" and "Strong Alternatives" against specific Pokémon threats, featuring real-time stat sorting and smart links to Bulbapedia.
+# PokéCounter
 
-## 🚀 Features
-Smart Tiering: Automatically groups Pokémon into "Perfect Walls" and "Strong Alternatives."
+A Pokémon counter dashboard built with Vue 3, Vite, and a Spring Boot backend. Find "Perfect Walls" and "Strong Alternatives" against specific Pokémon threats, with tiered results, stat sorting, and Bulbapedia links.
 
-Dynamic Sorting: Re-order results within tiers by their stats.
+## Features
 
-Collapsible Tiers: Clean UX for managing large sets of counter-data.
+- Smart tiering: groups counters into Perfect Walls and Strong Alternatives
+- Dynamic sorting within tiers by base stats
+- Collapsible tier sections
+- Pokémon and move autocomplete backed by the Spring API
+- Counter calculation runs server-side
 
-Auto-Sync: Custom script to pull the latest data (including forms and species) from PokéAPI into your own Supabase instance.
+## Setup
 
-Smart Linking: Deep-links directly to Bulbapedia species pages.
+### 1. Clone and install
 
-## 🛠️ Setup
-### 1. Clone & Install
-```
+```bash
 git clone https://github.com/wolfi211/Pokemon-Calculator.git
-cd Pokemon-Calculator
-npm i
+cd Pokemon-Calculator/poke-counter-frontend
+npm install
 ```
-### 2. Environment Variables
-Create a .env file in the root directory. Do not commit this file.
 
-```
-# Supabase Configuration
-VITE_SUPABASE_URL=your_supabase_project_url
-VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
-```
-### 3. Database Schema
-The Schema can be found inside [supabase.sql](https://github.com/wolfi211/Pokemon-Calculator/blob/main/supabase.sql)
+### 2. Backend and database
 
-## 🔄 Syncing Data
-To populate your database from PokéAPI, run the sync script. This script handles rate-limiting and batches requests for efficiency.
+The frontend expects the Spring Boot API in [`poke-counter-backend`](poke-counter-backend/). See [`poke-counter-backend/README.md`](poke-counter-backend/README.md) for Postgres setup.
 
+Populate data from PokéAPI:
+
+```bash
+curl -X POST http://localhost:8080/api/v1/sync
 ```
-npm run db:sync
+
+### 3. Environment variables
+
+Copy `.env.example` to `.env` in `poke-counter-frontend/`:
+
+```bash
+# Leave empty for local dev (Vite proxies /api to localhost:8080)
+VITE_API_BASE_URL=
+
+# Production build example:
+# VITE_API_BASE_URL=https://api.example.com
 ```
-## 💻 Development
-```
-# Start the dev server
+
+## Development
+
+Start the backend (port 8080), then the frontend:
+
+```bash
+# Terminal 1 — backend
+cd poke-counter-backend
+./gradlew :poke-counter:bootRun
+
+# Terminal 2 — frontend
+cd poke-counter-frontend
 npm run dev
+```
 
-# Build for production
+Open http://localhost:5173. API requests go to `/api/v1/...` and are proxied to the backend in dev.
+
+## Build
+
+```bash
+cd poke-counter-frontend
 npm run build
 ```
 
-## 🐋 Deployment with Docker
-This project is optimized for a multi-stage Docker build, serving the static frontend via Nginx.
+Set `VITE_API_BASE_URL` to your public API origin before building for production.
 
-### 1. Build and Start
-Ensure your .env file is populated with your Supabase credentials, then run:
+## Deployment note
 
-```
-docker-compose up -d --build
-```
+Root `Dockerfile` and `docker-compose.yml` still reflect the old Supabase-only setup and need updating for a full-stack deployment (static frontend + API reverse proxy).
 
-### 🤖 Automation (Monthly Sync)
-To keep the database updated with new Pokémon, forms, or stat changes without manual intervention, you can set up a Cron job. This triggers a one-off container to run the sync script and then removes itself.
+## Contributing
 
-#### Setup
-Open your crontab editor:
-```
-crontab -e
-```
-Add the following line at the bottom (replace /path/to/project with your actual directory):
-
-```
-0 0 1 * * cd /path/to/project && /usr/local/bin/docker-compose run --rm pokecounter npm run db:sync
-```
-0 0 1 * *: Executes at 00:00 on the first day of every month.
-
-This frequency ensures we stay up-to-date while remaining respectful of PokéAPI rate limits.
-## 💡 Contributing
-Found a bug with a specific Pokémon's Bulbapedia link or stat calculation?
-
-Open an Issue.
-
-Submit a Pull Request.
-
-## 🔒 Security Note
-This project uses .env files to manage database connectivity. Ensure .env is listed in your .gitignore to prevent leaking your Supabase credentials.
+Open an issue or pull request on GitHub.

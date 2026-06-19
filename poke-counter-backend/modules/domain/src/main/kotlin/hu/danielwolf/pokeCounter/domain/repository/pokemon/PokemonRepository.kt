@@ -61,5 +61,21 @@ interface PokemonRepository : JpaRepository<Pokemon, Int> {
     fun findAllByIdWithTypesAndTypeEntity(
         @Param("ids") ids: Collection<Int>,
     ): List<Pokemon>
-}
 
+    @Query(
+        "SELECT DISTINCT p FROM Pokemon p " +
+            "LEFT JOIN FETCH p.stats ps LEFT JOIN FETCH ps.stat " +
+            "WHERE p.id IN :ids AND (ps.generation IS NULL OR ps.id IS NULL)",
+    )
+    fun findAllByIdWithCurrentStats(
+        @Param("ids") ids: Collection<Int>,
+    ): List<Pokemon>
+
+    @Query(
+        "SELECT DISTINCT p FROM Pokemon p " +
+            "LEFT JOIN FETCH p.types pt LEFT JOIN FETCH pt.type " +
+            "LEFT JOIN FETCH p.stats ps LEFT JOIN FETCH ps.stat " +
+            "WHERE ps.generation IS NULL OR ps.id IS NULL",
+    )
+    fun findAllWithTypesAndCurrentStats(): List<Pokemon>
+}

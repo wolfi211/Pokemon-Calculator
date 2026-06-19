@@ -1,86 +1,107 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import PokemonDisplay from './PokemonDisplay.vue'
+import type { CounterResultDto } from '@/types/api/counterResult'
+import type { StatSortKey } from '@/types/api/statBlock'
 
 const props = defineProps<{
-    counters: any[]
+  counters: CounterResultDto[]
 }>()
 
 const collapsedTiers = ref<Record<string, boolean>>({})
-const sortBy = ref<'hp' | 'attack' | 'special_attack' | 'speed'>('speed')
+const sortBy = ref<StatSortKey>('speed')
 
 const toggleTier = (tier: string) => {
-    collapsedTiers.value[tier] = !collapsedTiers.value[tier]
+  collapsedTiers.value[tier] = !collapsedTiers.value[tier]
 }
 
 const groupedResults = computed(() => {
-    const groups: Record<number, any[]> = {}
+  const groups: Record<number, CounterResultDto[]> = {}
 
-    props.counters.forEach(pokemon => {
-        const tier = pokemon.tier ?? 0
-        if (!groups[tier]) groups[tier] = []
-        groups[tier].push(pokemon)
+  props.counters.forEach((result) => {
+    const tier = result.tier ?? 0
+    if (!groups[tier]) groups[tier] = []
+    groups[tier].push(result)
+  })
+
+  Object.keys(groups).forEach((tier) => {
+    groups[Number(tier)]!.sort((a, b) => {
+      const valA = a.pokemon.stats[sortBy.value] || 0
+      const valB = b.pokemon.stats[sortBy.value] || 0
+      return valB - valA
     })
+  })
 
-    Object.keys(groups).forEach(tier => {
-        groups[Number(tier)]!.sort((a, b) => {
-            const valA = a[sortBy.value] || 0
-            const valB = b[sortBy.value] || 0
-            return valB - valA
-        })
-    })
-
-    return groups
+  return groups
 })
 </script>
 
 <template>
-    <div class="flex flex-col gap-6">
-        <div class="flex justify-end items-center gap-3 px-2 mb-2">
-            <span class="text-xs font-bold text-neutral-100 uppercase tracking-widest">Sort by:</span>
-            <select v-model="sortBy"
-                class="bg-white border border-neutral-200 rounded-lg px-3 py-1.5 text-sm font-medium text-neutral-700 focus:ring-2 focus:ring-emerald-500 outline-none">
-                <option value="hp">HP</option>
-                <option value="attack">Attack</option>
-                <option value="defense">Defense</option>
-                <option value="special_attack">Sp. Atk</option>
-                <option value="special_defense">Sp. Defense</option>
-                <option value="speed" selected>Speed</option>
-            </select>
-        </div>
-
-        <div v-for="(group, tier) in groupedResults" :key="tier"
-            class="bg-white rounded-2xl border border-neutral-200 shadow-sm overflow-hidden">
-            <button @click="toggleTier(tier.toString())"
-                class="w-full flex items-center justify-between p-5 hover:bg-neutral-50 transition-colors"
-                :class="{ 'border-b border-neutral-100': !collapsedTiers[tier] }">
-                <div class="flex items-center gap-4">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                        class="h-5 w-5 text-neutral-400 transition-transform duration-300"
-                        :class="{ '-rotate-90': collapsedTiers[tier] }" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                    </svg>
-
-                    <div class="flex items-center gap-2">
-                        <span
-                            class="px-3 py-1 bg-emerald-100 text-emerald-700 text-xs font-black uppercase rounded-full">
-                            Tier {{ tier }}
-                        </span>
-                        <span class="text-neutral-700 font-bold uppercase tracking-wide text-sm">
-                            {{ tier == '0' ? 'Perfect Walls' : (tier == '1' ? 'Strong Alternatives' : (tier == '2' ?
-                                'Only 2 resistances' : (tier == '3' ? 'Only 3 resitances' : 'No resistances'))) }}
-                        </span>
-                        <span class="text-neutral-400 text-xs font-medium">({{ group.length }} found)</span>
-                    </div>
-                </div>
-            </button>
-
-            <div v-show="!collapsedTiers[tier]" class="p-4 bg-neutral-50/30">
-                <div class="grid grid-cols-1 gap-3">
-                    <PokemonDisplay v-for="pokemon in group" :key="pokemon.id" :pokemon="pokemon" />
-                </div>
-            </div>
-        </div>
+  <div class="flex flex-col gap-6">
+    <div class="flex justify-end items-center gap-3 px-2 mb-2">
+      <span class="text-xs font-bold text-neutral-100 uppercase tracking-widest">Sort by:</span>
+      <select
+        v-model="sortBy"
+        class="bg-white border border-neutral-200 rounded-lg px-3 py-1.5 text-sm font-medium text-neutral-700 focus:ring-2 focus:ring-emerald-500 outline-none"
+      >
+        <option value="hp">HP</option>
+        <option value="attack">Attack</option>
+        <option value="defense">Defense</option>
+        <option value="specialAttack">Sp. Atk</option>
+        <option value="specialDefense">Sp. Defense</option>
+        <option value="speed">Speed</option>
+      </select>
     </div>
+
+    <div
+      v-for="(group, tier) in groupedResults"
+      :key="tier"
+      class="bg-white rounded-2xl border border-neutral-200 shadow-sm overflow-hidden"
+    >
+      <button
+        @click="toggleTier(tier.toString())"
+        class="w-full flex items-center justify-between p-5 hover:bg-neutral-50 transition-colors"
+        :class="{ 'border-b border-neutral-100': !collapsedTiers[tier] }"
+      >
+        <div class="flex items-center gap-4">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 text-neutral-400 transition-transform duration-300"
+            :class="{ '-rotate-90': collapsedTiers[tier] }"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+
+          <div class="flex items-center gap-2">
+            <span class="px-3 py-1 bg-emerald-100 text-emerald-700 text-xs font-black uppercase rounded-full">
+              Tier {{ tier }}
+            </span>
+            <span class="text-neutral-700 font-bold uppercase tracking-wide text-sm">
+              {{
+                tier == '0'
+                  ? 'Perfect Walls'
+                  : tier == '1'
+                    ? 'Strong Alternatives'
+                    : tier == '2'
+                      ? 'Only 2 resistances'
+                      : tier == '3'
+                        ? 'Only 3 resitances'
+                        : 'No resistances'
+              }}
+            </span>
+            <span class="text-neutral-400 text-xs font-medium">({{ group.length }} found)</span>
+          </div>
+        </div>
+      </button>
+
+      <div v-show="!collapsedTiers[tier]" class="p-4 bg-neutral-50/30">
+        <div class="grid grid-cols-1 gap-3">
+          <PokemonDisplay v-for="result in group" :key="result.pokemon.id" :pokemon="result.pokemon" />
+        </div>
+      </div>
+    </div>
+  </div>
 </template>

@@ -19,5 +19,17 @@ interface PokemonMoveRepository : JpaRepository<PokemonMove, Int> {
         @Param("pokemonId") pokemonId: Int,
         @Param("moveIds") moveIds: Collection<Int>,
     ): List<Array<Any>>
+
+    @Query(
+        "SELECT pm FROM PokemonMove pm " +
+            "JOIN FETCH pm.move m " +
+            "JOIN FETCH m.damageClass " +
+            "JOIN FETCH m.types mt " +
+            "JOIN FETCH mt.type " +
+            "WHERE pm.pokemon.id IN :pokemonIds",
+    )
+    fun findAllByPokemonIdInWithMoveGraph(
+        @Param("pokemonIds") pokemonIds: Collection<Int>,
+    ): List<PokemonMove>
 }
 
