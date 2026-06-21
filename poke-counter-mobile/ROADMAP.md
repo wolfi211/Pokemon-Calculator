@@ -1,20 +1,22 @@
 # PokéCounter Mobile — Compose Multiplatform Roadmap
 
-This folder will hold the **Compose Multiplatform (CMP)** client for PokéCounter — a shared Kotlin UI for **iOS and Android** that talks to the existing Spring Boot API in [`poke-counter-backend`](../poke-counter-backend/).
+This folder will hold the **Compose Multiplatform (CMP)** client for PokéCounter — a shared Kotlin UI for **iOS and Android** that talks to the existing Spring Boot API in `[poke-counter-backend](../poke-counter-backend/)`.
 
-The web app in [`poke-counter-frontend`](../poke-counter-frontend/) is the reference for features and API contracts. The mobile app reuses the same endpoints and user journey with a layout tuned for phones.
+The web app in `[poke-counter-frontend](../poke-counter-frontend/)` is the reference for features and API contracts. The mobile app reuses the same endpoints and user journey with a layout tuned for phones.
 
 ---
 
 ## Strategy
 
-| Decision | Choice |
-|----------|--------|
-| UI framework | Compose Multiplatform (shared UI in `commonMain`) |
-| Primary platform (phase 1) | **iOS** — develop and test on a physical iPhone |
-| Secondary platform (phase 2) | **Android** — same `composeApp` module, thin `androidApp` shell |
-| Backend | Existing Spring API at `/api/v1/...` (no mobile-specific backend) |
-| Dev machine | Mac with Xcode (iOS builds) + Android Studio / IntelliJ |
+
+| Decision                     | Choice                                                            |
+| ---------------------------- | ----------------------------------------------------------------- |
+| UI framework                 | Compose Multiplatform (shared UI in `commonMain`)                 |
+| Primary platform (phase 1)   | **iOS** — develop and test on a physical iPhone                   |
+| Secondary platform (phase 2) | **Android** — same `composeApp` module, thin `androidApp` shell   |
+| Backend                      | Existing Spring API at `/api/v1/...` (no mobile-specific backend) |
+| Dev machine                  | Mac with Xcode (iOS builds) + Android Studio / IntelliJ           |
+
 
 ---
 
@@ -88,11 +90,13 @@ Keep business logic and screens in `commonMain` as long as possible.
 
 Same contract as the Vue app. Swagger/OpenAPI lives in the backend.
 
-| Method | Endpoint | Purpose |
-|--------|----------|---------|
-| `GET` | `/api/v1/pokemon/minified-search?query=&versionGroup=` | Enemy Pokémon autocomplete |
-| `GET` | `/api/v1/moves/minified-search?query=&pokemonId=` | Move autocomplete (filtered by selected Pokémon) |
-| `POST` | `/api/v1/counters/find` | Counter calculation |
+
+| Method | Endpoint                                               | Purpose                                          |
+| ------ | ------------------------------------------------------ | ------------------------------------------------ |
+| `GET`  | `/api/v1/pokemon/minified-search?query=&versionGroup=` | Enemy Pokémon autocomplete                       |
+| `GET`  | `/api/v1/moves/minified-search?query=&pokemonId=`      | Move autocomplete (filtered by selected Pokémon) |
+| `POST` | `/api/v1/counters/find`                                | Counter calculation                              |
+
 
 ### Request / response (reference)
 
@@ -109,11 +113,13 @@ Same contract as the Vue app. Swagger/OpenAPI lives in the backend.
 
 ### Local development URLs
 
-| Environment | Base URL |
-|-------------|----------|
-| iOS Simulator | `http://localhost:8080` (simulator shares Mac localhost) |
-| Physical iPhone | `http://<your-mac-lan-ip>:8080` (same Wi‑Fi as Mac) |
-| Android emulator (later) | `http://10.0.2.2:8080` |
+
+| Environment              | Base URL                                                 |
+| ------------------------ | -------------------------------------------------------- |
+| iOS Simulator            | `http://localhost:8080` (simulator shares Mac localhost) |
+| Physical iPhone          | `http://<your-mac-lan-ip>:8080` (same Wi‑Fi as Mac)      |
+| Android emulator (later) | `http://10.0.2.2:8080`                                   |
+
 
 Start the backend:
 
@@ -138,27 +144,29 @@ curl -X POST http://localhost:8080/api/v1/sync
 
 ### Mac (required for iOS)
 
-- [ ] **Xcode** 15+ (current stable)
-- [ ] **Android Studio** (latest) with **Kotlin Multiplatform** plugin
-- [ ] JDK 17+
-- [ ] Run **Tools → Kotlin Multiplatform → Doctor** and fix any issues
+- [x] **Xcode** 15+ (current stable)
+- [x] **Android Studio** (latest) with **Kotlin Multiplatform** plugin
+- [x] JDK 17+
+- [x] Run **Tools → Kotlin Multiplatform → Doctor** and fix any issues
 
 ### Apple Developer (for physical iPhone)
 
-- [ ] Apple ID added in Xcode
-- [ ] Unique **Bundle ID** (e.g. `hu.danielwolf.pokecounter`)
-- [ ] **Developer Mode** enabled on iPhone (Settings → Privacy & Security)
-- [ ] Device trusted in Xcode (Window → Devices and Simulators)
+- [x] Apple ID added in Xcode
+- [x] Unique **Bundle ID** (e.g. `hu.danielwolf.pokecounter`)
+- [x] **Developer Mode** enabled on iPhone (Settings → Privacy & Security)
+- [x] Device trusted in Xcode (Window → Devices and Simulators)
 
 ### Libraries to add in `composeApp` (as you build)
 
-| Library | Purpose |
-|---------|---------|
-| Navigation Compose | Screen flow |
+
+| Library               | Purpose                  |
+| --------------------- | ------------------------ |
+| Navigation Compose    | Screen flow              |
 | ViewModel + Lifecycle | UI state across rotation |
-| Ktor Client | HTTP |
-| kotlinx.serialization | JSON DTOs |
-| Coil (optional) | Pokémon sprites |
+| Ktor Client           | HTTP                     |
+| kotlinx.serialization | JSON DTOs                |
+| Coil (optional)       | Pokémon sprites          |
+
 
 ---
 
@@ -263,27 +271,31 @@ The core job on a phone: **quickly answer “what walls this?”** during battle
 
 ## Web → CMP concept map
 
-| Vue / TypeScript | Compose Multiplatform |
-|------------------|----------------------|
-| `ref` / `reactive` | `mutableStateOf` / `StateFlow` |
-| `watch` | `LaunchedEffect`, `collectAsStateWithLifecycle` |
-| `emit('results')` | ViewModel updates state; UI collects |
-| `fetch` / `apiGet` | Ktor suspend functions |
-| Components | `@Composable` functions |
-| `vue-router` | Navigation Compose |
-| Tailwind | `Modifier`, Material 3 |
+
+| Vue / TypeScript   | Compose Multiplatform                           |
+| ------------------ | ----------------------------------------------- |
+| `ref` / `reactive` | `mutableStateOf` / `StateFlow`                  |
+| `watch`            | `LaunchedEffect`, `collectAsStateWithLifecycle` |
+| `emit('results')`  | ViewModel updates state; UI collects            |
+| `fetch` / `apiGet` | Ktor suspend functions                          |
+| Components         | `@Composable` functions                         |
+| `vue-router`       | Navigation Compose                              |
+| Tailwind           | `Modifier`, Material 3                          |
+
 
 ---
 
 ## Platform comparison (what you learn where)
 
-| Topic | iOS (phase 1) | Android (phase 2) |
-|-------|---------------|-------------------|
-| Code signing | Apple Developer, Team ID, profiles | Debug keystore, Play signing |
-| Dev networking | LAN IP on device; localhost on Simulator | `10.0.2.2` on emulator |
-| HTTP cleartext | ATS exception in Info.plist | `networkSecurityConfig` |
-| Store | App Store Connect, TestFlight | Play Console |
-| Permissions | Info.plist usage descriptions | AndroidManifest |
+
+| Topic          | iOS (phase 1)                            | Android (phase 2)            |
+| -------------- | ---------------------------------------- | ---------------------------- |
+| Code signing   | Apple Developer, Team ID, profiles       | Debug keystore, Play signing |
+| Dev networking | LAN IP on device; localhost on Simulator | `10.0.2.2` on emulator       |
+| HTTP cleartext | ATS exception in Info.plist              | `networkSecurityConfig`      |
+| Store          | App Store Connect, TestFlight            | Play Console                 |
+| Permissions    | Info.plist usage descriptions            | AndroidManifest              |
+
 
 CMP uses **Material 3** on both platforms for v1 — acceptable for shipping. iOS-specific spacing tweaks can live in theme code later without splitting screens.
 
@@ -303,8 +315,8 @@ CMP uses **Material 3** on both platforms for v1 — acceptable for shipping. iO
 
 When sitting down to scaffold the project:
 
-- [ ] Create CMP project in this folder (`poke-counter-mobile/`)
-- [ ] Run on iOS Simulator, then physical iPhone
+- [x] Create CMP project in this folder (`poke-counter-mobile/`)
+- [x] Run on iOS Simulator, then physical iPhone
 - [ ] Add Ktor + kotlinx.serialization
 - [ ] Configure debug API base URL (simulator vs device)
 - [ ] Implement enemy search screen only
